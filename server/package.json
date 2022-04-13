@@ -1,0 +1,11 @@
+{
+  "name": "resprint",
+  "version": "1.0.0",
+  "description": "CS-524 Final Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aman Khalfay, Apoorva Pandey, Aaditi Patange, Siddharth Gulati",
+  "license": "ISC"
+}
