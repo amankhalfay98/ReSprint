@@ -39,7 +39,6 @@ module.exports = {
   validString,
   validEmail,
   validBoolean,
-  checkIfValidUUID,
   checkIsProperNumber,
   validIsoDate,
   validStringEmpty,
