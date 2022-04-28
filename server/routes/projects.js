@@ -66,8 +66,8 @@ router.get('/:id', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
-  const { members, master, projectName, userStories, totalSprints } = req.body;
+router.put('/', async (req, res) => {
+  const { id, members, master, projectName, userStories, totalSprints } = req.body;
   let project;
   const errorParams = [];
   if (!Array.isArray(members)) {
@@ -75,6 +75,9 @@ router.post('/', async (req, res) => {
   }
   if (!uuidValidate(master)) {
     errorParams.push('Master');
+  }
+  if (id && !uuidValidate(id)) {
+    errorParams.push('id');
   }
   if (!verify.validString(projectName)) {
     errorParams.push('Project Name');
@@ -104,12 +107,25 @@ router.post('/', async (req, res) => {
     });
   }
   try {
-    project = await projectData.addProject(members, master, projectName, userStories, totalSprints);
+    project = await projectData.upsertProject(
+      members,
+      master,
+      projectName,
+      userStories,
+      totalSprints,
+      id
+    );
   } catch (error) {
     return res.json({ status: 'error', message: error.message });
   }
-  return res.status(200).json({
-    project,
+  if (project.updatedExisting) {
+    return res.status(200).json({
+      project: project.project,
+      status: 'success',
+    });
+  }
+  return res.status(201).json({
+    project: project.project,
     status: 'success',
   });
 });

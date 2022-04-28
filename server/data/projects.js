@@ -18,7 +18,11 @@ const getAllProjects = async (memberId) => {
   }
 };
 
-const addProject = async (members, master, projectName, userStories, totalSprints) => {
+const upsertProject = async (members, master, projectName, userStories, totalSprints, id) => {
+  id === undefined ? uuid.v4() : id;
+  if (!uuidValidate(id)) {
+    throw Error('Id is of invalid type');
+  }
   if (!Array.isArray(members)) {
     throw Error('Members is of invalid type');
   }
@@ -46,15 +50,28 @@ const addProject = async (members, master, projectName, userStories, totalSprint
   }
   try {
     const projectsCollection = await projectSchema();
-    const projects = await projectsCollection.insertOne({
-      _id: uuid.v4(),
-      members,
-      master,
-      projectName,
-      userStories,
-      totalSprints,
-    });
-    return projects.ops[0];
+    let project = await projectsCollection.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          members,
+          master,
+          projectName,
+          userStories,
+          totalSprints,
+        },
+      },
+      {
+        upsert: true,
+      }
+    );
+    let updatedExisting = project.lastErrorObject.updatedExisting;
+    if (project !== null) {
+      project = await projectsCollection.findOne({
+        _id: id,
+      });
+    }
+    return { updatedExisting, project };
   } catch (error) {
     throw Error(error.message);
   }
@@ -62,5 +79,5 @@ const addProject = async (members, master, projectName, userStories, totalSprint
 
 module.exports = {
   getAllProjects,
-  addProject,
+  upsertProject,
 };
