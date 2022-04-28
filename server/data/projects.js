@@ -18,16 +18,13 @@ const getAllProjects = async (memberId) => {
   }
 };
 
-const getProjectById = async (memberId, id) => {
-  if (!uuidValidate(memberId)) {
-    throw TypeError('Member is of invalid type');
-  }
+const getProjectById = async (id) => {
   if (!uuidValidate(id)) {
     throw TypeError('Id is of invalid type');
   }
   try {
     const projectsCollection = await projectSchema();
-    const project = await projectsCollection.findOne({ _id: id, members: { $in: [memberId] } });
+    const project = await projectsCollection.findOne({ _id: id });
     return project;
   } catch (error) {
     throw Error(error.message);
@@ -111,8 +108,23 @@ const upsertProject = async (
   }
 };
 
+const deleteProject = async (id) => {
+  let project;
+  if (!uuidValidate(id)) {
+    throw TypeError('Id is of invalid type');
+  }
+  try {
+    const projectsCollection = await projectSchema();
+    project = await projectsCollection.deleteOne({ _id: id });
+    return project;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
+
 module.exports = {
   getAllProjects,
   getProjectById,
   upsertProject,
+  deleteProject,
 };

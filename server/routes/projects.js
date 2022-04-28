@@ -87,10 +87,7 @@ router.get('/:id', async (req, res) => {
   let project;
   const errorParams = [];
   if (!uuidValidate(id)) {
-    res.status(422).json({
-      status: 'error',
-      message: 'Invalid Project Id type',
-    });
+    errorParams.push('Id');
   }
   if (memberId && !uuidValidate(memberId)) {
     errorParams.push('memberId');
@@ -102,7 +99,18 @@ router.get('/:id', async (req, res) => {
     });
   }
   try {
-    project = await projectData.getProjectById(memberId, id);
+    project = await projectData.getProjectById(id);
+    if (project === null)
+      return res.status(404).json({
+        status: 'error',
+        message: 'Project Not Found',
+      });
+    if (!project.members.includes(memberId)) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'User Not Authorized',
+      });
+    }
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
@@ -154,6 +162,51 @@ router.put('/', async (req, res) => {
   }
   return res.status(201).json({
     project: project.project,
+    status: 'success',
+  });
+});
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { memberId } = req.body;
+  let project;
+  const errorParams = [];
+  if (!uuidValidate(id)) {
+    res.status(422).json({
+      status: 'error',
+      message: 'Invalid Project Id type',
+    });
+  }
+  if (memberId && !uuidValidate(memberId)) {
+    errorParams.push('memberId');
+  }
+  if (errorParams.length > 0) {
+    return res.status(422).json({
+      status: 'error',
+      message: `${errorParams} is not valid type`,
+    });
+  }
+  try {
+    project = await projectData.getProjectById(id);
+    if (project === null)
+      return res.status(404).json({
+        status: 'error',
+        message: 'Project Not Found',
+      });
+    if (!project.members.includes(memberId)) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'User Not Authorized',
+      });
+    }
+    await projectData.deleteProject(id);
+  } catch (error) {
+    if (error instanceof TypeError) {
+      return res.status(422).json({ status: 'error', message: error.message });
+    }
+    return res.status(500).json({ status: 'error', message: error.message });
+  }
+  return res.status(200).json({
     status: 'success',
   });
 });
