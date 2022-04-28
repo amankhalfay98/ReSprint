@@ -5,13 +5,23 @@ const mongoCollections = require('../config/mongoCollections');
 
 const projectSchema = mongoCollections.projects;
 
-const getAllProjects = async (memberId) => {
+const getAllProjects = async (memberId, company, projectName) => {
+  const query = { members: { $in: [memberId] } };
+  if (company) {
+    query.company = company;
+  }
+  if (projectName) {
+    query.projectName = projectName;
+  }
   if (!uuidValidate(memberId)) {
     return { error: true, message: 'Invalid member id' };
   }
   try {
     const projectsCollection = await projectSchema();
-    const projects = await projectsCollection.find({ members: { $in: [memberId] } }).toArray();
+    const projects = await projectsCollection
+      .find(query)
+      .collation({ locale: 'en', strength: 2 })
+      .toArray();
     return projects;
   } catch (error) {
     throw Error(error.message);

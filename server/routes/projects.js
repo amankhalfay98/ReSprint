@@ -52,6 +52,7 @@ router.get('/', async (req, res) => {
   const errorParams = [];
   let projects;
   const { memberId } = req.body;
+  const { company, projectName } = req.query;
   if (memberId && !uuidValidate(memberId)) {
     errorParams.push('memberId');
   }
@@ -62,7 +63,7 @@ router.get('/', async (req, res) => {
     });
   }
   try {
-    projects = await projectData.getAllProjects(memberId);
+    projects = await projectData.getAllProjects(memberId, company, projectName);
     if (projects.error) {
       return res.status(422).json({
         status: 'error',
