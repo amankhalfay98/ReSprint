@@ -1,6 +1,10 @@
+const projectRoutes = require('./projects');
+
 const constructorMethod = (app) => {
+  app.use('/projects', projectRoutes);
+
   app.use('*', (req, res) => {
-    res.sendStatus(200);
+    res.sendStatus(404);
   });
 };
 
