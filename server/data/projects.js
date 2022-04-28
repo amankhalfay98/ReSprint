@@ -24,6 +24,7 @@ const upsertProject = async (
   projectName,
   userStories,
   totalSprints,
+  company,
   id = uuid.v4()
 ) => {
   if (!uuidValidate(id)) {
@@ -37,6 +38,9 @@ const upsertProject = async (
   }
   if (!verify.validString(projectName)) {
     throw Error('Project Name is of invalid type');
+  }
+  if (!verify.validString(company)) {
+    throw Error('Company is of invalid type');
   }
   if (!Array.isArray(userStories)) {
     throw Error('User Stories is of invalid type');
@@ -65,6 +69,7 @@ const upsertProject = async (
           projectName,
           userStories,
           totalSprints,
+          company,
         },
       },
       {

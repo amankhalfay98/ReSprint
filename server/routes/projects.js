@@ -4,6 +4,7 @@ const router = express.Router();
 const { validate: uuidValidate } = require('uuid');
 const verify = require('../middlewares/validation');
 const projectData = require('../data/projects');
+// const checkIfAuthenticated = require('../middlewares/auth');
 
 router.get('/', async (req, res) => {
   const errorParams = [];
@@ -67,7 +68,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/', async (req, res) => {
-  const { id, members, master, projectName, userStories, totalSprints } = req.body;
+  const { id, members, master, projectName, userStories, totalSprints, company } = req.body;
   let project;
   const errorParams = [];
   if (!Array.isArray(members)) {
@@ -81,6 +82,9 @@ router.put('/', async (req, res) => {
   }
   if (!verify.validString(projectName)) {
     errorParams.push('Project Name');
+  }
+  if (!verify.validString(company)) {
+    errorParams.push('Company');
   }
   if (!Array.isArray(userStories)) {
     errorParams.push('User Stories');
@@ -113,6 +117,7 @@ router.put('/', async (req, res) => {
       projectName,
       userStories,
       totalSprints,
+      company,
       id
     );
   } catch (error) {
