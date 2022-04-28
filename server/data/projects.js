@@ -41,10 +41,14 @@ const upsertProject = async (
   userStories,
   totalSprints,
   company,
+  memberId,
   id = uuid.v4()
 ) => {
   if (!uuidValidate(id)) {
     throw TypeError('Id is of invalid type');
+  }
+  if (!uuidValidate(memberId)) {
+    throw TypeError('Member id is of invalid type');
   }
   if (!Array.isArray(members)) {
     throw TypeError('Members is of invalid type');
@@ -77,7 +81,7 @@ const upsertProject = async (
   try {
     const projectsCollection = await projectSchema();
     let project = await projectsCollection.findOneAndUpdate(
-      { _id: id },
+      { _id: id, members: { $in: [memberId] } },
       {
         $set: {
           members,
@@ -100,6 +104,9 @@ const upsertProject = async (
     }
     return { updatedExisting, project };
   } catch (error) {
+    if (error.code === 11000) {
+      throw ReferenceError('User Not Authorized');
+    }
     throw Error(error.message);
   }
 };

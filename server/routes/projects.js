@@ -8,12 +8,15 @@ const projectData = require('../data/projects');
 
 const paramsValidation = (params) => {
   const errorParams = [];
-  const { id, members, master, projectName, userStories, totalSprints, company } = params;
+  const { id, members, master, projectName, userStories, totalSprints, company, memberId } = params;
   if (!Array.isArray(members)) {
     errorParams.push('Members');
   }
   if (!uuidValidate(master)) {
     errorParams.push('Master');
+  }
+  if (!uuidValidate(memberId)) {
+    errorParams.push('Member Id');
   }
   if (id && !uuidValidate(id)) {
     errorParams.push('id');
@@ -113,7 +116,8 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/', async (req, res) => {
-  const { id, members, master, projectName, userStories, totalSprints, company } = req.body;
+  const { id, members, master, projectName, userStories, totalSprints, company, memberId } =
+    req.body;
   let project;
   const errorParams = paramsValidation(req.body);
   if (errorParams.length > 0) {
@@ -130,11 +134,15 @@ router.put('/', async (req, res) => {
       userStories,
       totalSprints,
       company,
+      memberId,
       id
     );
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
+    }
+    if (error instanceof ReferenceError) {
+      return res.status(403).json({ status: 'error', message: error.message });
     }
     return res.status(500).json({ status: 'error', message: error.message });
   }
