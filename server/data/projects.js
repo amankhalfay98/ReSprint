@@ -14,7 +14,20 @@ const getAllProjects = async (memberId) => {
     const projects = await projectsCollection.find({ members: { $in: [memberId] } }).toArray();
     return projects;
   } catch (error) {
-    throw Error();
+    throw Error(error.message);
+  }
+};
+
+const getProjectById = async (id) => {
+  if (!uuidValidate(id)) {
+    throw TypeError('Id is of invalid type');
+  }
+  try {
+    const projectsCollection = await projectSchema();
+    const project = await projectsCollection.findOne({ _id: id });
+    return project;
+  } catch (error) {
+    throw Error(error.message);
   }
 };
 
@@ -25,43 +38,47 @@ const upsertProject = async (
   userStories,
   totalSprints,
   company,
+  memberId,
   id = uuid.v4()
 ) => {
   if (!uuidValidate(id)) {
-    throw Error('Id is of invalid type');
+    throw TypeError('Id is of invalid type');
+  }
+  if (!uuidValidate(memberId)) {
+    throw TypeError('Member id is of invalid type');
   }
   if (!Array.isArray(members)) {
-    throw Error('Members is of invalid type');
+    throw TypeError('Members is of invalid type');
   }
   if (!uuidValidate(master)) {
-    throw Error('Master is of invalid type');
+    throw TypeError('Master is of invalid type');
   }
   if (!verify.validString(projectName)) {
-    throw Error('Project Name is of invalid type');
+    throw TypeError('Project Name is of invalid type');
   }
   if (!verify.validString(company)) {
-    throw Error('Company is of invalid type');
+    throw TypeError('Company is of invalid type');
   }
   if (!Array.isArray(userStories)) {
-    throw Error('User Stories is of invalid type');
+    throw TypeError('User Stories is of invalid type');
   }
   if (!verify.checkIsProperNumber(totalSprints)) {
-    throw Error('Total Sprints is of invalid type');
+    throw TypeError('Total Sprints is of invalid type');
   }
   for (let index = 0; index < members.length; index += 1) {
     if (!uuidValidate(members[index])) {
-      throw Error('Member is of invalid type');
+      throw TypeError('Member is of invalid type');
     }
   }
   for (let index = 0; index < userStories.length; index += 1) {
     if (!uuidValidate(userStories[index])) {
-      throw Error('User Stories is of invalid type');
+      throw TypeError('User Stories is of invalid type');
     }
   }
   try {
     const projectsCollection = await projectSchema();
     let project = await projectsCollection.findOneAndUpdate(
-      { _id: id },
+      { _id: id, members: { $in: [memberId] } },
       {
         $set: {
           members,
@@ -84,11 +101,30 @@ const upsertProject = async (
     }
     return { updatedExisting, project };
   } catch (error) {
+    if (error.code === 11000) {
+      throw ReferenceError('User Not Authorized');
+    }
+    throw Error(error.message);
+  }
+};
+
+const deleteProject = async (id) => {
+  let project;
+  if (!uuidValidate(id)) {
+    throw TypeError('Id is of invalid type');
+  }
+  try {
+    const projectsCollection = await projectSchema();
+    project = await projectsCollection.deleteOne({ _id: id });
+    return project;
+  } catch (error) {
     throw Error(error.message);
   }
 };
 
 module.exports = {
   getAllProjects,
+  getProjectById,
   upsertProject,
+  deleteProject,
 };
