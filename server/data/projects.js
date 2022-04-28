@@ -18,8 +18,14 @@ const getAllProjects = async (memberId) => {
   }
 };
 
-const upsertProject = async (members, master, projectName, userStories, totalSprints, id) => {
-  id === undefined ? uuid.v4() : id;
+const upsertProject = async (
+  members,
+  master,
+  projectName,
+  userStories,
+  totalSprints,
+  id = uuid.v4()
+) => {
   if (!uuidValidate(id)) {
     throw Error('Id is of invalid type');
   }
@@ -65,7 +71,7 @@ const upsertProject = async (members, master, projectName, userStories, totalSpr
         upsert: true,
       }
     );
-    let updatedExisting = project.lastErrorObject.updatedExisting;
+    const { updatedExisting } = project.lastErrorObject;
     if (project !== null) {
       project = await projectsCollection.findOne({
         _id: id,
