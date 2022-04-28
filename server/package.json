@@ -21,6 +21,7 @@
     "dotenv": "^16.0.0",
     "eslint-config-prettier": "^8.4.0",
     "express": "^4.17.1",
+    "firebase-admin": "^10.1.0",
     "moment": "^2.29.1",
     "mongodb": "^3.6.2",
     "uuid": "^8.3.2"
