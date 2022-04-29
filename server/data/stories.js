@@ -74,7 +74,6 @@ const getAllStories = async (
   status,
   storyPoint,
   type,
-  id
 ) => {
   //   const query = { members: { $in: [memberId] } };
   const query = {};
@@ -88,12 +87,8 @@ const getAllStories = async (
     status,
     storyPoint,
     type,
-    id,
   };
   await validateParams(params);
-  if (id) {
-    query._id = id;
-  }
   if (assignedTo) {
     query.assignedTo = assignedTo;
   }
@@ -127,6 +122,19 @@ const getAllStories = async (
       .find(query)
       .collation({ locale: 'en', strength: 2 })
       .toArray();
+    return story;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
+
+const getStoryById = async (id) => {
+  if (!uuidValidate(id)) {
+    throw TypeError('Id is of invalid type');
+  }
+  try {
+    const storiesCollection = await storiesSchema();
+    const story = await storiesCollection.findOne({ _id: id });
     return story;
   } catch (error) {
     throw Error(error.message);
@@ -214,10 +222,24 @@ const upsertStory = async (
   }
 };
 
+const deleteStory = async (id) => {
+  let story;
+  if (!uuidValidate(id)) {
+    throw TypeError('Id is of invalid type');
+  }
+  try {
+    const storiesCollection = await storiesSchema();
+    story = await storiesCollection.deleteOne({ _id: id });
+    return story;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
+
 module.exports = {
   getAllStories,
+  getStoryById,
   validateParams,
-  //   getStoryById,
   upsertStory,
-  //   deleteStory,
+  deleteStory,
 };
