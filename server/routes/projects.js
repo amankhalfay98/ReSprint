@@ -59,17 +59,11 @@ router.get('/', async (req, res) => {
   if (errorParams.length > 0) {
     return res.status(422).json({
       status: 'error',
-      message: `${errorParams} is not valid type`,
+      message: `${errorParams} is of invalid type`,
     });
   }
   try {
     projects = await projectData.getAllProjects(memberId, company, projectName);
-    if (projects.error) {
-      return res.status(422).json({
-        status: 'error',
-        message: projects.message,
-      });
-    }
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
@@ -96,7 +90,7 @@ router.get('/:id', async (req, res) => {
   if (errorParams.length > 0) {
     return res.status(422).json({
       status: 'error',
-      message: `${errorParams} is not valid type`,
+      message: `${errorParams} is of invalid type`,
     });
   }
   try {
@@ -125,27 +119,17 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/', async (req, res) => {
-  const { id, members, master, projectName, userStories, totalSprints, company, memberId } =
-    req.body;
+  const { id, members, master, projectName, userStories, totalSprints, company, memberId } = req.body;
   let project;
   const errorParams = paramsValidation(req.body);
   if (errorParams.length > 0) {
     return res.status(422).json({
       status: 'error',
-      message: `${errorParams} is not valid type`,
+      message: `${errorParams} is of invalid type`,
     });
   }
   try {
-    project = await projectData.upsertProject(
-      members,
-      master,
-      projectName,
-      userStories,
-      totalSprints,
-      company,
-      memberId,
-      id
-    );
+    project = await projectData.upsertProject(members, master, projectName, userStories, totalSprints, company, memberId, id);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
@@ -175,7 +159,7 @@ router.delete('/:id', async (req, res) => {
   if (!uuidValidate(id)) {
     res.status(422).json({
       status: 'error',
-      message: 'Invalid Project Id type',
+      message: 'Project Id is of invalid type',
     });
   }
   if (memberId && !uuidValidate(memberId)) {
@@ -184,7 +168,7 @@ router.delete('/:id', async (req, res) => {
   if (errorParams.length > 0) {
     return res.status(422).json({
       status: 'error',
-      message: `${errorParams} is not valid type`,
+      message: `${errorParams} is of invalid type`,
     });
   }
   try {

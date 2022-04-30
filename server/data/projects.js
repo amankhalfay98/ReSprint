@@ -18,10 +18,17 @@ const getAllProjects = async (memberId, company, projectName) => {
   }
   try {
     const projectsCollection = await projectSchema();
-    const projects = await projectsCollection
-      .find(query)
-      .collation({ locale: 'en', strength: 2 })
-      .toArray();
+    let projects = await projectsCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
+    if (projects !== null) {
+      projects = projects.map((x) => {
+        const val = x;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        val.id = val._id;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        delete val._id;
+        return val;
+      });
+    }
     return projects;
   } catch (error) {
     throw Error(error.message);
@@ -35,22 +42,19 @@ const getProjectById = async (id) => {
   try {
     const projectsCollection = await projectSchema();
     const project = await projectsCollection.findOne({ _id: id });
+    if (project !== null) {
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+      project.id = project._id;
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+      delete project._id;
+    }
     return project;
   } catch (error) {
     throw Error(error.message);
   }
 };
 
-const upsertProject = async (
-  members,
-  master,
-  projectName,
-  userStories,
-  totalSprints,
-  company,
-  memberId,
-  id = uuid.v4()
-) => {
+const upsertProject = async (members, master, projectName, userStories, totalSprints, company, memberId, id = uuid.v4()) => {
   if (!uuidValidate(id)) {
     throw TypeError('Id is of invalid type');
   }
@@ -90,14 +94,7 @@ const upsertProject = async (
     let project = await projectsCollection.findOneAndUpdate(
       { _id: id, members: { $in: [memberId] } },
       {
-        $set: {
-          members,
-          master,
-          projectName,
-          userStories,
-          totalSprints,
-          company,
-        },
+        $set: { members, master, projectName, userStories, totalSprints, company },
       },
       {
         upsert: true,
@@ -108,6 +105,12 @@ const upsertProject = async (
       project = await projectsCollection.findOne({
         _id: id,
       });
+      if (project !== null) {
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        project.id = project._id;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        delete project._id;
+      }
     }
     return { updatedExisting, project };
   } catch (error) {
