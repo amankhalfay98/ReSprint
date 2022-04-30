@@ -53,7 +53,7 @@ router.get('/:id', async (req, res) => {
 router.put('/', async (req, res) => {
   const { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = req.body;
   let story;
-  let errorParams = [];
+  const errorParams = [];
   if (!createdBy) errorParams.push('Created By');
   if (!assignedTo) errorParams.push('Assigned To');
   if (!comments) errorParams.push('Comments');

@@ -82,11 +82,15 @@ const getAllStories = async (assignedTo, createdAt, createdBy, modifiedAt, prior
   }
   try {
     const storiesCollection = await storiesSchema();
-    const story = await storiesCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
+    let story = await storiesCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
     if (story !== null) {
-      story.map((x) => {
-        x.id = x._id;
-        delete x._id;
+      story = story.map((x) => {
+        const val = x;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        val.id = val._id;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        delete val._id;
+        return val;
       });
     }
     return story;
@@ -103,7 +107,9 @@ const getStoryById = async (id) => {
     const storiesCollection = await storiesSchema();
     const story = await storiesCollection.findOne({ _id: id });
     if (story !== null) {
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
       story.id = story._id;
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
       delete story._id;
     }
     return story;
@@ -114,7 +120,7 @@ const getStoryById = async (id) => {
 
 const upsertStory = async (createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id = uuid.v4()) => {
   const params = { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id };
-  let errorParams = [];
+  const errorParams = [];
   if (!createdBy) errorParams.push('Created By');
   if (!assignedTo) errorParams.push('Assigned To');
   if (!comments) errorParams.push('Comments');
@@ -157,7 +163,9 @@ const upsertStory = async (createdBy, assignedTo, comments, createdAt, descripti
         _id: id,
       });
       if (story !== null) {
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
         story.id = story._id;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
         delete story._id;
       }
     }

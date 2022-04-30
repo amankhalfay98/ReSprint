@@ -18,11 +18,15 @@ const getAllProjects = async (memberId, company, projectName) => {
   }
   try {
     const projectsCollection = await projectSchema();
-    const projects = await projectsCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
+    let projects = await projectsCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
     if (projects !== null) {
-      projects.map((x) => {
-        x.id = x._id;
-        delete x._id;
+      projects = projects.map((x) => {
+        const val = x;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        val.id = val._id;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+        delete val._id;
+        return val;
       });
     }
     return projects;
@@ -39,7 +43,9 @@ const getProjectById = async (id) => {
     const projectsCollection = await projectSchema();
     const project = await projectsCollection.findOne({ _id: id });
     if (project !== null) {
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
       project.id = project._id;
+      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
       delete project._id;
     }
     return project;
@@ -100,7 +106,9 @@ const upsertProject = async (members, master, projectName, userStories, totalSpr
         _id: id,
       });
       if (project !== null) {
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
         project.id = project._id;
+        /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
         delete project._id;
       }
     }
