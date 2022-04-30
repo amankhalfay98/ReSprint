@@ -30,7 +30,6 @@ The main directories are:
 | `server/config`      | This directory contains database configuration file                                                                              |
 | `server/data`        | This directory contains all the business logic of the application and database operations with respect to different endpoints    |
 | `server/middlewares` | This directory contains all the middleware logic for the application for eg authentication                                       |
-| `server/models`      | This directory contains all the sequelize definitions of the tables in the databse                                               |
 | `server/routes`      | This directory contains all the routes for the application                                                                       |
 
 The entry point of the application is located in `index.js` from where the express server starts
