@@ -3,26 +3,11 @@ const uuid = require('uuid');
 const verify = require('../middlewares/validation');
 const mongoCollections = require('../config/mongoCollections');
 const { STATUS_VALUE, TYPE_VALUE } = require('../middlewares/constants');
-const { query } = require('express');
 
 const storiesSchema = mongoCollections.stories;
 
 const validateParams = async (args) => {
-  const {
-    createdBy,
-    assignedTo,
-    comments,
-    createdAt,
-    description,
-    modifiedAt,
-    priority,
-    sprint,
-    status,
-    storyPoint,
-    title,
-    type,
-    id,
-  } = args;
+  const { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = args;
   if (createdBy && !uuidValidate(createdBy)) {
     throw TypeError('Created by is of invalid type');
   }
@@ -64,30 +49,9 @@ const validateParams = async (args) => {
   }
 };
 
-const getAllStories = async (
-  assignedTo,
-  createdAt,
-  createdBy,
-  modifiedAt,
-  priority,
-  sprint,
-  status,
-  storyPoint,
-  type,
-) => {
-  //   const query = { members: { $in: [memberId] } };
+const getAllStories = async (assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type) => {
   const query = {};
-  const params = {
-    assignedTo,
-    createdAt,
-    createdBy,
-    modifiedAt,
-    priority,
-    sprint,
-    status,
-    storyPoint,
-    type,
-  };
+  const params = { assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type };
   await validateParams(params);
   if (assignedTo) {
     query.assignedTo = assignedTo;
@@ -118,10 +82,13 @@ const getAllStories = async (
   }
   try {
     const storiesCollection = await storiesSchema();
-    const story = await storiesCollection
-      .find(query)
-      .collation({ locale: 'en', strength: 2 })
-      .toArray();
+    const story = await storiesCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
+    if (story !== null) {
+      story.map((x) => {
+        x.id = x._id;
+        delete x._id;
+      });
+    }
     return story;
   } catch (error) {
     throw Error(error.message);
@@ -135,42 +102,33 @@ const getStoryById = async (id) => {
   try {
     const storiesCollection = await storiesSchema();
     const story = await storiesCollection.findOne({ _id: id });
+    if (story !== null) {
+      story.id = story._id;
+      delete story._id;
+    }
     return story;
   } catch (error) {
     throw Error(error.message);
   }
 };
 
-const upsertStory = async (
-  createdBy,
-  assignedTo,
-  comments,
-  createdAt,
-  description,
-  modifiedAt,
-  priority,
-  sprint,
-  status,
-  storyPoint,
-  title,
-  type,
-  id = uuid.v4()
-) => {
-  const params = {
-    createdBy,
-    assignedTo,
-    comments,
-    createdAt,
-    description,
-    modifiedAt,
-    priority,
-    sprint,
-    status,
-    storyPoint,
-    title,
-    type,
-    id,
-  };
+const upsertStory = async (createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id = uuid.v4()) => {
+  const params = { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id };
+  let errorParams = [];
+  if (!createdBy) errorParams.push('Created By');
+  if (!assignedTo) errorParams.push('Assigned To');
+  if (!comments) errorParams.push('Comments');
+  if (!createdAt) errorParams.push('Created At');
+  if (!description) errorParams.push('Description');
+  if (!modifiedAt) errorParams.push('Modified By');
+  if (!priority) errorParams.push('Priority');
+  if (!sprint) errorParams.push('Sprint');
+  if (!status) errorParams.push('Status');
+  if (!storyPoint) errorParams.push('Story Point');
+  if (!title) errorParams.push('Title');
+  if (!type) errorParams.push('Type');
+  if (!id) errorParams.push('Id');
+  if (errorParams.length > 0) return { errorParams, missing: true };
   await validateParams(params);
   try {
     const storiesCollection = await storiesSchema();
@@ -186,22 +144,8 @@ const upsertStory = async (
         ],
       },
       {
-        $set: {
-          assignedTo,
-          comments,
-          description,
-          modifiedAt,
-          priority,
-          sprint,
-          status,
-          storyPoint,
-          title,
-          type,
-        },
-        $setOnInsert: {
-          createdBy,
-          createdAt,
-        },
+        $set: { assignedTo, comments, description, modifiedAt, priority, sprint, status, storyPoint, title, type },
+        $setOnInsert: { createdBy, createdAt },
       },
       {
         upsert: true,
@@ -212,6 +156,10 @@ const upsertStory = async (
       story = await storiesCollection.findOne({
         _id: id,
       });
+      if (story !== null) {
+        story.id = story._id;
+        delete story._id;
+      }
     }
     return { updatedExisting, story };
   } catch (error) {
