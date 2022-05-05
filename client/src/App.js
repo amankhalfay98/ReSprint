@@ -27,7 +27,7 @@ const App = () => {
           <Link className='showlink' to='/kanban'>
             Kanban
           </Link>
-          <Link className='showlink' to='/bavklog'>
+          <Link className='showlink' to='/backlog'>
             Backlog
           </Link>
           <Link className='showlink' to='/userstories'>
