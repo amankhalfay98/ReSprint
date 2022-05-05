@@ -6,10 +6,10 @@ const storiesData = require('../data/stories');
 
 router.get('/', async (req, res) => {
   let story;
-  const { assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type } = req.query;
+  const { projectId, assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type } = req.query;
   await storiesData.validateParams(req.query);
   try {
-    story = await storiesData.getAllStories(assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type);
+    story = await storiesData.getAllStories(projectId, assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
@@ -51,9 +51,10 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/', async (req, res) => {
-  const { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = req.body;
+  const { projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = req.body;
   let story;
   const errorParams = [];
+  if (!projectId) errorParams.push('Project Id');
   if (!createdBy) errorParams.push('Created By');
   if (!assignedTo) errorParams.push('Assigned To');
   if (!comments) errorParams.push('Comments');
@@ -73,7 +74,7 @@ router.put('/', async (req, res) => {
     });
   await storiesData.validateParams(req.body);
   try {
-    story = await storiesData.upsertStory(createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id);
+    story = await storiesData.upsertStory(projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
