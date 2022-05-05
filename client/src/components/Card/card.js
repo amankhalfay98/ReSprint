@@ -16,8 +16,8 @@ function card() {
           Card 1
       </div>
       <div className='card_footer'>
-          <p><Clock/></p>
-          <p><CheckSquare/></p>
+          <p><Clock/> 5 May</p>
+          <p><CheckSquare/> 2</p>
       </div>
     </div>
   )

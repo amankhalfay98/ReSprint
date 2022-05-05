@@ -13,9 +13,6 @@ const Projects = () => {
             <Board/>
             <Board/>
             <Board/>
-            <Board/>
-            <Board/>
-            <Board/>
         </div>
         </div>
     </div>
