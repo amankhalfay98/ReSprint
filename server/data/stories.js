@@ -5,6 +5,7 @@ const mongoCollections = require('../config/mongoCollections');
 const { STATUS_VALUE, TYPE_VALUE } = require('../middlewares/constants');
 
 const storiesSchema = mongoCollections.stories;
+const projectSchema = mongoCollections.projects;
 
 const validateParams = async (args) => {
   const { projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = args;
@@ -165,6 +166,15 @@ const upsertStory = async (projectId, createdBy, assignedTo, comments, createdAt
       }
     );
     const { updatedExisting } = story.lastErrorObject;
+    if (!updatedExisting) {
+      const projectsCollection = await projectSchema();
+      await projectsCollection.updateOne(
+        {
+          _id: projectId,
+        },
+        { $push: { userStories: id } }
+      );
+    }
     if (story !== null) {
       story = await storiesCollection.findOne({
         _id: id,
