@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import Board from './Boards/board';
+import Editable from './Editable/Editable';
 
 const Projects = () => {
   return (
@@ -12,7 +13,12 @@ const Projects = () => {
         <div className='kanban_boards'>
             <Board/>
             <Board/>
-            <Board/>
+            <div className='kanban_boards_board'>
+            <Editable
+            displayClass="kanban_boards_board_add"
+            text="Add Board"
+            placeholder="Enter Board title"/>
+            </div>
         </div>
         </div>
     </div>
