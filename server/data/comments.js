@@ -76,6 +76,7 @@ const addComment = async (userId, name, comment, projectId, storyId) => {
   }
   const commentDocument = {
     _id: uuid.v4(),
+    userId,
     name,
     comment,
     projectId,
