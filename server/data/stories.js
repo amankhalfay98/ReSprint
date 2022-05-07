@@ -5,9 +5,13 @@ const mongoCollections = require('../config/mongoCollections');
 const { STATUS_VALUE, TYPE_VALUE } = require('../middlewares/constants');
 
 const storiesSchema = mongoCollections.stories;
+const projectSchema = mongoCollections.projects;
 
 const validateParams = async (args) => {
-  const { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = args;
+  const { projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = args;
+  if (projectId && !uuidValidate(projectId)) {
+    throw TypeError('Project Id is of invalid type');
+  }
   if (createdBy && !uuidValidate(createdBy)) {
     throw TypeError('Created by is of invalid type');
   }
@@ -49,10 +53,13 @@ const validateParams = async (args) => {
   }
 };
 
-const getAllStories = async (assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type) => {
+const getAllStories = async (projectId, assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type) => {
   const query = {};
-  const params = { assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type };
+  const params = { projectId, assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type };
   await validateParams(params);
+  if (projectId) {
+    query.projectId = projectId;
+  }
   if (assignedTo) {
     query.assignedTo = assignedTo;
   }
@@ -118,9 +125,10 @@ const getStoryById = async (id) => {
   }
 };
 
-const upsertStory = async (createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id = uuid.v4()) => {
+const upsertStory = async (projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id = uuid.v4()) => {
   const params = { createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id };
   const errorParams = [];
+  if (!projectId) errorParams.push('Project Id');
   if (!createdBy) errorParams.push('Created By');
   if (!assignedTo) errorParams.push('Assigned To');
   if (!comments) errorParams.push('Comments');
@@ -151,13 +159,22 @@ const upsertStory = async (createdBy, assignedTo, comments, createdAt, descripti
       },
       {
         $set: { assignedTo, comments, description, modifiedAt, priority, sprint, status, storyPoint, title, type },
-        $setOnInsert: { createdBy, createdAt },
+        $setOnInsert: { createdBy, createdAt, projectId },
       },
       {
         upsert: true,
       }
     );
     const { updatedExisting } = story.lastErrorObject;
+    if (!updatedExisting) {
+      const projectsCollection = await projectSchema();
+      await projectsCollection.updateOne(
+        {
+          _id: projectId,
+        },
+        { $push: { userStories: id } }
+      );
+    }
     if (story !== null) {
       story = await storiesCollection.findOne({
         _id: id,
