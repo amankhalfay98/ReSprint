@@ -6,6 +6,7 @@ const { STATUS_VALUE, TYPE_VALUE } = require('../middlewares/constants');
 
 const storiesSchema = mongoCollections.stories;
 const projectSchema = mongoCollections.projects;
+const commentSchema = mongoCollections.comments;
 
 const validateParams = async (args) => {
   const { projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = args;
@@ -19,7 +20,7 @@ const validateParams = async (args) => {
     throw TypeError('Assigned to is of invalid type');
   }
   if (comments && !Array.isArray(comments)) {
-    throw TypeError('Members is of invalid type');
+    throw TypeError('Comments is of invalid type');
   }
   if (createdAt && !verify.validIsoDate(createdAt)) {
     throw TypeError('Created At is of invalid type');
@@ -213,6 +214,8 @@ const deleteStory = async (id, projectId) => {
       },
       { $pull: { userStories: id } }
     );
+    const commentsCollection = await commentSchema();
+    await commentsCollection.deleteMany({ storyId: id });
     return story;
   } catch (error) {
     throw Error(error.message);
