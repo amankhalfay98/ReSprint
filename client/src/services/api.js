@@ -1,21 +1,241 @@
-import axios, { post, get, put } from 'axios';
+import axios, { post, get, put, patch  } from 'axios';
 const host = 'https://resprint.herokuapp.com';
+//const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 
 export default class Api {
+
+    getAllProjects = async()=>{
+        const url = `${host}/projects`
+        try {
+            const { data } = await get(url);
+                  //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    upsertProject = async(master,projectName,company,userStories,members,totalSprints,memberId)=>{
+        const url = `${host}/projects`
+        try {
+                  const { data } = await put(
+                    url,
+                    {
+                        master,
+                        projectName,
+                        company,
+                        userStories,
+                        members,
+                        totalSprints,
+                        memberId
+                    },
+                    {
+                      headers: {
+                        authorization: `Bearer ${this.token}`,
+                      },
+                    },
+                  );
+                  return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    getProjectById = async(id)=>{
+        const url = `${host}/projects/${id}`
+        try {
+            const { data } = await get(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    deleteProject = async(id)=>{
+        const url = `${host}/projects/${id}`
+        try {
+            const { data } = await axios.delete(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    upsertStory = async(createdBy,assignedTo,comments,createdAt,description,modifiedAt,priority,sprint,status,storyPoint,title,type,projectId,id)=>{
+        const url = `${host}`
+        try {
+            const { data } = await put(url,{
+                createdBy,
+                assignedTo,
+                comments,
+                createdAt,
+                description,
+                modifiedAt,
+                priority,
+                sprint,
+                status,
+                storyPoint,
+                title,
+                type,
+                projectId,
+                id
+            });
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    getStories = async () => {
+        const url = `${host}/story`;
+        try {
+          const { data } = await get(url);
+          //console.log(data);
+          return data;
+        } catch (e) {
+          if (e.response?.data?.message) {
+            throw new Error(e.response?.data.message);
+          }
+          throw new Error(e.message);
+        }
+      };
+
+    deleteStory = async(id)=>{
+        const url = `${host}/story/${id}`
+        try {
+            const { data } = await axios.delete(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    getStoryById = async(id)=>{
+        const url = `${host}/story/${id}`
+        try {
+            const { data } = await get(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    addComment = async(comment)=>{
+        const url = `${host}/comment`
+        try {
+            const { data } = await post(url,{
+                comment
+            });
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    getAllComments = async()=>{
+        const url = `${host}/comment`
+        try {
+            const { data } = await get(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    getCommentById = async(id)=>{
+        const url = `${host}/comment/${id}`
+        try {
+            const { data } = await get(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    updateComment = async(id,comment)=>{
+        const url = `${host}/comment`
+        try {
+            const { data } = await patch(url,{
+                id,
+                comment
+            });
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
+
+    deleteComment = async(id)=>{
+        const url = `${host}/comment/${id}`
+        try {
+            const { data } = await axios.delete(url);
+            //console.log(data);
+            return data;
+          } catch (e) {
+            if (e.response?.data?.message) {
+              throw new Error(e.response?.data.message);
+            }
+            throw new Error(e.message);
+          }
+
+    };
   
-   getStories = async () => {
-    const url = `${host}/story`;
-    try {
-      const { data } = await get(url);
-      //console.log(data);
-      return data;
-    } catch (e) {
-      if (e.response?.data?.message) {
-        throw new Error(e.response?.data.message);
-      }
-      throw new Error(e.message);
-    }
-  };
+   
+
+
   
 
 //   health = async () => {

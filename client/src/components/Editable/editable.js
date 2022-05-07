@@ -14,7 +14,9 @@ function Editable(props) {
              props.onSubmit()
          }
          }}>
-         <input type='text' 
+         <input
+         autoFocus
+          type='text' 
          defaultValue={props.text}
          placeholder={props.placeholder ||"Enter item"}/>
          <div className='editable_edit_footer'>

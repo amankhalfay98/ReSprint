@@ -1,13 +1,12 @@
-import React from 'react';
+import React from 'react'
 import '../App.css';
 
-const Projects = () => {
+function ReportIssue() {
   return (
     <div>
-      Report Issue
-      
+      ReportIssue
     </div>
-  );
-};
+  )
+}
 
-export default Projects;
+export default ReportIssue
