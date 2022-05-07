@@ -195,14 +195,24 @@ const upsertStory = async (projectId, createdBy, assignedTo, comments, createdAt
   }
 };
 
-const deleteStory = async (id) => {
+const deleteStory = async (id, projectId) => {
   let story;
   if (!uuidValidate(id)) {
     throw TypeError('Id is of invalid type');
   }
+  if (!uuidValidate(projectId)) {
+    throw TypeError('Project Id is of invalid type');
+  }
   try {
     const storiesCollection = await storiesSchema();
+    const projectsCollection = await projectSchema();
     story = await storiesCollection.deleteOne({ _id: id });
+    await projectsCollection.updateOne(
+      {
+        _id: projectId,
+      },
+      { $pull: { userStories: id } }
+    );
     return story;
   } catch (error) {
     throw Error(error.message);

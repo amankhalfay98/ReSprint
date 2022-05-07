@@ -167,7 +167,7 @@ router.delete('/:id', async (req, res) => {
         status: 'error',
         message: 'Project Not Found',
       });
-    await commentData.deleteComment(id);
+    await commentData.deleteComment(id, comment.storyId);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });

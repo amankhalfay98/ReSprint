@@ -134,7 +134,7 @@ router.delete('/:id', async (req, res) => {
     //     message: 'User Not Authorized',
     //   });
     // }
-    await storiesData.deleteStory(id);
+    await storiesData.deleteStory(id, story.projectId);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
