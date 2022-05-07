@@ -1,0 +1,1125 @@
+openapi: 3.0.0
+info:
+  title: ReSprint
+  description: ReSprint backend specification
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000
+    description: Localhost
+  - url: https://resprint.herokuapp.com
+    description: Production
+components:
+  # securitySchemes:
+  #   bearerAuth:
+  #     type: http
+  #     scheme: bearer
+  #     bearerFormat: JWT
+  schemas:
+    # error_missing_header:
+    #   type: object
+    #   properties:
+    #     status:
+    #       type: string
+    #     message:
+    #       type: string
+    #       title: 'Missing authorization header'
+    error_missing_required_properties:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ['error']
+        message:
+          type: string
+          enum: ['Missing required values']
+    comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        comment:
+          type: string
+        projectId:
+          type: string
+          format: uuid
+        storyId:
+          type: string
+          format: uuid
+    project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        members:
+          type: array
+          items:
+            type: string
+            format: uuid
+        company:
+          type: string
+        master:
+          type: string
+        projectName:
+          type: string
+          format: uuid
+        totalSprints:
+          type: integer
+        userStories:
+          type: array
+          items:
+            type: string
+            format: uuid
+    story:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        assignedTo:
+          type: string
+          format: uuid
+        comments:
+          type: array
+          items:
+            type: string
+            format: uuid
+        createdAt:
+          type: string
+          format: date
+        createdBy:
+          type: string
+          format: uuid
+        description:
+          type: string
+        modifiedAt:
+          type: string
+          format: date
+        priority:
+          type: integer
+        projectId:
+          type: string
+          format: uuid
+        sprint:
+          type: integer
+        status:
+          type: string
+          enum:
+            - To do
+            - In Progress
+            - Review
+            - Completed
+        storyPoint:
+          type: integer
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - Feature
+            - Bug
+            - Enhancement
+# security:
+#   - bearerAuth: []
+
+paths:
+  /projects:
+    get:
+      summary: Get a list of all the projects
+      parameters:
+        - in: query
+          name: company
+          description: Name of the company
+          schema:
+            type: string
+        - in: query
+          name: projectName
+          description: Name of the project
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success finding the projects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/project'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    put:
+      summary: Upsert a project
+      # security:
+      #   - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - master
+                - projectName
+                - company
+                - userStories
+                - members
+                - totalSprints
+                - memberId
+              properties:
+                master:
+                  type: string
+                  format: uuid
+                projectName:
+                  type: string
+                company:
+                  type: string
+                userStories:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                members:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                totalSprints:
+                  type: integer
+                memberId:
+                  type: string
+                  format: uuid
+                id:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    $ref: '#/components/schemas/project'
+                  status:
+                    type: string
+                    enum: ['success']
+        '201':
+          description: Success creating a project that the user didn't have before
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    $ref: '#/components/schemas/project'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+  /projects/{projectId}:
+    get:
+      summary: Get a project by its id
+      parameters:
+        - in: path
+          required: true
+          name: projectId
+          description: The uuid of the project
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success finding the project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    type: object
+                    $ref: '#/components/schemas/project'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '404':
+          description: 'Project not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Project not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    delete:
+      summary: Delete a project by its id
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          description: The uuid of the project
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success deleting the project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '404':
+          description: 'Project not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Project not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+
+  /story:
+    get:
+      summary: Get a list of all the stories
+      parameters:
+        - in: query
+          name: projectId
+          description: Project Id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: assignedTo
+          description: Id of the user assigned to
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: createdAt
+          description: Created at date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: modifiedAt
+          description: Modified at date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: createdBy
+          description: Id of created by
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: priority
+          description: Priority of the story
+          schema:
+            type: integer
+        - in: query
+          name: storyPoint
+          description: Story point of the story
+          schema:
+            type: integer
+        - in: query
+          name: sprint
+          description: Sprint of the story
+          schema:
+            type: integer
+        - in: query
+          name: status
+          description: Status of the story
+          schema:
+            type: string
+            enum:
+              - To do
+              - In Progress
+              - Review
+              - Completed
+        - in: query
+          name: type
+          description: Type of the story
+          schema:
+            type: string
+            enum:
+              - Feature
+              - Bug
+              - Enhancement
+      responses:
+        '200':
+          description: Success finding the stories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/story'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    put:
+      summary: Upsert a story
+      # security:
+      #   - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projectId
+                - createdBy
+                - assignedTo
+                - comments
+                - createdAt
+                - description
+                - modifiedAt
+                - priority
+                - sprint
+                - status
+                - storyPoint
+                - title
+                - type
+              properties:
+                createdBy:
+                  type: string
+                  format: uuid
+                assignedTo:
+                  type: string
+                  format: uuid
+                createdAt:
+                  type: string
+                  format: date
+                description:
+                  type: string
+                modifiedAt:
+                  type: string
+                  format: date
+                priority:
+                  type: integer
+                sprint:
+                  type: integer
+                storyPoint:
+                  type: integer
+                title:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - To do
+                    - In Progress
+                    - Review
+                    - Completed
+                comments:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                type:
+                  type: string
+                  enum:
+                    - Feature
+                    - Bug
+                    - Enhancement
+                projectId:
+                  type: string
+                  format: uuid
+                id:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  story:
+                    type: object
+                    $ref: '#/components/schemas/story'
+                  status:
+                    type: string
+                    enum: ['success']
+        '201':
+          description: Success creating a story that the user didn't have before
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  story:
+                    type: object
+                    $ref: '#/components/schemas/story'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+  /story/{storyId}:
+    get:
+      summary: Get a story by its id
+      parameters:
+        - in: path
+          required: true
+          name: storyId
+          description: The uuid of the story
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success finding the story
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  story:
+                    type: object
+                    $ref: '#/components/schemas/story'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '404':
+          description: 'Story not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Story not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    delete:
+      summary: Delete a story by its id
+      parameters:
+        - in: path
+          name: storyId
+          required: true
+          description: The uuid of the story
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success deleting the story
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '404':
+          description: 'Story not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Story not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+  /comment:
+    get:
+      summary: Get a list of all the comments
+      parameters:
+        - in: query
+          name: projectId
+          description: Project Id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: storyId
+          description: Story Id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success finding the comments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/comment'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    post:
+      summary: Add a comment
+      # security:
+      #   - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - userId
+                - comment
+                - projectId
+                - storyId
+              properties:
+                name:
+                  type: string
+                userId:
+                  type: string
+                  format: uuid
+                projectId:
+                  type: string
+                  format: uuid
+                storyId:
+                  type: string
+                  format: uuid
+                comment:
+                  type: string
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item:
+                    description: Comment created
+                    type: object
+                    $ref: '#/components/schemas/comment'
+
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+
+  /comment/{commentId}:
+    get:
+      summary: Get a comment by its id
+      parameters:
+        - in: path
+          required: true
+          name: commentId
+          description: The uuid of the comment
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success finding the comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comment:
+                    type: object
+                    $ref: '#/components/schemas/comment'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '404':
+          description: 'Comment not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Comment not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    delete:
+      summary: Delete a comment by its id
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          description: The uuid of the comment
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success deleting the comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '404':
+          description: 'Comment not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Comment not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
