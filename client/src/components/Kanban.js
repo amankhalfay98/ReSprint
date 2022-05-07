@@ -3,7 +3,7 @@ import '../App.css';
 import Board from './Boards/board';
 import Editable from './Editable/Editable';
 
-const Projects = () => {
+const Kanban = () => {
   return (
       <div className='kanban'>
     <div className='kanban_navbar'>
@@ -25,4 +25,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Kanban;

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 
-const Projects = () => {
+const Retrospective = () => {
   return (
     <div>
      Retrospective
@@ -10,4 +10,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Retrospective;
