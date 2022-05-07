@@ -103,7 +103,7 @@ router.post('/', async (req, res) => {
     }
     return res.status(500).json({ status: 'error', message: error.message });
   }
-  return res.status(200).json({
+  return res.status(201).json({
     comment: newComment,
     status: 'success',
   });
