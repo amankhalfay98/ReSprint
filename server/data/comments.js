@@ -76,6 +76,7 @@ const addComment = async (userId, name, comment, projectId, storyId) => {
   }
   const commentDocument = {
     _id: uuid.v4(),
+    userId,
     name,
     comment,
     projectId,
@@ -130,14 +131,24 @@ const updateComment = async (id, comment, userId, name) => {
   }
 };
 
-const deleteComment = async (id) => {
+const deleteComment = async (id, storyId) => {
   let comment;
   if (!uuidValidate(id)) {
     throw TypeError('Id is of invalid type');
   }
+  if (!uuidValidate(storyId)) {
+    throw TypeError('Story Id is of invalid type');
+  }
   try {
     const commentsCollection = await commentSchema();
     comment = await commentsCollection.deleteOne({ _id: id });
+    const storiesCollection = await storiesSchema();
+    await storiesCollection.updateOne(
+      {
+        _id: storyId,
+      },
+      { $pull: { comments: id } }
+    );
     return comment;
   } catch (error) {
     throw Error(error.message);

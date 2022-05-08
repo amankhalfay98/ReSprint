@@ -72,6 +72,9 @@ router.post('/', async (req, res) => {
   const { userId, name, comment, projectId, storyId } = req.body;
   let newComment;
   const errorParams = [];
+  if (!uuidValidate(userId)) {
+    errorParams.push('User Id');
+  }
   if (!verify.validString(name)) {
     errorParams.push('Name');
   }
@@ -103,14 +106,15 @@ router.post('/', async (req, res) => {
     }
     return res.status(500).json({ status: 'error', message: error.message });
   }
-  return res.status(200).json({
+  return res.status(201).json({
     comment: newComment,
     status: 'success',
   });
 });
 
-router.patch('/', async (req, res) => {
-  const { id, comment, userId, name } = req.body;
+router.patch('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { comment, userId, name } = req.body;
   let updatedcomment;
   const errorParams = [];
   if (id && !uuidValidate(id)) {
@@ -151,7 +155,7 @@ router.delete('/:id', async (req, res) => {
   if (!uuidValidate(id)) {
     res.status(422).json({
       status: 'error',
-      message: 'Project Id is of invalid type',
+      message: 'Comment Id is of invalid type',
     });
   }
   if (errorParams.length > 0) {
@@ -167,7 +171,7 @@ router.delete('/:id', async (req, res) => {
         status: 'error',
         message: 'Project Not Found',
       });
-    await commentData.deleteComment(id);
+    await commentData.deleteComment(id, comment.storyId);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
