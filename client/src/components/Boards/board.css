@@ -35,11 +35,28 @@
 }
 
 .board_cards_add{
-    background-color: #fff;
+    background-color: #fff ;
     border-radius: 5px;
-    box-shadow: 1px 2px 0px 1px rbga(0,0,0,0.15);
+    box-shadow: 1px 2px 0 1px rgba(0,0,0,0.15);
 }
 
 .board_cards_add:hover{
-    box-shadow: #ccc;
+    box-shadow: 1px 2px 0 1px #ccc ;
+}
+
+.board_top_more{
+    position: relative;
+    cursor: pointer;
+}
+
+.board_dropdown{
+    background-color: #fff;
+    width: 130px;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 1px 0 20px rgba(0,0,0,0.1);
+}
+
+.board_dropdown p{
+    cursor: pointer;
 }

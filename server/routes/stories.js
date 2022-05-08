@@ -68,7 +68,7 @@ router.put('/', async (req, res) => {
   if (!title) errorParams.push('Title');
   if (!type) errorParams.push('Type');
   if (errorParams.length > 0)
-    return res.status(400).json({
+    return res.status(422).json({
       status: 'error',
       message: errorParams.length > 1 ? `${errorParams} are missing` : `${errorParams} is missing`,
     });
@@ -134,7 +134,7 @@ router.delete('/:id', async (req, res) => {
     //     message: 'User Not Authorized',
     //   });
     // }
-    await storiesData.deleteStory(id);
+    await storiesData.deleteStory(id, story.projectId);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });

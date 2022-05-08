@@ -1,8 +1,9 @@
 import React from 'react';
 import '../App.css';
 import Board from './Boards/board';
+import Editable from './Editable/Editable';
 
-const Projects = () => {
+const Kanban = () => {
   return (
       <div className='kanban'>
     <div className='kanban_navbar'>
@@ -12,11 +13,16 @@ const Projects = () => {
         <div className='kanban_boards'>
             <Board/>
             <Board/>
-            <Board/>
+            <div className='kanban_boards_board'>
+            <Editable
+            displayClass="kanban_boards_board_add"
+            text="Add Board"
+            placeholder="Enter Board title"/>
+            </div>
         </div>
         </div>
     </div>
   );
 };
 
-export default Projects;
+export default Kanban;
