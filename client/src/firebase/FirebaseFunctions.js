@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from 'firebase/app';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
 	await firebase.auth().createUserWithEmailAndPassword(email, password);
