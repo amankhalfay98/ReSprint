@@ -4,6 +4,7 @@ const router = express.Router();
 const { validate: uuidValidate } = require('uuid');
 const verify = require('../middlewares/validation');
 const userData = require('../data/users');
+const projectsData = require('../data/projects');
 // const checkIfAuthenticated = require('../middlewares/auth');
 
 router.get('/:id', async (req, res) => {
@@ -48,6 +49,13 @@ router.post('/', async (req, res) => {
     for (let index = 0; index < projects.length; index += 1) {
       if (!uuidValidate(projects[index])) {
         errorParams.push(`Project Id ${projects[index]}`);
+      }
+      // eslint-disable-next-line
+      if ((await projectsData.getProjectById(projects[index])) === null) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Project Not Found',
+        });
       }
     }
   }
