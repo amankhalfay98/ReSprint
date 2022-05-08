@@ -7,6 +7,7 @@ import Backlog from './components/Backlog';
 import Kanban from './components/Kanban';
 import Retrospective from './components/Retrospective';
 import UserStories from './components/UserStories';
+import NewProject from './components/NewProject';
 import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
             <Route path='/backlog' element={<Backlog />} />
             <Route path='/userstories' element={<UserStories />} />
             <Route path='/retrospective' element={<Retrospective />} />
+            <Route path='/newproject' element={<NewProject />} />
           </Routes>
         </div>
       </div>

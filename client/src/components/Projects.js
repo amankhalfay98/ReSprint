@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import "../App.css";
 import Api from '../services/api'
 
@@ -30,7 +31,7 @@ const Projects = () => {
   return (
     <div>
       <ul>{card}</ul>
-      <button>New Project</button>
+      <NavLink to= '/newproject'>New Project</NavLink>  
     </div>
   );
 };
