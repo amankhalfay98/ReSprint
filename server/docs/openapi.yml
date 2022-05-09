@@ -15,14 +15,14 @@ components:
   #     scheme: bearer
   #     bearerFormat: JWT
   schemas:
-    error_missing_header:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-          title: 'Missing authorization header'
+    # error_missing_header:
+    #   type: object
+    #   properties:
+    #     status:
+    #       type: string
+    #     message:
+    #       type: string
+    #       title: 'Missing authorization header'
     error_missing_required_properties:
       type: object
       properties:
@@ -32,23 +32,6 @@ components:
         message:
           type: string
           enum: ['Missing required values']
-    users:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-          format: email
-        isScrumMaster:
-          type: boolean
-        userName:
-          type: string
-        projects:
-          type: array
-          items:
-            type: string
-            format: uuid
     comment:
       type: object
       properties:
@@ -143,140 +126,6 @@ components:
 #   - bearerAuth: []
 
 paths:
-  /{id}:
-    get:
-      # security:
-      #   - bearerAuth: []
-      summary: Return the token holder information
-      parameters:
-        - in: path
-          required: true
-          name: id
-          description: The uid of user
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success finding the item
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/users'
-                  status:
-                    type: string
-        '401':
-          description: 'Missing authorization header'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error_missing_header'
-        '500':
-          description: 'Server error'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Server error']
-  /:
-    post:
-      summary: Create User
-      # security:
-      #   - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - userId
-                - email
-                - isScrumMaster
-                - userName
-                - projects
-              properties:
-                userId:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                isScrumMaster:
-                  type: boolean
-                userName:
-                  type: string
-                projects:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-      responses:
-        '201':
-          description: Success finding the item
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/users'
-                  status:
-                    type: string
-        '401':
-          description: 'Invalid credentials'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Invalid credential']
-        '403':
-          description: 'Not authorized'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Not authorized to perform that action']
-        '422':
-          description: 'Invalid or missing requirements'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error_missing_required_properties'
-        '500':
-          description: 'Server error'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Server error']
   /projects:
     get:
       summary: Get a list of all the projects

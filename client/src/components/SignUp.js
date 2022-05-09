@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
 import SocialSignIn from './SocialSignIn';
@@ -26,7 +26,7 @@ function SignUp() {
 	};
 
 	if (currentUser) {
-		return <Redirect to="/home" />;
+		return <Navigate to="/home" />;
 	}
 
 	return (
