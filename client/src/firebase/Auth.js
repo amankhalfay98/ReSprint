@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import firebaseApp from './Firebase';
+import firebase from './Firebase';
 
 export const AuthContext = React.createContext();
 
@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 	const [loadingUser, setLoadingUser] = useState(true);
 
 	useEffect(() => {
-		firebaseApp.auth().onAuthStateChanged((user) => {
+		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
 				console.log('This is the users uid: ', user.uid);
 				console.log('This is the users email: ', user.email);
@@ -16,6 +16,11 @@ export const AuthProvider = ({ children }) => {
 				console.log('This is the role: ', user.role);
 				console.log(user);
 			}
+
+			// var findingAuth = firebaseApp.auth().currentUser.getIdToken();
+			// if (findingAuth) {
+			// 	console.log('this is the inside', findingAuth);
+			// }
 
 			setCurrentUser(user);
 			setLoadingUser(false);
