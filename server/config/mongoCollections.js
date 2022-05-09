@@ -15,5 +15,4 @@ module.exports = {
   stories: getCollectionFn('Project_UserStories'),
   comments: getCollectionFn('Comments'),
   projects: getCollectionFn('Company_Projects'),
-  users: getCollectionFn('Users'),
 };
