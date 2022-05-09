@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './board.css';
 import {MoreHorizontal} from 'react-feather';
 import Card from '../Card/card';
-import Editable from '../Editable/Editable.js'
+import Editable from '../Editable/editable.js'
 import Dropdown from '../Dropdown/Dropdown';
 
 function Board() {
