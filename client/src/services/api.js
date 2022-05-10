@@ -80,27 +80,17 @@ export default class Api {
     };
 
     upsertStory = async(createdBy,assignedTo,comments,createdAt,description,modifiedAt,priority,sprint,status,storyPoint,title,type,projectId,id)=>{
-        const url = `${host}`
+      const url = `${host}/story`
         try {
+          console.log("in")
+          console.log(projectId)
             const { data } = await put(url,{
-                createdBy,
-                assignedTo,
-                comments,
-                createdAt,
-                description,
-                modifiedAt,
-                priority,
-                sprint,
-                status,
-                storyPoint,
-                title,
-                type,
-                projectId,
-                id
+              projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id
             });
-            //console.log(data);
+            console.log(data);
             return data;
           } catch (e) {
+             console.log(e)
             if (e.response?.data?.message) {
               throw new Error(e.response?.data.message);
             }

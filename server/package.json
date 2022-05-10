@@ -4,12 +4,13 @@
   "description": "CS-524 Final Project",
   "main": "index.js",
   "scripts": {
+    "seed": "node ./tasks/seed.js",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "jest",
-    "start": "node inedx.js",
+    "start": "node index.js",
     "dev": "nodemon index.js",
     "precommit": "lint-staged"
   },
