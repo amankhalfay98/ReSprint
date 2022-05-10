@@ -1,7 +1,7 @@
 import axios, { post, get, put, patch } from 'axios';
 //import { auth } from '../firebase/Firebase';
 
-const host = 'https://resprint.herokuapp.com';
+const host = 'http://resprint.herokuapp.com';
 // Change token here
 const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 

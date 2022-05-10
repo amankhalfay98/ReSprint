@@ -213,3 +213,10 @@ dd {
 	text-decoration: none;
 	color: red;
 }
+
+.project_card{
+	border: 1px solid #1e8678;
+	width: 400px;
+	height: 300px;
+	display: inline-grid;
+}
