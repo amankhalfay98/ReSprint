@@ -20,11 +20,23 @@ const Projects = () => {
     }
     getAllProjects();
   }, []);
+
+  const buildCard = (project)=>{
+    return (
+      <div key={project.id}>
+      <li><a href={`/projects/${project.id}`}>{project.projectName}</a></li>
+      <li>{project.company}</li>
+      <li>{project.totalSprints}</li>
+      </div>
+    );
+  }
   
 
   if (projectData && Array.isArray(projectData)) {
     card = projectData.map((project) => {
-      return <li key={project.id}>{project.company}</li>;
+      return(
+      buildCard(project)
+      )
     });
   }
 

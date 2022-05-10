@@ -2,7 +2,8 @@ import axios, { post, get, put, patch } from 'axios';
 //import { auth } from '../firebase/Firebase';
 
 const host = 'https://resprint.herokuapp.com';
-//const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
+// Change token here
+const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 
 export default class Api {
     //tested
@@ -59,7 +60,11 @@ export default class Api {
 	getProjectById = async (id) => {
 		const url = `${host}/projects/${id}`;
 		try {
-			const { data } = await get(url);
+			const { data } = await get(url,{
+                headers: {
+                    authorization: `Bearer ${token}`,
+                  },
+            });
 			//console.log(data);
 			return data;
 		} catch (e) {
