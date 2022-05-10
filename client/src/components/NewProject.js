@@ -9,7 +9,7 @@ function NewProject() {
     let projectName;
     let companyName;
 
-//     const [projectData, setProjectData] = useState(undefined);
+//     const [projectData, setProjectData] = useState({});
 //   useEffect(() => {
 //     const api = new Api();
 //     async function upsertProject() {
@@ -39,19 +39,20 @@ function NewProject() {
              throw Error('Project Name is Required');
            }
            api.upsertProject({
-            variables: {
-              totalSprints: totalSprints.value,
+            //variables: {
+              totalSprints: totalSprints.value,//parseInt(totalSprints.value),
               projectName: projectName.value,
               company: companyName.value,
               userStories: [],
               members: [],
               master: '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7',
               memberId: '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7'
-            }
+           // }
           });
           totalSprints.value = '';
           projectName.value = '';
           companyName.value = '';
+          alert('Project is created');
           window.location.pathname = '/backlog';
         }catch(err){
           alert(err.message);

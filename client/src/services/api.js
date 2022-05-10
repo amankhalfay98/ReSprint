@@ -1,10 +1,11 @@
 import axios, { post, get, put, patch } from 'axios';
-import { auth } from '../firebase/Firebase';
+//import { auth } from '../firebase/Firebase';
 
 const host = 'https://resprint.herokuapp.com';
 //const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 
 export default class Api {
+    //tested
 	getAllProjects = async () => {
 		const url = `${host}/projects`;
 		try {
@@ -19,16 +20,16 @@ export default class Api {
 		}
 	};
 
-	upsertProject = async (
+    //tested - catch not working
+	upsertProject = async ({
 		master,
 		projectName,
 		company,
 		userStories,
 		members,
 		totalSprints,
-		memberId
-	) => {
-		const token = await auth.currentUser.getIdToken();
+		memberId 
+    }) => {
 		const url = `${host}/projects`;
 		try {
 			const { data } = await put(
@@ -42,14 +43,12 @@ export default class Api {
 					totalSprints,
 					memberId,
 				},
-				{
-					headers: {
-						authorization: `Bearer ${token}`,
-					},
-				}
 			);
+            console.log(data);
 			return data;
+
 		} catch (e) {
+            console.log(e);
 			if (e.response?.data?.message) {
 				throw new Error(e.response?.data.message);
 			}
@@ -85,7 +84,8 @@ export default class Api {
 		}
 	};
 
-	upsertStory = async (
+    //In progress
+	upsertStory = async ({
 		createdBy,
 		assignedTo,
 		comments,
@@ -100,7 +100,7 @@ export default class Api {
 		type,
 		projectId,
 		id
-	) => {
+    }) => {
 		const url = `${host}`;
 		try {
 			const { data } = await put(url, {
@@ -129,6 +129,7 @@ export default class Api {
 		}
 	};
 
+    //tested
 	getStories = async () => {
 		const url = `${host}/story`;
 		try {
@@ -245,6 +246,42 @@ export default class Api {
 			throw new Error(e.message);
 		}
 	};
+
+    addUser = async (userId,email,isScrumMaster,userName,projects) => {
+		const url = `${host}/`;
+		try {
+			const { data } = await post(url, {
+				userId,
+                email,
+                isScrumMaster,
+                userName,
+                projects
+			});
+			//console.log(data);
+			return data;
+		} catch (e) {
+			if (e.response?.data?.message) {
+				throw new Error(e.response?.data.message);
+			}
+			throw new Error(e.message);
+		}
+	};
+
+    getUserById = async (id) => {
+		const url = `${host}/${id}`;
+		try {
+			const { data } = await get(url);
+			//console.log(data);
+			return data;
+		} catch (e) {
+			if (e.response?.data?.message) {
+				throw new Error(e.response?.data.message);
+			}
+			throw new Error(e.message);
+		}
+	};
+
+
 
 	//   health = async () => {
 	//     const url = `${this.host}/categories`;
