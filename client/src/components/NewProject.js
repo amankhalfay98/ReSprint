@@ -40,7 +40,7 @@ function NewProject() {
            }
            api.upsertProject({
             //variables: {
-              totalSprints: totalSprints.value,//parseInt(totalSprints.value),
+              totalSprints: parseInt(totalSprints.value),
               projectName: projectName.value,
               company: companyName.value,
               userStories: [],
