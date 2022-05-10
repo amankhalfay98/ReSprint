@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 import Board from './Boards/board';
-import Editable from './Editable/editable';
+import Editable from './Editable/Editable';
 
 const Kanban = () => {
 	return (
