@@ -7,6 +7,8 @@ const Projects = () => {
   
   let card = null;
   const [projectData, setProjectData] = useState(undefined);
+  //const [user, setUser] = useState(undefined);
+  
   useEffect(() => {
     const api = new Api();
     async function getAllProjects() {
@@ -21,12 +23,44 @@ const Projects = () => {
     getAllProjects();
   }, []);
 
+  // useEffect(() => {
+  //   const api = new Api();
+  //   async function getUserById() {
+  //     try {
+  //       const {user } = await api.getUserById(id) ; //get session id
+  //       console.log(user);
+  //       if (user) setUser(user);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  //   getUserById();
+  // }, []);
+
+  // const deleteProject = (id)=>{
+  //   const api = new Api();
+  //   try {
+  //           const {projDel } = await api.deleteProject(id) ; //get session id
+  //           console.log(projDel);
+  //           if (projDel) {
+  //             alert('Project Deleted successfully')
+  //         window.location.reload();
+  //         }
+  //         } catch (error) {
+  //           console.log(error.message);
+  //         }
+
+  // }
+
+  
+
   const buildCard = (project)=>{
     return (
-      <div key={project.id}>
-      <li><a href={`/projects/${project.id}`}>{project.projectName}</a></li>
-      <li>{project.company}</li>
-      <li>{project.totalSprints}</li>
+      <div className="project_card" key={project.id}>
+      <li><a href={`/backlog`}>Project Name:{project.projectName}</a></li>
+      <li>Company:{project.company}</li>
+      <li>Total Sprints:{project.totalSprints}</li>
+      {/* <button onClick={deleteProject(project.id)}>Delete Project</button> */}
       </div>
     );
   }
@@ -43,7 +77,8 @@ const Projects = () => {
   return (
     <div>
       <ul>{card}</ul>
-      <NavLink to= '/newproject'>New Project</NavLink>  
+      <NavLink to= '/newproject'>New Project</NavLink> 
+      {/* {user.isScrumMaster?<NavLink to= '/newproject'>New Project</NavLink> :"" } */}
     </div>
   );
 };

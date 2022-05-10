@@ -8,22 +8,63 @@ function NewProject() {
     let totalSprints;
     let projectName;
     let companyName;
+    //const [companyList,setCompanyList] = useState(undefined);
+    //const [memberList,setMemberList] = useState(undefined);
 
-//     const [projectData, setProjectData] = useState({});
-//   useEffect(() => {
-//     const api = new Api();
-//     async function upsertProject() {
-//       try {
-//         const {projects } = await api.upsertProject(master,projectName,company,userStories,members,totalSprints,memberId) ;
-//         console.log(projects);
-//         if (projects) setProjectData(projects);
-//       } catch (error) {
-//         console.log(error.message);
-//       }
-//     }
-//     upsertProject();
-//   }, []);
-    //const [addImage] = useMutation(queries.ADD_IMAGE);
+// useEffect(() => {
+  //   const api = new Api();
+  //   async function getAllCompanies() {
+  //     try {
+  //       const {companies } = await api.getAllCompanies() ;
+  //       console.log(companies);
+  //       if (companies) setCompanyList(companies);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  //   getAllCompanies();
+  // }, []);
+
+  // useEffect(() => {
+  //   const api = new Api();
+  //   async function getAllMembers() {
+  //     try {
+  //    if(companyName.value.length>0){
+  //       const {members } = await api.getAllMembers(companyName) ;
+  //       console.log(members);
+  //       if (members) setCompanyList(members);
+  //      }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  //   getAllMembers();
+  // }, [companyName]);
+
+
+
+	// let companies = companyList.length > 0
+	// 	&& companyList.map((company, i) => {
+	// 	return (
+  //   optionGenerator(company)
+	// 		<option key={i} value={item.id}>{item.name}</option>
+	// 	)
+	// });
+
+  	// let members = memberList.length > 0
+	// 	&& memberList.map((member, i) => {
+	// 	return (
+  //   optionGenerator(member)
+	// 		<option key={i} value={item.id}>{item.name}</option>
+	// 	)
+	// });
+
+  // const optionGenerator = (item)=> {
+  //   return(
+  //     <option key={i} value={item.id}>{item.name}</option>
+  //     )
+    
+  // }
     
     return (
         <form
@@ -53,7 +94,7 @@ function NewProject() {
           projectName.value = '';
           companyName.value = '';
           alert('Project is created');
-          window.location.pathname = '/backlog';
+          window.location.pathname = '/projects';
         }catch(err){
           alert(err.message);
         }
@@ -95,8 +136,18 @@ function NewProject() {
                 companyName = node;
               }}
             />
+            {/* <select name="company" id="company">
+    <option value="">--Please choose an option--</option>
+    {companies}
+</select> */}
           </label>
         </div>
+        {/* {
+            companyName.value.length>0?'': <select multiple name="members" id="members">
+            <option value="">--Please choose an option--</option>
+            {members}
+        </select>
+        } */}
         <br />
         <br />
         <Button variant='outlined'  type='submit'>Submit</Button>
