@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import SocialSignIn from './SocialSignIn';
+// import SocialSignIn from './SocialSignIn';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../firebase/Auth';
 import {
@@ -71,8 +71,8 @@ function SignIn() {
 				</button>
 			</form>
 
-			<br />
-			<SocialSignIn />
+			{/* <br />
+			<SocialSignIn /> */}
 		</div>
 	);
 }

@@ -1,12 +1,8 @@
 import '../App.css';
-import React from 'react'
+import React from 'react';
 
 function CreateUserStory() {
-  return (
-    <div>
-      CreateUserStory
-    </div>
-  )
+	return <div>CreateUserStory</div>;
 }
 
-export default CreateUserStory
+export default CreateUserStory;
