@@ -6,7 +6,7 @@ const host = 'http://resprint.herokuapp.com';
 const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 
 export default class Api {
-    //tested
+	//tested
 	getAllProjects = async () => {
 		const url = `${host}/projects`;
 		try {
@@ -21,7 +21,7 @@ export default class Api {
 		}
 	};
 
-    //tested - catch not working
+	//tested - catch not working
 	upsertProject = async ({
 		master,
 		projectName,
@@ -29,27 +29,23 @@ export default class Api {
 		userStories,
 		members,
 		totalSprints,
-		memberId 
-    }) => {
+		memberId,
+	}) => {
 		const url = `${host}/projects`;
 		try {
-			const { data } = await put(
-				url,
-				{
-					master,
-					projectName,
-					company,
-					userStories,
-					members,
-					totalSprints,
-					memberId,
-				},
-			);
-            console.log(data);
+			const { data } = await put(url, {
+				master,
+				projectName,
+				company,
+				userStories,
+				members,
+				totalSprints,
+				memberId,
+			});
+			console.log(data);
 			return data;
-
 		} catch (e) {
-            console.log(e);
+			console.log(e);
 			if (e.response?.data?.message) {
 				throw new Error(e.response?.data.message);
 			}
@@ -60,11 +56,11 @@ export default class Api {
 	getProjectById = async (id) => {
 		const url = `${host}/projects/${id}`;
 		try {
-			const { data } = await get(url,{
-                headers: {
-                    authorization: `Bearer ${token}`,
-                  },
-            });
+			const { data } = await get(url, {
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			});
 			//console.log(data);
 			return data;
 		} catch (e) {
@@ -89,7 +85,7 @@ export default class Api {
 		}
 	};
 
-    //In progress
+	//In progress
 	upsertStory = async ({
 		createdBy,
 		assignedTo,
@@ -104,8 +100,8 @@ export default class Api {
 		title,
 		type,
 		projectId,
-		id
-    }) => {
+		id,
+	}) => {
 		const url = `${host}`;
 		try {
 			const { data } = await put(url, {
@@ -134,7 +130,7 @@ export default class Api {
 		}
 	};
 
-    //tested
+	//tested
 	getStories = async () => {
 		const url = `${host}/story`;
 		try {
@@ -252,16 +248,24 @@ export default class Api {
 		}
 	};
 
-    addUser = async (userId,email,isScrumMaster,userName,projects) => {
+	addUser = async (userId, email, isScrumMaster, userName, projects) => {
 		const url = `${host}/`;
 		try {
-			const { data } = await post(url, {
-				userId,
-                email,
-                isScrumMaster,
-                userName,
-                projects
-			});
+			const { data } = await post(
+				url,
+				{
+					userId,
+					email,
+					isScrumMaster,
+					userName,
+					projects,
+				},
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			);
 			//console.log(data);
 			return data;
 		} catch (e) {
@@ -272,7 +276,7 @@ export default class Api {
 		}
 	};
 
-    getUserById = async (id) => {
+	getUserById = async (id) => {
 		const url = `${host}/${id}`;
 		try {
 			const { data } = await get(url);
@@ -285,8 +289,6 @@ export default class Api {
 			throw new Error(e.message);
 		}
 	};
-
-
 
 	//   health = async () => {
 	//     const url = `${this.host}/categories`;

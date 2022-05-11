@@ -42,6 +42,12 @@ async function doSignOut() {
 	await firebase.auth().signOut();
 }
 
+// async function getCurrentUser() {
+// 	await firebase.auth().onAuthStateChanged((user) => {
+// 		console.log('This is the currently logged in user: ', user);
+// 	});
+// }
+
 export {
 	doCreateUserWithEmailAndPassword,
 	doSocialSignIn,
@@ -50,4 +56,5 @@ export {
 	doPasswordUpdate,
 	doSignOut,
 	doChangePassword,
+	// getCurrentUser,
 };

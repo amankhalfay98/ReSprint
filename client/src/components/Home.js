@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../firebase/Auth';
 import '../App.css';
 
 const Home = () => {
+	const { currentUser } = useContext(AuthContext);
+	console.log('This is coming from the Home Component: ', currentUser.uid);
 	return (
 		<div>
 			<p>

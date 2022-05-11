@@ -21,23 +21,26 @@ const getUserById = async (id) => {
   }
 };
 
-const createUser = async (userId, email, isScrumMaster, userName, projects) => {
+const createUser = async (userId, email, isScrumMaster, userName, projects, company) => {
   if (!verify.validString(userName)) {
     throw TypeError('Username is missing or is of invalid type');
   }
   if (!verify.validEmail(email)) {
     throw TypeError('Email is missing or is of invalid type');
   }
-  if (!verify.validBoolean(isScrumMaster)) {
+  if (!verify.validString(isScrumMaster)) {
     throw TypeError('isScrumMaster is missing or is of invalid type');
   }
   if (!Array.isArray(projects)) {
     throw TypeError('Projects is missing is missing or is of invalid type');
   }
+  if (!uuidValidate(company)) {
+    throw TypeError('Company is missing or is of invalid type');
+  }
   if (projects.length > 0) {
     for (let index = 0; index < projects.length; index += 1) {
       if (!uuidValidate(projects[index])) {
-        throw TypeError('projectId is of invalid type');
+        throw TypeError('Project Id is of invalid type');
       }
     }
   }
@@ -47,6 +50,7 @@ const createUser = async (userId, email, isScrumMaster, userName, projects) => {
     isScrumMaster,
     userName,
     projects,
+    company,
   };
   const usersCollection = await userSchema();
   const user = await usersCollection.insertOne(userDocument);
@@ -55,7 +59,7 @@ const createUser = async (userId, email, isScrumMaster, userName, projects) => {
     for (let index = 0; index < projects.length; index += 1) {
       // eslint-disable-next-line
       await projectsCollection.updateOne({ _id: projects[index] }, { $push: { members: userId } });
-      if (isScrumMaster) {
+      if (isScrumMaster == 'true') {
         // eslint-disable-next-line
         await projectsCollection.updateOne({ _id: projects[index] }, { $set: { master: userId } });
       }

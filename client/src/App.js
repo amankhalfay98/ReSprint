@@ -81,6 +81,7 @@ import Landing from './components/Landing';
 import Navigation from './components/Navigation';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Storyform from './components/storyform';
 import { AuthProvider } from './firebase/Auth';
 import NewProject from './components/NewProject';
 import PrivateRoute from './components/PrivateRoute';
@@ -105,7 +106,8 @@ function App() {
 						<PrivateRoute path="/backlog" component={Backlog} />
 						<PrivateRoute path="/userstories" component={UserStories} />
 						<PrivateRoute path="/retrospective" component={Retrospective} />
-            <PrivateRoute path='/newproject' component={NewProject} />
+						<PrivateRoute path="/newproject" component={NewProject} />
+						<PrivateRoute path='/storyform' component={Storyform} />
 					</div>
 				</div>
 			</Router>

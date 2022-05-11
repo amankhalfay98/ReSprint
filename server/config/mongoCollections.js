@@ -16,4 +16,5 @@ module.exports = {
   comments: getCollectionFn('Comments'),
   projects: getCollectionFn('Company_Projects'),
   users: getCollectionFn('Users'),
+  company: getCollectionFn('Company'),
 };
