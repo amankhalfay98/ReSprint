@@ -206,6 +206,8 @@ export default class Api {
             }
             throw new Error(e.message);
           }
+          };
+
 	getAllComments = async () => {
 		const url = `${host}/comment`;
 		try {
