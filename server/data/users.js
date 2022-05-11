@@ -49,12 +49,8 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
     email,
     isScrumMaster,
     userName,
-<<<<<<< Updated upstream
     projects,
-    company
-=======
-    projects: [],
->>>>>>> Stashed changes
+    company,
   };
   const usersCollection = await userSchema();
   const user = await usersCollection.insertOne(userDocument);
