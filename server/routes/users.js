@@ -5,7 +5,7 @@ const { validate: uuidValidate } = require('uuid');
 const verify = require('../middlewares/validation');
 const userData = require('../data/users');
 const projectsData = require('../data/projects');
-// const checkIfAuthenticated = require('../middlewares/auth');
+const companyData = require('../data/company');
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { userId, email, isScrumMaster, userName, projects } = req.body;
+  const { userId, email, isScrumMaster, userName, projects, company } = req.body;
   let newUser;
   const errorParams = [];
   if (!verify.validEmail(email)) {
@@ -45,6 +45,9 @@ router.post('/', async (req, res) => {
   if (!Array.isArray(projects)) {
     errorParams.push('Projects');
   }
+  if (!uuidValidate(company)) {
+    errorParams.push('Company');
+  }
   if (projects.length > 0) {
     for (let index = 0; index < projects.length; index += 1) {
       if (!uuidValidate(projects[index])) {
@@ -58,6 +61,9 @@ router.post('/', async (req, res) => {
         });
       }
     }
+    if ((await companyData.getCompanyById(company)) === null) {
+      return res.status(404).json({ status: 'error', message: 'Company Not Found' });
+    }
   }
   if (errorParams.length > 0) {
     return res.status(422).json({
@@ -70,7 +76,7 @@ router.post('/', async (req, res) => {
     if (newUser !== null) {
       return res.status(200).json({ user: newUser, status: 'success' });
     }
-    newUser = await userData.createUser(userId, email, isScrumMaster, userName, projects);
+    newUser = await userData.createUser(userId, email, isScrumMaster, userName, projects, company);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
