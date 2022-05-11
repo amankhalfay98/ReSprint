@@ -54,6 +54,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/', async (req, res) => {
+  console.log('Inside backend')
   const { projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id } = req.body;
   let story;
   const errorParams = [];
