@@ -31,16 +31,16 @@ const validateParams = async (args) => {
   if (modifiedAt && !verify.validIsoDate(modifiedAt)) {
     throw TypeError('Modified At is of invalid type');
   }
-  if (priority && !verify.checkIsProperNumber(priority)) {
+  if (priority !== undefined  && !verify.checkIsProperNumber(priority)) {
     throw TypeError('Priority is of invalid type');
   }
-  if (sprint && !verify.checkIsProperNumber(sprint)) {
+  if (sprint !== undefined && !verify.checkIsProperNumber(sprint)) {
     throw TypeError('Sprint is of invalid type');
   }
   if (status && !STATUS_VALUE.includes(status)) {
     throw TypeError('Status is of invalid type');
   }
-  if (storyPoint && !verify.checkIsProperNumber(storyPoint)) {
+  if (storyPoint !== undefined && !verify.checkIsProperNumber(storyPoint)) {
     throw TypeError('Story Point is of invalid type');
   }
   if (title && !verify.validString(title)) {
@@ -76,7 +76,7 @@ const getAllStories = async (projectId, assignedTo, createdAt, createdBy, modifi
   if (priority) {
     query.priority = priority;
   }
-  if (priority) {
+  if (sprint) {
     query.sprint = sprint;
   }
   if (status) {
