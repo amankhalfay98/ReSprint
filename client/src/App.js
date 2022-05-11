@@ -74,7 +74,7 @@ import Account from './components/Account';
 import Home from './components/Home';
 import Projects from './components/Projects';
 import Backlog from './components/Backlog';
-import Kanban from './components/Kanban';
+import Kanban from './components/Kanban2';
 import Retrospective from './components/Retrospective';
 import UserStories from './components/UserStories';
 import Landing from './components/Landing';
