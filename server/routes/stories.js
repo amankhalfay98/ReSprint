@@ -6,9 +6,12 @@ const storiesData = require('../data/stories');
 
 router.get('/', async (req, res) => {
   let stories;
+  if (req.query.priority !== undefined) req.query.priority = parseInt(req.query.priority, 10);
+  if (req.query.sprint !== undefined) req.query.sprint = parseInt(req.query.sprint, 10);
+  if (req.query.storyPoint !== undefined) req.query.storyPoint = parseInt(req.query.storyPoint, 10);
   const { projectId, assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type } = req.query;
-  await storiesData.validateParams(req.query);
   try {
+    await storiesData.validateParams(req.query);
     stories = await storiesData.getAllStories(projectId, assignedTo, createdAt, createdBy, modifiedAt, priority, sprint, status, storyPoint, type);
   } catch (error) {
     if (error instanceof TypeError) {
@@ -72,8 +75,8 @@ router.put('/', async (req, res) => {
       status: 'error',
       message: errorParams.length > 1 ? `${errorParams} are missing` : `${errorParams} is missing`,
     });
-  await storiesData.validateParams(req.body);
   try {
+    await storiesData.validateParams(req.body);
     story = await storiesData.upsertStory(projectId, createdBy, assignedTo, comments, createdAt, description, modifiedAt, priority, sprint, status, storyPoint, title, type, id);
   } catch (error) {
     if (error instanceof TypeError) {
