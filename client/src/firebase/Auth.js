@@ -10,11 +10,11 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
-				console.log('This is the users uid: ', user.uid);
-				console.log('This is the users email: ', user.email);
-				console.log('This is the display name: ', user.displayName);
-				console.log('This is the role: ', user.role);
-				console.log(user);
+				// console.log('This is the users uid: ', user.uid);
+				// console.log('This is the users email: ', user.email);
+				// console.log('This is the display name: ', user.displayName);
+				// console.log('This is the role: ', user.role);
+				//console.log(user);
 			}
 
 			// var findingAuth = firebaseApp.auth().currentUser.getIdToken();

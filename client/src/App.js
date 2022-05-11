@@ -105,7 +105,7 @@ function App() {
 						<PrivateRoute path="/backlog" component={Backlog} />
 						<PrivateRoute path="/userstories" component={UserStories} />
 						<PrivateRoute path="/retrospective" component={Retrospective} />
-            <PrivateRoute path='/newproject' component={NewProject} />
+						<PrivateRoute path="/newproject" component={NewProject} />
 					</div>
 				</div>
 			</Router>
