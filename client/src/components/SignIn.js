@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import SocialSignIn from './SocialSignIn';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../firebase/Auth';
 import {
 	doSignInWithEmailAndPassword,
@@ -33,7 +33,7 @@ function SignIn() {
 		}
 	};
 	if (currentUser) {
-		return <Navigate to="/home" />;
+		return <Redirect to="/home" />;
 	}
 	return (
 		<div>

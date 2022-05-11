@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: ReSprint
   description: ReSprint backend specification
-  version: 1.0.0
+  version: 1.0.1
 servers:
   - url: http://localhost:4000
     description: Localhost
@@ -15,14 +15,14 @@ components:
   #     scheme: bearer
   #     bearerFormat: JWT
   schemas:
-    # error_missing_header:
-    #   type: object
-    #   properties:
-    #     status:
-    #       type: string
-    #     message:
-    #       type: string
-    #       title: 'Missing authorization header'
+    error_missing_header:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+          title: 'Missing authorization header'
     error_missing_required_properties:
       type: object
       properties:
@@ -32,6 +32,26 @@ components:
         message:
           type: string
           enum: ['Missing required values']
+    users:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        isScrumMaster:
+          type: boolean
+        userName:
+          type: string
+        projects:
+          type: array
+          items:
+            type: string
+            format: uuid
+        company:
+          type: string
+          format: uuid
     comment:
       type: object
       properties:
@@ -122,10 +142,155 @@ components:
             - Feature
             - Bug
             - Enhancement
+    company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyName:
+          type: string
 # security:
 #   - bearerAuth: []
 
 paths:
+  /{id}:
+    get:
+      # security:
+      #   - bearerAuth: []
+      summary: Return the token holder information
+      parameters:
+        - in: path
+          required: true
+          name: id
+          description: The uid of user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success finding the item
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    $ref: '#/components/schemas/users'
+                  status:
+                    type: string
+        '401':
+          description: 'Missing authorization header'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_header'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+  /:
+    post:
+      summary: Create User
+      # security:
+      #   - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - email
+                - isScrumMaster
+                - userName
+                - projects
+              properties:
+                userId:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                isScrumMaster:
+                  type: boolean
+                userName:
+                  type: string
+                projects:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                company:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Success finding the item
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    $ref: '#/components/schemas/users'
+                  status:
+                    type: string
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
   /projects:
     get:
       summary: Get a list of all the projects
@@ -434,7 +599,6 @@ paths:
                   message:
                     type: string
                     enum: ['Server error']
-
   /story:
     get:
       summary: Get a list of all the stories
@@ -848,7 +1012,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  stories:
+                  comments:
                     type: array
                     items:
                       $ref: '#/components/schemas/comment'
@@ -919,7 +1083,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  item:
+                  comment:
                     description: Comment created
                     type: object
                     $ref: '#/components/schemas/comment'
@@ -972,7 +1136,6 @@ paths:
                   message:
                     type: string
                     enum: ['Server error']
-
   /comment/{commentId}:
     get:
       summary: Get a comment by its id
@@ -1084,7 +1247,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  product:
+                  comment:
                     type: object
                     $ref: '#/components/schemas/comment'
                   status:
@@ -1209,6 +1372,170 @@ paths:
                   message:
                     type: string
                     enum: ['Comment not found']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+  /company:
+    get:
+      summary: Get a list of all the companies
+      parameters:
+        - in: query
+          name: companyName
+          description: Company Name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success finding the company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/company'
+                  status:
+                    type: string
+                    enum: ['success']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    post:
+      summary: Add a company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - companyName
+              properties:
+                companyName:
+                  type: string
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company:
+                    description: Company created
+                    type: object
+                    $ref: '#/components/schemas/company'
+
+                  status:
+                    type: string
+                    enum: ['success']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
+        '409':
+          description: 'Duplicate Company'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Company already exists']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+  /company/{companyId}:
+    put:
+      summary: Update a company
+      parameters:
+        - in: path
+          required: true
+          name: companyId
+          description: The uuid of the company
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                companyName:
+                  type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company:
+                    type: object
+                    $ref: '#/components/schemas/company'
+                  status:
+                    type: string
+                    enum: ['success']
+        '404':
+          description: 'Company not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Company not found']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
         '500':
           description: 'Server error'
           content:
