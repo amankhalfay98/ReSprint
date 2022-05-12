@@ -1,7 +1,7 @@
 const { validate: uuidValidate } = require('uuid');
 const verify = require('../middlewares/validation');
 const mongoCollections = require('../config/mongoCollections');
-
+const companyData = require('./company');
 const userSchema = mongoCollections.users;
 const projectSchema = mongoCollections.projects;
 
@@ -70,7 +70,18 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
   return createdUserData;
 };
 
+const getUser = async (company) => {
+  const query = {};
+  if (company && !uuidValidate(company)) {
+    throw TypeError('Company id is of invalid type');
+  }
+  if (company) query.company = company;
+  const usersCollection = await userSchema();
+  return await usersCollection.findOne(query);
+};
+
 module.exports = {
   getUserById,
   createUser,
+  getUser,
 };

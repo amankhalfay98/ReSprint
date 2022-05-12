@@ -89,4 +89,26 @@ router.post('/', async (req, res) => {
   });
 });
 
+router.get('/', async (req, res) => {
+  const { company } = req.query;
+  let user;
+  try {
+    user = await userData.getUser(company);
+    if (user === null)
+      return res.status(404).json({
+        status: 'error',
+        message: 'User Not Found',
+      });
+  } catch (error) {
+    if (error instanceof TypeError) {
+      return res.status(422).json({ status: 'error', message: error.message });
+    }
+    return res.status(500).json({ status: 'error', message: error.message });
+  }
+  return res.status(200).json({
+    user,
+    status: 'success',
+  });
+});
+
 module.exports = router;
