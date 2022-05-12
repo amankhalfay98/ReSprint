@@ -10,6 +10,7 @@ function NewProject() {
     let companyName;
     //const [companyList,setCompanyList] = useState(undefined);
     //const [memberList,setMemberList] = useState(undefined);
+    //const [user, setUser] = useState(undefined);
 
 // useEffect(() => {
   //   const api = new Api();
@@ -23,6 +24,20 @@ function NewProject() {
   //     }
   //   }
   //   getAllCompanies();
+  // }, []);
+
+  // useEffect(() => {
+  //   const api = new Api();
+  //   async function getUserById() {
+  //     try {
+  //       const {user } = await api.getUserById(id) ; //get session id
+  //       console.log(user);
+  //       if (user) setUser(user);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  //   getUserById();
   // }, []);
 
   // useEffect(() => {
@@ -131,7 +146,8 @@ function NewProject() {
           <label>
             Company Name:
             <br />
-            <input 
+            <input disabled
+            //defaultValue={user.companyName}
             ref={(node) => {
                 companyName = node;
               }}
