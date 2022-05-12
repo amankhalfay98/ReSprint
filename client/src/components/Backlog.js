@@ -10,15 +10,15 @@ import {
 	Typography,
 } from '@material-ui/core';
 
- const Backlog = () => {
-
+ const Backlog = (props) => {
+  console.log(props);
   let card = null;
   const [storyData, setStoryData] = useState(undefined);
   useEffect(() => {
     const api = new Api();
     async function getStories() {
       try {
-        const {stories } = await api.getStories() ;
+        const {stories } = await api.getStories(props.location.project) ;
         console.log(stories);
         if (stories) setStoryData(stories);
       } catch (error) {
@@ -26,7 +26,7 @@ import {
       }
     }
     getStories();
-  }, []);
+  }, [props.location.project]);
 
   
   if (storyData && Array.isArray(storyData)) {

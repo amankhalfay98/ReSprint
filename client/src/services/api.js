@@ -131,8 +131,15 @@ export default class Api {
 	};
 
 	//tested
-	getStories = async () => {
-		const url = `${host}/story`;
+	getStories = async (project) => {
+        let url;
+        if(project){
+         url = `${host}/story?projectId=${project}`;
+        }
+        else{
+            url = `${host}/story`;
+        }
+		
 		try {
 			const { data } = await get(url);
 			//console.log(data);
@@ -350,6 +357,20 @@ export default class Api {
 			throw new Error(e.message);
 		}
 
+    }
+
+    getUser = async (companyName)=>{
+        const url = `${host}/?company=${companyName}`;
+		try {
+			const { data } = await get(url);
+			//console.log(data);
+			return data;
+		} catch (e) {
+			if (e.response?.data?.message) {
+				throw new Error(e.response?.data.message);
+			}
+			throw new Error(e.message);
+		}
     }
 
 }
