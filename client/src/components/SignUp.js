@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
 // import SocialSignIn from './SocialSignIn';
-import Api from '../services/api';
+//import Api from '../services/api';
 // import Modal from './Modals/Modal';
 
 function SignUp() {
