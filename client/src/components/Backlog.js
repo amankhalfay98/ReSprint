@@ -28,17 +28,22 @@ import {
     getStories();
   }, [props.location.project]);
 
+
+
   
   if (storyData && Array.isArray(storyData)) {
     card = storyData.map((story) => {
-      return (<Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+      return (<Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={story.id}>
 				<Card  variant="outlined">
 					<CardActionArea>
+          <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
 							<CardContent>
 								<Typography variant="body2" color="textSecondary" component="p">
-								<li key={story.id}>{story.title}</li>;
+                  {/* <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>{story.title}</Link> */}
+								{story.title}
 								</Typography>
 							</CardContent>
+              </Link>
 					</CardActionArea>
 				</Card>
 			</Grid>)

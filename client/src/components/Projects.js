@@ -70,7 +70,7 @@ const Projects = () => {
 
   if (projectData && Array.isArray(projectData)) {
     card = projectData.map((project) => {
-      // if(User.company===project.company){
+      // if(user.company===project.company){
 
       // }
       return(
