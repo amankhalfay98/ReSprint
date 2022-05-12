@@ -1,5 +1,5 @@
-import React from 'react';
-import '../App.css';
+// import React from 'react';
+// import '../App.css';
 //import axios from 'axios';
 
 // {
@@ -20,15 +20,87 @@ import '../App.css';
 //   "title": "This is a test title",
 //   "type": "Feature"
 // }
-const UserStories = () => {
+// const UserStories = () => {
   
+
+//   return (
+//     <div>
+//       {/* <button onClick={getProducts()}>Click me</button> */}
+      
+//     </div>
+//   );
+// };
+
+// export default UserStories;
+
+
+import React, { useState, useEffect } from "react";
+import '../App.css';
+import Api from '../services/api'
+//import { Link } from 'react-router-dom';
+import {
+	Card,
+	CardActionArea,
+	CardContent,
+	Grid,
+	Typography,
+} from '@material-ui/core';
+
+ const UserStories = () => {
+
+  let card = null;
+  const [storyData, setStoryData] = useState(undefined);
+  useEffect(() => {
+    const api = new Api();
+    async function getStories() {
+      try {
+        const {stories } = await api.getStories() ;
+        console.log(stories);
+        if (stories) setStoryData(stories);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getStories();
+  }, []);
+
+  
+  if (storyData && Array.isArray(storyData)) {
+    card = storyData.map((story) => {
+      return (<Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+				<Card  variant="outlined">
+					<CardActionArea>
+							<CardContent>
+								<Typography variant="body2" color="textSecondary" component="p">
+                <li key={story.id}>{story.title}</li>;
+								<li key={story.id}>{story.description}</li>;
+                <li key={story.id}>{story.status}</li>;
+                <li key={story.id}>{story.createdAt}</li>;
+								</Typography>
+							</CardContent>
+					</CardActionArea>
+				</Card>
+			</Grid>)
+    });
+  }
 
   return (
     <div>
-      {/* <button onClick={getProducts()}>Click me</button> */}
+     
+      <Card  variant="outlined">
+					<CardActionArea>
+							<CardContent>
+								<Typography variant="body2" color="textSecondary" component="p">
+								INDIVIDUAL USER STORIES:
+								</Typography>
+							</CardContent>
+					</CardActionArea>
+				</Card>
+      <ul>{card}</ul>
       
     </div>
   );
+
 };
 
 export default UserStories;

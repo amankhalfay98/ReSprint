@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+//import { User } from "react-feather";
 import { NavLink } from "react-router-dom";
 import "../App.css";
 import Api from '../services/api'
@@ -57,7 +58,8 @@ const Projects = () => {
   const buildCard = (project)=>{
     return (
       <div className="project_card" key={project.id}>
-      <li><a href={`/backlog`}>Project Name:{project.projectName}</a></li>
+      <NavLink to={{pathname:'/backlog', project:`${project.id}`}}>Project Name:{project.projectName}</NavLink>
+      {/* <li><a href={`/backlog?project=${project.id}`}>Project Name:{project.projectName}</a></li> */}
       <li>Company:{project.company}</li>
       <li>Total Sprints:{project.totalSprints}</li>
       {/* <button onClick={deleteProject(project.id)}>Delete Project</button> */}
@@ -68,6 +70,9 @@ const Projects = () => {
 
   if (projectData && Array.isArray(projectData)) {
     card = projectData.map((project) => {
+      // if(user.company===project.company){
+
+      // }
       return(
       buildCard(project)
       )

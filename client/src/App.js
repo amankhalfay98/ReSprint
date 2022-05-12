@@ -74,13 +74,14 @@ import Account from './components/Account';
 import Home from './components/Home';
 import Projects from './components/Projects';
 import Backlog from './components/Backlog';
-import Kanban from './components/Kanban';
+import Kanban from './components/Kanban2';
 import Retrospective from './components/Retrospective';
 import UserStories from './components/UserStories';
 import Landing from './components/Landing';
 import Navigation from './components/Navigation';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Storyform from './components/storyform';
 import { AuthProvider } from './firebase/Auth';
 import NewProject from './components/NewProject';
 import PrivateRoute from './components/PrivateRoute';
@@ -106,6 +107,7 @@ function App() {
 						<PrivateRoute path="/userstories" component={UserStories} />
 						<PrivateRoute path="/retrospective" component={Retrospective} />
 						<PrivateRoute path="/newproject" component={NewProject} />
+						<PrivateRoute path='/storyform' component={Storyform} />
 					</div>
 				</div>
 			</Router>
