@@ -127,7 +127,8 @@ const Projects = () => {
       async function upsertStory(user) {
         try {
           console.log("this is the new variables", user.createdAt)
-          const stories = await api.upsertStory(user.createdBy,user.assignedTo,user.comments,user.createdAt,user.description,user.modifiedAt,parseInt(user.priority),parseInt(user.sprint),user.status,parseInt(user.storyPoint),user.title,user.type,user.projectId,user.id) ;
+          //const stories = 
+          await api.upsertStory(user.createdBy,user.assignedTo,user.comments,user.createdAt,user.description,user.modifiedAt,parseInt(user.priority),parseInt(user.sprint),user.status,parseInt(user.storyPoint),user.title,user.type,user.projectId,user.id) ;
         } catch (error) {
           console.log(error.message);
         }
