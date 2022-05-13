@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: ReSprint
   description: ReSprint backend specification
-  version: 1.0.1
+  version: 1.0.2
 servers:
   - url: http://localhost:4000
     description: Localhost
@@ -185,6 +185,102 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error_missing_header'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    put:
+      summary: Update an user
+      parameters:
+        - in: path
+          required: true
+          name: id
+          description: The uid of the user
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - isScrumMaster
+                - userName
+                - projects
+                - company
+              properties:
+                email:
+                  type: string
+                  format: email
+                isScrumMaster:
+                  type: boolean
+                userName:
+                  type: string
+                projects:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                company:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    $ref: '#/components/schemas/project'
+                  status:
+                    type: string
+                    enum: ['success']
+        '201':
+          description: Success creating a project that the user didn't have before
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    $ref: '#/components/schemas/project'
+                  status:
+                    type: string
+                    enum: ['success']
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
         '500':
           description: 'Server error'
           content:
