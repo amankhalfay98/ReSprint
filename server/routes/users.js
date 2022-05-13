@@ -116,9 +116,6 @@ router.put('/:id', async (req, res) => {
   const { email, isScrumMaster, userName, projects, company } = req.body;
   let user = null;
   const errorParams = [];
-  if (!uuidValidate(id)) {
-    errorParams.push('Id');
-  }
   if (!verify.validEmail(email)) {
     errorParams.push('Email');
   }

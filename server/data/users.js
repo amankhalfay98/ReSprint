@@ -129,9 +129,6 @@ const updateUser = async (id, email, isScrumMaster, userName, projects, company)
   if (!uuidValidate(company)) {
     throw TypeError('Company is missing or is of invalid type');
   }
-  if (!uuidValidate(id)) {
-    throw TypeError('Id is missing or is of invalid type');
-  }
   if (projects.length > 0) {
     for (let index = 0; index < projects.length; index += 1) {
       if (!uuidValidate(projects[index])) {
