@@ -14,6 +14,7 @@ export default class Api {
 			console.log(idToken);
 			// token = idToken;
 			token = idToken;
+			return token;
 		});
 	};
 	// getToken();
