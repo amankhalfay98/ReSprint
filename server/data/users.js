@@ -1,20 +1,42 @@
 const { validate: uuidValidate } = require('uuid');
-const verify = require('../middlewares/validation');
-const mongoCollections = require('../config/mongoCollections');
+require('dotenv').config();
 
-const userSchema = mongoCollections.users;
+const redis = require('redis');
+const bluebird = require('bluebird');
+const mongoCollections = require('../config/mongoCollections');
+const verify = require('../middlewares/validation');
+
+const redisConfig = {
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: process.env.REDIS_PORT || '6379',
+  auth_pass: process.env.REDIS_PASS || '',
+};
+const client = redis.createClient(redisConfig);
+
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
+
+client.on('connect', (error) => {
+  console.log('Redis Connection Successful!!');
+});
+
+client.on('error', (error) => {
+  console.log(`${error}`);
+});
+
 const projectSchema = mongoCollections.projects;
 
 const getUserById = async (id) => {
   try {
-    const usersCollection = await userSchema();
-    const user = await usersCollection.findOne({ _id: id });
-    if (user !== null) {
-      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-      user.id = user._id;
-      /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-      delete user._id;
-    }
+    // const usersCollection = await userSchema();
+    // const user = await usersCollection.findOne({ _id: id });
+    const user = JSON.parse(await client.getAsync(id));
+    // if (user !== null) {
+    //   /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+    //   user.id = user._id;
+    //   /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+    //   delete user._id;
+    // }
     return user;
   } catch (error) {
     throw Error(error.message);
@@ -45,16 +67,18 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
     }
   }
   const userDocument = {
-    _id: userId,
+    id: userId,
     email,
     isScrumMaster,
     userName,
     projects,
     company,
   };
-  const usersCollection = await userSchema();
-  const user = await usersCollection.insertOne(userDocument);
-  if (user.insertedCount > 0) {
+  // const usersCollection = await userSchema();
+  // const user = await usersCollection.insertOne(userDocument);
+  const user = await client.setAsync(userId, JSON.stringify(userDocument));
+  await client.lpushAsync('users', JSON.stringify(userDocument));
+  if (user !== null) {
     const projectsCollection = await projectSchema();
     for (let index = 0; index < projects.length; index += 1) {
       // eslint-disable-next-line
@@ -65,19 +89,28 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
       }
     }
   }
-  const newId = user.insertedId;
-  const createdUserData = await getUserById(newId);
+  const createdUserData = await getUserById(userId);
   return createdUserData;
 };
 
 const getUser = async (company) => {
-  const query = {};
+  // const query = {};
   if (company && !uuidValidate(company)) {
     throw TypeError('Company id is of invalid type');
   }
-  if (company) query.company = company;
-  const usersCollection = await userSchema();
-  return usersCollection.findOne(query);
+  // if (company) query.company = company;
+  // const usersCollection = await userSchema();
+  // return usersCollection.findOne(query);
+  const user = await client
+    .lrangeAsync('users', 0, -1)
+    .map(JSON.parse)
+    .filter((value) => {
+      if (company) {
+        return value.company === company;
+      }
+      return value;
+    });
+  return user;
 };
 
 const updateUser = async (id, email, isScrumMaster, userName, projects, company) => {
@@ -106,8 +139,24 @@ const updateUser = async (id, email, isScrumMaster, userName, projects, company)
       }
     }
   }
-  const usersCollection = await userSchema();
-  await usersCollection.updateOne({ _id: id }, { $set: { email, isScrumMaster, userName, projects, company } });
+  const updateUserDocument = {
+    id,
+    email,
+    isScrumMaster,
+    userName,
+    projects,
+    company,
+  };
+  // const usersCollection = await userSchema();
+  // await usersCollection.updateOne({ _id: id }, { $set: { email, isScrumMaster, userName, projects, company } });
+  try {
+    const cache = JSON.parse(await client.getAsync(id));
+    await client.lremAsync('users', 0, JSON.stringify(cache));
+    await client.lpushAsync('users', 0, JSON.stringify(updateUserDocument));
+    await client.setAsync(id, JSON.stringify(updateUserDocument));
+  } catch (error) {
+    throw Error(error.message);
+  }
   return getUserById(id);
 };
 
