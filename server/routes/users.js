@@ -91,10 +91,10 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   const { company } = req.query;
-  let user;
+  let users;
   try {
-    user = await userData.getUser(company);
-    if (user === null)
+    users = await userData.getUser(company);
+    if (users === null)
       return res.status(404).json({
         status: 'error',
         message: 'User Not Found',
@@ -106,7 +106,7 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ status: 'error', message: error.message });
   }
   return res.status(200).json({
-    user,
+    users,
     status: 'success',
   });
 });
@@ -114,7 +114,7 @@ router.get('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { email, isScrumMaster, userName, projects, company } = req.body;
-  let users = null;
+  let user = null;
   const errorParams = [];
   if (!verify.validEmail(email)) {
     errorParams.push('Email');
@@ -155,8 +155,8 @@ router.put('/:id', async (req, res) => {
     });
   }
   try {
-    users = await userData.updateUser(id, email, isScrumMaster, userName, projects, company);
-    if (users === null)
+    user = await userData.updateUser(id, email, isScrumMaster, userName, projects, company);
+    if (user === null)
       return res.status(404).json({
         status: 'error',
         message: 'User Not Found',
@@ -168,7 +168,7 @@ router.put('/:id', async (req, res) => {
     return res.status(500).json({ status: 'error', message: error.message });
   }
   return res.status(200).json({
-    users,
+    user,
     status: 'success',
   });
 });
