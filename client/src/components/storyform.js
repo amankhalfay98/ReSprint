@@ -112,8 +112,8 @@ const Projects = () => {
   description:"",
   modifiedAt:date.toISOString(),
   priority:"",
-  sprint:"",
-  status:"",
+  sprint:"0",
+  status:"To do",
   storyPoint:"",
   title:"",
   type:"",
@@ -140,8 +140,8 @@ const Projects = () => {
       description:"",
       modifiedAt:date.toISOString(),
       priority:"",
-      sprint:"",
-      status:"",
+      sprint:"0",
+      status:"To do",
       storyPoint:"",
       title:"",
       type:"",
@@ -168,18 +168,6 @@ const Projects = () => {
         priority
           <input type="text" name="priority" id="priority"   value={user.priority}
         onChange={e => setUser({...user,priority: e.target.value})}/>
-        </label>
-        <br></br>
-         <label>
-           sprint
-         <input type="text" name="sprint" id="sprint"   value={user.sprint}
-        onChange={e => setUser({...user,sprint: e.target.value})}/>
-         </label>
-         <br></br>
-         <label>
-          status
-        <input type="text" name="status" id="status"   value={user.status}
-        onChange={e => setUser({...user,status: e.target.value})}/>
         </label>
          <br></br>
          <label>
