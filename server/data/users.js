@@ -1,7 +1,7 @@
 const { validate: uuidValidate } = require('uuid');
 const verify = require('../middlewares/validation');
 const mongoCollections = require('../config/mongoCollections');
-const companyData = require('./company');
+
 const userSchema = mongoCollections.users;
 const projectSchema = mongoCollections.projects;
 
@@ -77,11 +77,43 @@ const getUser = async (company) => {
   }
   if (company) query.company = company;
   const usersCollection = await userSchema();
-  return await usersCollection.findOne(query);
+  return usersCollection.findOne(query);
+};
+
+const updateUser = async (id, email, isScrumMaster, userName, projects, company) => {
+  if (!verify.validString(userName)) {
+    throw TypeError('Username is missing or is of invalid type');
+  }
+  if (!verify.validEmail(email)) {
+    throw TypeError('Email is missing or is of invalid type');
+  }
+  if (!verify.validBoolean(isScrumMaster)) {
+    throw TypeError('isScrumMaster is missing or is of invalid type');
+  }
+  if (!Array.isArray(projects)) {
+    throw TypeError('Projects is missing is missing or is of invalid type');
+  }
+  if (!uuidValidate(company)) {
+    throw TypeError('Company is missing or is of invalid type');
+  }
+  if (!uuidValidate(id)) {
+    throw TypeError('Id is missing or is of invalid type');
+  }
+  if (projects.length > 0) {
+    for (let index = 0; index < projects.length; index += 1) {
+      if (!uuidValidate(projects[index])) {
+        throw TypeError('Project Id is of invalid type');
+      }
+    }
+  }
+  const usersCollection = await userSchema();
+  await usersCollection.updateOne({ _id: id }, { $set: { email, isScrumMaster, userName, projects, company } });
+  return getUserById(id);
 };
 
 module.exports = {
   getUserById,
   createUser,
   getUser,
+  updateUser,
 };
