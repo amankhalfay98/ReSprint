@@ -131,17 +131,16 @@ export default class Api {
 	};
 
 	//tested
-	getStories = async (project,sprint) => {
-        let url;
-        if(project && !(sprint)){
-         url = `${host}/story?projectId=${project}`;
-        }else if(project && sprint){
-            url = `${host}/story?projectId=${project}&sprint=${sprint}`;
-        }
-        else{
-            url = `${host}/story`;
-        }
-		
+	getStories = async (project, sprint) => {
+		let url;
+		if (project && !sprint) {
+			url = `${host}/story?projectId=${project}`;
+		} else if (project && sprint) {
+			url = `${host}/story?projectId=${project}&sprint=${sprint}`;
+		} else {
+			url = `${host}/story`;
+		}
+
 		try {
 			const { data } = await get(url);
 			//console.log(data);
@@ -257,7 +256,14 @@ export default class Api {
 		}
 	};
 
-	addUser = async (userId, email, isScrumMaster, userName, projects) => {
+	addUser = async (
+		userId,
+		email,
+		isScrumMaster,
+		userName,
+		projects,
+		company
+	) => {
 		const url = `${host}/`;
 		try {
 			const { data } = await post(
@@ -268,6 +274,7 @@ export default class Api {
 					isScrumMaster,
 					userName,
 					projects,
+					company,
 				},
 				{
 					headers: {
@@ -275,7 +282,7 @@ export default class Api {
 					},
 				}
 			);
-			//console.log(data);
+			console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -299,8 +306,8 @@ export default class Api {
 		}
 	};
 
-    getCompany = async()=>{
-        const url = `${host}/company`;
+	getCompany = async () => {
+		const url = `${host}/company`;
 		try {
 			const { data } = await get(url);
 			//console.log(data);
@@ -311,10 +318,10 @@ export default class Api {
 			}
 			throw new Error(e.message);
 		}
-    }
+	};
 
-    getCompanyById = async (id) =>{
-        const url = `${host}/company/${id}`;
+	getCompanyById = async (id) => {
+		const url = `${host}/company/${id}`;
 		try {
 			const { data } = await get(url);
 			//console.log(data);
@@ -325,10 +332,10 @@ export default class Api {
 			}
 			throw new Error(e.message);
 		}
-    }
+	};
 
-    addCompany = async (companyName) =>{
-        const url = `${host}/company`;
+	addCompany = async (companyName) => {
+		const url = `${host}/company`;
 		try {
 			const { data } = await post(url, {
 				companyName,
@@ -341,13 +348,13 @@ export default class Api {
 			}
 			throw new Error(e.message);
 		}
-    }
+	};
 
-    updateCompany = async (id,companyName)=>{
-        const url = `${host}/company/${id}`;
+	updateCompany = async (id, companyName) => {
+		const url = `${host}/company/${id}`;
 		try {
 			const { data } = await put(url, {
-                id,
+				id,
 				companyName,
 			});
 			//console.log(data);
@@ -358,11 +365,10 @@ export default class Api {
 			}
 			throw new Error(e.message);
 		}
+	};
 
-    }
-
-    getAllMembers = async (companyName)=>{
-        const url = `${host}/?company=${companyName}`;
+	getAllMembers = async (companyName) => {
+		const url = `${host}/?company=${companyName}`;
 		try {
 			const { data } = await get(url);
 			//console.log(data);
@@ -373,6 +379,5 @@ export default class Api {
 			}
 			throw new Error(e.message);
 		}
-    }
-
+	};
 }
