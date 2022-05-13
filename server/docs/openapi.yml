@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: ReSprint
   description: ReSprint backend specification
-  version: 1.0.2
+  version: 1.0.3
 servers:
   - url: http://localhost:4000
     description: Localhost
@@ -154,6 +154,135 @@ components:
 #   - bearerAuth: []
 
 paths:
+  /:
+    get:
+      summary: Get a list of users
+      parameters:
+        - in: query
+          name: company
+          description: Name of the company
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success finding the users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/users'
+                  status:
+                    type: string
+                    enum: ['success']
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
+    post:
+      summary: Create User
+      # security:
+      #   - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - email
+                - isScrumMaster
+                - userName
+                - projects
+              properties:
+                userId:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                isScrumMaster:
+                  type: boolean
+                userName:
+                  type: string
+                projects:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                company:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Success finding the item
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    $ref: '#/components/schemas/users'
+                  status:
+                    type: string
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Invalid credential']
+        '403':
+          description: 'Not authorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Not authorized to perform that action']
+        '422':
+          description: 'Invalid or missing requirements'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_missing_required_properties'
+        '500':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ['error']
+                  message:
+                    type: string
+                    enum: ['Server error']
   /{id}:
     get:
       # security:
@@ -294,99 +423,7 @@ paths:
                   message:
                     type: string
                     enum: ['Server error']
-  /:
-    post:
-      summary: Create User
-      # security:
-      #   - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - userId
-                - email
-                - isScrumMaster
-                - userName
-                - projects
-              properties:
-                userId:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                isScrumMaster:
-                  type: boolean
-                userName:
-                  type: string
-                projects:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-                company:
-                  type: string
-                  format: uuid
-      responses:
-        '201':
-          description: Success finding the item
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/users'
-                  status:
-                    type: string
-        '401':
-          description: 'Invalid credentials'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Invalid credential']
-        '403':
-          description: 'Not authorized'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Not authorized to perform that action']
-        '422':
-          description: 'Invalid or missing requirements'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error_missing_required_properties'
-        '500':
-          description: 'Server error'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum: ['error']
-                  message:
-                    type: string
-                    enum: ['Server error']
+
   /projects:
     get:
       summary: Get a list of all the projects
@@ -695,6 +732,7 @@ paths:
                   message:
                     type: string
                     enum: ['Server error']
+
   /story:
     get:
       summary: Get a list of all the stories
@@ -1084,6 +1122,7 @@ paths:
                   message:
                     type: string
                     enum: ['Server error']
+
   /comment:
     get:
       summary: Get a list of all the comments
@@ -1481,6 +1520,7 @@ paths:
                   message:
                     type: string
                     enum: ['Server error']
+
   /company:
     get:
       summary: Get a list of all the companies
