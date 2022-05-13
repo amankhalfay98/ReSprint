@@ -13,10 +13,10 @@ const validateParams = async (args) => {
   if (projectId && !uuidValidate(projectId)) {
     throw TypeError('Project Id is of invalid type');
   }
-  if (createdBy && !uuidValidate(createdBy)) {
+  if (createdBy && !verify.validString(createdBy)) {
     throw TypeError('Created by is of invalid type');
   }
-  if (assignedTo && !uuidValidate(assignedTo)) {
+  if (assignedTo && !verify.validString(assignedTo)) {
     throw TypeError('Assigned to is of invalid type');
   }
   if (comments && !Array.isArray(comments)) {
