@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {useContext,useState,useEffect} from 'react';
 import '../App.css';
 import { Button } from '@material-ui/core';
 import Api from '../services/api'
+import { AuthContext } from '../firebase/Auth';
 
 function NewProject() {
     const api = new Api();
+    const { currentUser } = useContext(AuthContext);
+	console.log('This is coming from the New Project Component: ', currentUser.uid);
     let totalSprints;
     let projectName;
     let companyName;
     //const [companyList,setCompanyList] = useState(undefined);
-    //const [memberList,setMemberList] = useState(undefined);
-    //const [user, setUser] = useState(undefined);
+    const [memberList,setMemberList] = useState(undefined);
+    const [user, setUser] = useState(undefined);
 
 // useEffect(() => {
   //   const api = new Api();
@@ -26,35 +29,35 @@ function NewProject() {
   //   getAllCompanies();
   // }, []);
 
-  // useEffect(() => {
-  //   const api = new Api();
-  //   async function getUserById() {
-  //     try {
-  //       const {user } = await api.getUserById(id) ; //get session id
-  //       console.log(user);
-  //       if (user) setUser(user);
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  //   getUserById();
-  // }, []);
+  useEffect((currentUser) => {
+    //const api = new Api();
+    async function getUserById() {
+      try {
+        const {user } = await api.getUserById('9LaXAim6PZVppWwMajyH93vG0dt2') ; //get session id
+        console.log(user);
+        if (user) setUser(user);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getUserById();
+  }, [currentUser,api]);
 
-  // useEffect(() => {
-  //   const api = new Api();
-  //   async function getAllMembers() {
-  //     try {
-  //    if(companyName.value.length>0){
-  //       const {members } = await api.getAllMembers(companyName) ;
-  //       console.log(members);
-  //       if (members) setCompanyList(members);
-  //      }
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  //   getAllMembers();
-  // }, [companyName]);
+  useEffect(() => {
+    const api = new Api();
+    async function getAllMembers() {
+      try {
+     if(companyName.value.length>0){
+        const {members } = await api.getAllMembers('e80df368-8ccc-4da2-8017-1f4936fbe20a') ;
+        console.log(members);
+        if (members) setMemberList(members);
+       }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getAllMembers();
+  }, [companyName]);
 
 
 
@@ -66,20 +69,20 @@ function NewProject() {
 	// 	)
 	// });
 
-  	// let members = memberList.length > 0
-	// 	&& memberList.map((member, i) => {
-	// 	return (
-  //   optionGenerator(member)
-	// 		<option key={i} value={item.id}>{item.name}</option>
-	// 	)
-	// });
+  	let members = memberList.length > 0
+		&& memberList.map((member, i) => {
+		return (
+    optionGenerator(member,i)
+			// <option key={i} value={item.id}>{item.name}</option>
+		)
+	});
 
-  // const optionGenerator = (item)=> {
-  //   return(
-  //     <option key={i} value={item.id}>{item.name}</option>
-  //     )
+  const optionGenerator = (item,i)=> {
+    return(
+      <option key={i} value={item.id}>{item.name}</option>
+      )
     
-  // }
+  }
     
     return (
         <form
@@ -147,7 +150,7 @@ function NewProject() {
             Company Name:
             <br />
             <input disabled
-            //defaultValue={user.companyName}
+            defaultValue={user.companyName}
             ref={(node) => {
                 companyName = node;
               }}
@@ -158,12 +161,10 @@ function NewProject() {
 </select> */}
           </label>
         </div>
-        {/* {
-            companyName.value.length>0?'': <select multiple name="members" id="members">
+        <select multiple name="members" id="members">
             <option value="">--Please choose an option--</option>
             {members}
         </select>
-        } */}
         <br />
         <br />
         <Button variant='outlined'  type='submit'>Submit</Button>
