@@ -101,7 +101,7 @@ const getUser = async (company) => {
   // if (company) query.company = company;
   // const usersCollection = await userSchema();
   // return usersCollection.findOne(query);
-  const user = await client
+  const users = await client
     .lrangeAsync('users', 0, -1)
     .map(JSON.parse)
     .filter((value) => {
@@ -110,7 +110,7 @@ const getUser = async (company) => {
       }
       return value;
     });
-  return user;
+  return users;
 };
 
 const updateUser = async (id, email, isScrumMaster, userName, projects, company) => {
