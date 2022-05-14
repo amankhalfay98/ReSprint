@@ -1,12 +1,27 @@
-import React from 'react'
+import React from 'react';
 import '../App.css';
 
-function ReportIssue() {
+const Projects = (props) => {
+  console.log(props.match.params.id)
   return (
-    <div>
-      ReportIssue
-    </div>
+    <form >
+         <h1> Report Issue </h1>
+         <label>
+        Comments:
+        <input type="text" name="createdBy" id="createdBy" />
+        </label>
+      <br></br>
+     <button className="button">
+                  SUBMIT
+                </button>
+    </form>
   )
 }
 
-export default ReportIssue
+export default Projects;
+
+
+
+
+
+

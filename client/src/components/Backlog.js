@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import '../App.css';
 import Api from '../services/api'
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {
 	Card,
 	CardActionArea,
@@ -12,7 +12,9 @@ import {
 
  const Backlog = (props) => {
   console.log(props);
+  //let totalSprints = parseInt(props.location.project.totalSprints);
   let card = null;
+  let column = null;
   const [storyData, setStoryData] = useState(undefined);
   useEffect(() => {
     const api = new Api();
@@ -28,15 +30,34 @@ import {
     getStories();
   }, [props.location.project]);
 
+// column = () => {
+//   for(let i=0;i<=totalSprints;i++){
+//     return(
+//       <div className='drag-n-drop'>
+//               <div className='dnd-group' name={`${i}`} id={`${i}`}>
+//                   <div className='group-title'>{i}</div>
+//               </div>
+//           </div>
+//     )
+//   }  
+// }
 
+// for(let i =0;i<=parseInt(props.location.sprint);i++){
+//   column = {return (
+//     <li></li>
+//   )}
+// }
 
   
   if (storyData && Array.isArray(storyData)) {
     card = storyData.map((story) => {
-      return (<Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={story.id}>
+      return (
+      
+      <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={story.id}>
 				<Card  variant="outlined">
 					<CardActionArea>
-          <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
+          <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
+          {/* <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}> */}
 							<CardContent>
 								<Typography variant="body2" color="textSecondary" component="p">
                   {/* <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>{story.title}</Link> */}
@@ -52,8 +73,11 @@ import {
 
   return (
     <div>
-     
-      <Card  variant="outlined">
+     <h2>
+       Product BACKLOG
+     </h2>
+     <ul>{column}</ul>
+      {/* <Card  variant="outlined">
 					<CardActionArea>
 							<CardContent>
 								<Typography variant="body2" color="textSecondary" component="p">
@@ -61,60 +85,17 @@ import {
 								</Typography>
 							</CardContent>
 					</CardActionArea>
-				</Card>
+				</Card> */}
+        {/* <div className='backlog'>
+        {column}  
+    </div> */}
       <ul>{card}</ul>
       
-      <Link to={"/storyform"}>
-      <button>New User Story</button>
-      </Link>
+      <NavLink to={{pathname:'/storyform', project:`${props.location.project}`}}>Add New User Story</NavLink>
     </div>
   );
-
-  // return (
-  //   <div>
-  //   <h1 >BACKLOGS:</h1>
-
-  //   <Link to={"/storyform"}>
-  //   <button  >ADD NEW STORY</button>
-  //   </Link>
-  //   </div>
-  // );
 };
 
 export default Backlog;
 
-// <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={show.id}>
-// <Card className={classes.card} variant="outlined">
-//   <CardActionArea>
-//      <Link to={`/characters/${show.id}`}>
-//       <CardMedia
-//         className={classes.media}
-//         component="img"
-//         image={
-//           show.thumbnail && show.thumbnail.path
-//             ? `${show.thumbnail.path}.${show.thumbnail.extension}`
-//             : noImage
-//         }
-//         title="show image"
-//        />
 
-//       <CardContent>
-//         <Typography
-//           className={classes.titleHead}
-//           gutterBottom
-//           variant="h6"
-//           component="h2"
-//         >
-//           {show.name}
-//         </Typography>
-//         <Typography variant="body2" color="textSecondary" component="p">
-//           {show.description
-//             ? show.description.replace(regex, '').substring(0, 139) + '...'
-//             : 'No Summary'}
-//           <span>More Info</span>
-//         </Typography>
-//       </CardContent>
-//     </Link>
-//   </CardActionArea>
-// </Card>
-// </Grid>

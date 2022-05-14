@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../firebase/Auth';
 
 const host = 'http://resprint.herokuapp.com';
+//const host = 'https://cf0f-98-109-149-176.ngrok.io';
 // Change token here
 let token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 //const to = '';
@@ -14,16 +15,16 @@ export default class Api {
 			console.log(idToken);
 			// token = idToken;
 			token = idToken;
+			return token;
 		});
 	};
 	// getToken();
 
 	//tested
-	getAllProjects = async () => {
-		const url = `${host}/projects`;
+	getAllProjects = async (company) => {
+		const url = `${host}/projects?company=${company}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -73,7 +74,6 @@ export default class Api {
 					authorization: `Bearer ${token}`,
 				},
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -83,11 +83,14 @@ export default class Api {
 		}
 	};
 
-	deleteProject = async (id) => {
-		const url = `${host}/projects/${id}`;
+	deleteProject = async (id,memId) => {
+		const url = `${host}/projects/${id}/${memId}`;
 		try {
-			const { data } = await axios.delete(url);
-			//console.log(data);
+			const { data } = await axios.delete(url,{
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			});
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -114,7 +117,7 @@ export default class Api {
 		projectId,
 		id,
 	}) => {
-		const url = `${host}`;
+		const url = `${host}/story`;
 		try {
 			const { data } = await put(url, {
 				createdBy,
@@ -132,7 +135,6 @@ export default class Api {
 				projectId,
 				id,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -155,7 +157,6 @@ export default class Api {
 
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -169,7 +170,6 @@ export default class Api {
 		const url = `${host}/story/${id}`;
 		try {
 			const { data } = await axios.delete(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -183,7 +183,6 @@ export default class Api {
 		const url = `${host}/story/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -199,7 +198,6 @@ export default class Api {
 			const { data } = await post(url, {
 				comment,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -213,7 +211,6 @@ export default class Api {
 		const url = `${host}/comment`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -227,7 +224,6 @@ export default class Api {
 		const url = `${host}/comment/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -244,7 +240,6 @@ export default class Api {
 				id,
 				comment,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -258,7 +253,6 @@ export default class Api {
 		const url = `${host}/comment/${id}`;
 		try {
 			const { data } = await axios.delete(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -308,7 +302,27 @@ export default class Api {
 		const url = `${host}/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
+			console.log(data);
+			return data;
+		} catch (e) {
+			if (e.response?.data?.message) {
+				throw new Error(e.response?.data.message);
+			}
+			throw new Error(e.message);
+		}
+	};
+
+      updateUserById = async (id,email,isScrumMaster,userName,projects,company) => {
+		const url = `${host}/${id}`;
+		try {
+			const { data } = await put(url,{
+				email,
+				isScrumMaster,
+				userName,
+				projects,
+				company
+			});
+			console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -322,7 +336,6 @@ export default class Api {
 		const url = `${host}/company`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -336,7 +349,6 @@ export default class Api {
 		const url = `${host}/company/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -352,7 +364,6 @@ export default class Api {
 			const { data } = await post(url, {
 				companyName,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -369,7 +380,6 @@ export default class Api {
 				id,
 				companyName,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -379,11 +389,17 @@ export default class Api {
 		}
 	};
 
-	getAllMembers = async (companyName) => {
-		const url = `${host}/?company=${companyName}`;
+	getAllMembers = async (companyName,project) => {
+		let url=`${host}/`;
+		if(companyName && project.length === 0){
+			 url = `${host}/?company=${companyName}`;
+		}
+		if(project && companyName.length === 0){
+			 url = `${host}/?projectId=${project}`;
+		}
+		
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {

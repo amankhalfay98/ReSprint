@@ -36,7 +36,9 @@
 
 import React, { useState, useEffect } from "react";
 import '../App.css';
+import { NavLink } from 'react-router-dom';
 import Api from '../services/api'
+//import ReportIssue from './ReportIssue'
 //import { Link } from 'react-router-dom';
 import {
 	Card,
@@ -67,15 +69,15 @@ import {
   
   if (storyData && Array.isArray(storyData)) {
     card = storyData.map((story) => {
-      return (<Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-				<Card  variant="outlined">
+      return (<Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={story.id}>
+				<Card  variant="outlined" key={story.id} >
 					<CardActionArea>
 							<CardContent>
 								<Typography variant="body2" color="textSecondary" component="p">
-                <li key={story.id}>{story.title}</li>;
-								<li key={story.id}>{story.description}</li>;
-                <li key={story.id}>{story.status}</li>;
-                <li key={story.id}>{story.createdAt}</li>;
+                <NavLink to={{pathname:'/individualUserStory', story:`${story.id}`}}> <li>{story.title}</li></NavLink>
+								<li>{story.description}</li>;
+                <li>{story.status}</li>;
+                <li >{story.createdAt}</li>;
 								</Typography>
 							</CardContent>
 					</CardActionArea>
@@ -91,7 +93,7 @@ import {
 					<CardActionArea>
 							<CardContent>
 								<Typography variant="body2" color="textSecondary" component="p">
-								INDIVIDUAL USER STORIES:
+								 USER STORIES:
 								</Typography>
 							</CardContent>
 					</CardActionArea>

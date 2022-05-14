@@ -1,85 +1,129 @@
-import React, { useContext, useState } from 'react';
+<<<<
+import React, { useContext, useState, useEffect } from "react";
 // import { Redirect } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
 import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
 // import SocialSignIn from './SocialSignIn';
 import Api from '../services/api';
+
 function SignUp() {
-	const { currentUser } = useContext(AuthContext);
-	const [userDisplayName, setUserDisplayName] = useState(undefined);
-	const [userRole, setUserRole] = useState(undefined);
-	const [userCompany, setUserCompany] = useState(undefined);
+  const { currentUser } = useContext(AuthContext);
+  const [userDisplayName, setUserDisplayName] = useState(undefined);
+  const [userRole, setUserRole] = useState(undefined);
+  const [userCompany, setUserCompany] = useState(undefined);
+  const [companyList, setCompanyList] = useState(undefined);
+  const [pwMatch, setPwMatch] = useState("");
 
-	// const [modalOpen, setModalOpen] = useState(false);
-	const [pwMatch, setPwMatch] = useState('');
-	const api = new Api();
-	const handleSignUp = async (e) => {
-		e.preventDefault();
-
-		const {
-			displayName,
-			email,
-			passwordOne,
-			passwordTwo,
-			isScrumMaster,
-			companyName,
-		} = e.target.elements;
-
-		setUserRole(isScrumMaster.value);
-		setUserCompany(companyName.value);
-		setUserDisplayName(displayName.value);
-		if (passwordOne.value !== passwordTwo.value) {
-			setPwMatch('Passwords do not match');
-			return false;
-		}
-
-		try {
-			await doCreateUserWithEmailAndPassword(
-				email.value,
-				passwordOne.value,
-				displayName
-			);
-		} catch (error) {
-			alert(error);
-		}
-	};
-
-	// if (currentUser) {
-	// 	setUserUID(currentUser.uid);
-	// }
-
-	// useEffect(() => {
-	// 	const api = new Api();
-	// 	async function addUser() {
-	// 		try {
-	// 			api.addUser(userUID, userEmail, userRole, userRole);
-	// 		} catch (error) {
-	// 			console.log(error.message);
-	// 		}
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const {
+      displayName,
+      email,
+      passwordOne,
+      passwordTwo,
+      isScrumMaster,
+      companyName,
+    } = e.target.elements;
+ 
+    isScrumMaster[0].checked ? setUserRole(true) : setUserRole(false);
+    setUserCompany(companyName.value);
+    setUserDisplayName(displayName.value);
+    if (passwordOne.value !== passwordTwo.value) {
+      setPwMatch("Passwords do not match");
+      return false;
+    }
+    try {
+      let user = await doCreateUserWithEmailAndPassword(
+        email.value,
+        passwordOne.value,
+        displayName.value
+      );
+      console.log(user);
+	//   if (user && currentUser && currentUser.uid !== null) {
+	// 	try {
+	// 	  createUser(currentUser, userRole, userDisplayName, userCompany);
+	// 	} catch (e) {
+	// 	  console.log(e);
 	// 	}
-	// 	addUser();
-	// }, []);
+	//   }
+    } catch (error) {
+      alert("Firebase: " + error);
+    }
+		
+    if (currentUser && currentUser.uid !== null) {
+			try {
+			  createUser(currentUser, userRole, userDisplayName, userCompany);
+			} catch (e) {
+			  console.log(e);
+			}
+		  }
+  };
 
-	if (currentUser) {
-		console.log(currentUser);
-		var isTrueSet = userRole === 'true';
-		const projects = [];
-		api.addUser(
-			currentUser.uid,
-			currentUser.email,
-			isTrueSet,
-			userDisplayName,
-			//currentUser.displayName,
-			projects,
-			userCompany
-			// 'b0e5f68a-43a5-49fb-8a75-bae2e421f4aa'
-		);
-		// return <Redirect to="/details" />;
-		alert('signup successful');
-		window.location.href = '/home';
-		//return <Redirect to="/home" />;
-	}
+  useEffect(() => {
+    const api = new Api();
+    async function getAllCompanies() {
+      try {
+        const { companies } = await api.getCompany();
+        console.log(companies);
+        if (companies) setCompanyList(companies);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getAllCompanies();
+  }, []);
+
+  const optionGenerator = (company) => {
+    return (
+      <option key={company.id} value={company.id}>
+        {company.companyName}
+      </option>
+    );
+  };
+
+  const createUser = async (
+    currentUser,
+    userRole,
+    userDisplayName,
+    userCompany
+  ) => {
+    const api = new Api();
+    const projects = [];
+    const { uid, email } = currentUser;
+    try {
+      const { user } = await api.addUser(
+        uid,
+        email,
+        userRole,
+        userDisplayName,
+        projects,
+        userCompany
+      );
+      console.log(user);
+      if (user) {
+        alert("signup successful");
+        window.location.href = "/home";
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  let companies =
+    companyList &&
+    companyList.map((company) => {
+      return optionGenerator(company);
+    });
+
+	//   if (currentUser && currentUser.uid !== null) {
+	// 	try {
+	// 	  createUser(currentUser, userRole, userDisplayName, userCompany);
+	// 	} catch (e) {
+	// 	  console.log(e);
+	// 	}
+	//   }
+  
 
 	return (
 		<div>
