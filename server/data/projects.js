@@ -2,6 +2,7 @@ const { validate: uuidValidate } = require('uuid');
 const uuid = require('uuid');
 const verify = require('../middlewares/validation');
 const mongoCollections = require('../config/mongoCollections');
+const userData = require('./users');
 
 const projectSchema = mongoCollections.projects;
 const storiesSchema = mongoCollections.stories;
@@ -112,6 +113,17 @@ const upsertProject = async (members, master, projectName, userStories, totalSpr
         project.id = project._id;
         /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
         delete project._id;
+      }
+      for (let index = 0; index < members.length; index += 1) {
+        // eslint-disable-next-line
+        const user = await userData.getUserById(members[index]);
+        if (user !== null) {
+          user.projects.push(project.id);
+          // eslint-disable-next-line
+          const { id, email, isScrumMaster, userName, projects, company } = user;
+          // eslint-disable-next-line
+          await userData.updateUser(id, email, isScrumMaster, userName, projects, company);
+        }
       }
     }
     return { updatedExisting, project };
