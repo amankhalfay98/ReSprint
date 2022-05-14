@@ -6,7 +6,7 @@ import Api from '../services/api'
 
 const Projects = () => {
   const { currentUser } = useContext(AuthContext);
-	console.log('This is coming from the Project Component: ', currentUser.uid);
+	//console.log('This is coming from the Project Component: ', currentUser.uid);
   let card = null;
   const [projectData, setProjectData] = useState(undefined);
   const [user, setUser] = useState(undefined);
@@ -17,12 +17,12 @@ const Projects = () => {
       try {
         //const {user } = await api.getUserById('9LaXAim6PZVppWwMajyH93vG0dt2') ; //get session id
         const {user } = await api.getUserById(currentUser.uid) ; 
-        console.log(user);
+        //console.log(user);
         if (user) {
           setUser(user);
           try {
             const {projects } = await api.getAllProjects(user.company) ;
-            console.log(projects);
+            //console.log(projects);
             if (projects) setProjectData(projects);
           } catch (error) {
             console.log(error.message);
@@ -55,7 +55,7 @@ const Projects = () => {
     const api = new Api();
     try {
             const {projDel } = await api.deleteProject(id) ; 
-            console.log(projDel);
+            //console.log(projDel);
             if (projDel) {
               alert('Project Deleted successfully')
           window.location.reload();
@@ -71,7 +71,7 @@ const Projects = () => {
   const buildCard = (project)=>{
     return (
       <div className="project_card" key={project.id}>
-      <NavLink to={{pathname:'/backlog', project:`${project.id}`}}>Project Name:{project.projectName}</NavLink>
+      <NavLink to={{pathname:'/backlog', sprint:`${project.totalSprints}`, project:`${project.id}`}}>Project Name:{project.projectName}</NavLink>
       {/* <li><a href={`/backlog?project=${project.id}`}>Project Name:{project.projectName}</a></li> */}
       <li>Company:{project.company}</li>
       <li>Total Sprints:{project.totalSprints}</li>
