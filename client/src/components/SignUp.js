@@ -1,5 +1,4 @@
-<<<<
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from 'react';
 // import { Redirect } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
@@ -8,113 +7,113 @@ import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
 import Api from '../services/api';
 
 function SignUp() {
-  const { currentUser } = useContext(AuthContext);
-  const [userDisplayName, setUserDisplayName] = useState(undefined);
-  const [userRole, setUserRole] = useState(undefined);
-  const [userCompany, setUserCompany] = useState(undefined);
-  const [companyList, setCompanyList] = useState(undefined);
-  const [pwMatch, setPwMatch] = useState("");
+	const { currentUser } = useContext(AuthContext);
+	const [userDisplayName, setUserDisplayName] = useState(undefined);
+	const [userRole, setUserRole] = useState(undefined);
+	const [userCompany, setUserCompany] = useState(undefined);
+	const [companyList, setCompanyList] = useState(undefined);
+	const [pwMatch, setPwMatch] = useState('');
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    const {
-      displayName,
-      email,
-      passwordOne,
-      passwordTwo,
-      isScrumMaster,
-      companyName,
-    } = e.target.elements;
- 
-    isScrumMaster[0].checked ? setUserRole(true) : setUserRole(false);
-    setUserCompany(companyName.value);
-    setUserDisplayName(displayName.value);
-    if (passwordOne.value !== passwordTwo.value) {
-      setPwMatch("Passwords do not match");
-      return false;
-    }
-    try {
-      let user = await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        displayName.value
-      );
-      console.log(user);
-	//   if (user && currentUser && currentUser.uid !== null) {
-	// 	try {
-	// 	  createUser(currentUser, userRole, userDisplayName, userCompany);
-	// 	} catch (e) {
-	// 	  console.log(e);
-	// 	}
-	//   }
-    } catch (error) {
-      alert("Firebase: " + error);
-    }
-		
-    if (currentUser && currentUser.uid !== null) {
+	const handleSignUp = async (e) => {
+		e.preventDefault();
+		const {
+			displayName,
+			email,
+			passwordOne,
+			passwordTwo,
+			isScrumMaster,
+			companyName,
+		} = e.target.elements;
+
+		isScrumMaster[0].checked ? setUserRole(true) : setUserRole(false);
+		setUserCompany(companyName.value);
+		setUserDisplayName(displayName.value);
+		if (passwordOne.value !== passwordTwo.value) {
+			setPwMatch('Passwords do not match');
+			return false;
+		}
+		try {
+			let user = await doCreateUserWithEmailAndPassword(
+				email.value,
+				passwordOne.value,
+				displayName.value
+			);
+			console.log(user);
+			//   if (user && currentUser && currentUser.uid !== null) {
+			// 	try {
+			// 	  createUser(currentUser, userRole, userDisplayName, userCompany);
+			// 	} catch (e) {
+			// 	  console.log(e);
+			// 	}
+			//   }
+		} catch (error) {
+			alert('Firebase: ' + error);
+		}
+
+		if (currentUser && currentUser.uid !== null) {
 			try {
-			  createUser(currentUser, userRole, userDisplayName, userCompany);
+				createUser(currentUser, userRole, userDisplayName, userCompany);
 			} catch (e) {
-			  console.log(e);
+				console.log(e);
 			}
-		  }
-  };
+		}
+	};
 
-  useEffect(() => {
-    const api = new Api();
-    async function getAllCompanies() {
-      try {
-        const { companies } = await api.getCompany();
-        console.log(companies);
-        if (companies) setCompanyList(companies);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    getAllCompanies();
-  }, []);
+	useEffect(() => {
+		const api = new Api();
+		async function getAllCompanies() {
+			try {
+				const { companies } = await api.getCompany();
+				console.log(companies);
+				if (companies) setCompanyList(companies);
+			} catch (error) {
+				console.log(error.message);
+			}
+		}
+		getAllCompanies();
+	}, []);
 
-  const optionGenerator = (company) => {
-    return (
-      <option key={company.id} value={company.id}>
-        {company.companyName}
-      </option>
-    );
-  };
+	const optionGenerator = (company) => {
+		return (
+			<option key={company.id} value={company.id}>
+				{company.companyName}
+			</option>
+		);
+	};
 
-  const createUser = async (
-    currentUser,
-    userRole,
-    userDisplayName,
-    userCompany
-  ) => {
-    const api = new Api();
-    const projects = [];
-    const { uid, email } = currentUser;
-    try {
-      const { user } = await api.addUser(
-        uid,
-        email,
-        userRole,
-        userDisplayName,
-        projects,
-        userCompany
-      );
-      console.log(user);
-      if (user) {
-        alert("signup successful");
-        window.location.href = "/home";
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+	const createUser = async (
+		currentUser,
+		userRole,
+		userDisplayName,
+		userCompany
+	) => {
+		const api = new Api();
+		const projects = [];
+		const { uid, email } = currentUser;
+		try {
+			const { user } = await api.addUser(
+				uid,
+				email,
+				userRole,
+				userDisplayName,
+				projects,
+				userCompany
+			);
+			console.log(user);
+			if (user) {
+				alert('signup successful');
+				window.location.href = '/home';
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
 
-  let companies =
-    companyList &&
-    companyList.map((company) => {
-      return optionGenerator(company);
-    });
+	let companies =
+		companyList &&
+		companyList.map((company) => {
+			return optionGenerator(company);
+		});
 
 	//   if (currentUser && currentUser.uid !== null) {
 	// 	try {
@@ -123,12 +122,12 @@ function SignUp() {
 	// 	  console.log(e);
 	// 	}
 	//   }
-  
 
 	return (
 		<div>
 			<h1>Sign up</h1>
 			{pwMatch && <h4 className="error">{pwMatch}</h4>}
+			{/* <form onSubmit={handleSignUp}> */}
 			<form onSubmit={handleSignUp}>
 				<div className="form-group">
 					<label>
