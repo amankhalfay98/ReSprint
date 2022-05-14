@@ -14,7 +14,7 @@ import {
   console.log(props);
   //let totalSprints = parseInt(props.location.project.totalSprints);
   let card = null;
-  //let column = null;
+  let column = null;
   const [storyData, setStoryData] = useState(undefined);
   useEffect(() => {
     const api = new Api();
@@ -40,6 +40,12 @@ import {
 //           </div>
 //     )
 //   }  
+// }
+
+// for(let i =0;i<=parseInt(props.location.sprint);i++){
+//   column = {return (
+//     <li></li>
+//   )}
 // }
 
   
@@ -68,8 +74,9 @@ import {
   return (
     <div>
      <h2>
-       BACKLOGS
+       Product BACKLOG
      </h2>
+     <ul>{column}</ul>
       {/* <Card  variant="outlined">
 					<CardActionArea>
 							<CardContent>

@@ -2,7 +2,7 @@ import axios, { post, get, put, patch } from 'axios';
 //import { auth } from '../firebase/Firebase';
 
 const host = 'http://resprint.herokuapp.com';
-//const host = 'http://b879-98-109-149-176.ngrok.io';
+//const host = 'https://cf0f-98-109-149-176.ngrok.io';
 // Change token here
 const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 
@@ -70,8 +70,8 @@ export default class Api {
 		}
 	};
 
-	deleteProject = async (id) => {
-		const url = `${host}/projects/${id}`;
+	deleteProject = async (id,memId) => {
+		const url = `${host}/projects/${id}/${memId}`;
 		try {
 			const { data } = await axios.delete(url,{
 				headers: {
@@ -289,6 +289,27 @@ export default class Api {
 		const url = `${host}/${id}`;
 		try {
 			const { data } = await get(url);
+			console.log(data);
+			return data;
+		} catch (e) {
+			if (e.response?.data?.message) {
+				throw new Error(e.response?.data.message);
+			}
+			throw new Error(e.message);
+		}
+	};
+
+      updateUserById = async (id,email,isScrumMaster,userName,projects,company) => {
+		const url = `${host}/${id}`;
+		try {
+			const { data } = await put(url,{
+				email,
+				isScrumMaster,
+				userName,
+				projects,
+				company
+			});
+			console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -355,8 +376,15 @@ export default class Api {
 		}
 	};
 
-	getAllMembers = async (companyName) => {
-		const url = `${host}/?company=${companyName}`;
+	getAllMembers = async (companyName,project) => {
+		let url=`${host}/`;
+		if(companyName && project.length === 0){
+			 url = `${host}/?company=${companyName}`;
+		}
+		if(project && companyName.length === 0){
+			 url = `${host}/?projectId=${project}`;
+		}
+		
 		try {
 			const { data } = await get(url);
 			return data;

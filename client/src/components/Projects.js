@@ -10,17 +10,19 @@ const Projects = () => {
   let card = null;
   const [projectData, setProjectData] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  const[company,setCompany] = useState(undefined);
 
   useEffect(() => {
     const api = new Api();
     async function getUserById() {
       try {
-        //const {user } = await api.getUserById('9LaXAim6PZVppWwMajyH93vG0dt2') ; //get session id
         const {user } = await api.getUserById(currentUser.uid) ; 
         console.log(user);
         if (user) {
           setUser(user);
           try {
+            const{company} = await api.getCompanyById(user.company);
+            setCompany(company);
             const {projects } = await api.getAllProjects(user.company) ;
             console.log(projects);
             if (projects) setProjectData(projects);
@@ -51,12 +53,12 @@ const Projects = () => {
 
   
 
-  const deleteProject = async(id)=>{
+  const deleteProject = async(id,memId)=>{
     const api = new Api();
     try {
-            const {projDel } = await api.deleteProject(id) ; 
-            console.log(projDel);
-            if (projDel) {
+            const {status} = await api.deleteProject(id,memId) ; 
+            console.log(status);
+            if (status==='success') {
               alert('Project Deleted successfully')
           window.location.reload();
           }
@@ -71,30 +73,35 @@ const Projects = () => {
   const buildCard = (project)=>{
     return (
       <div className="project_card" key={project.id}>
-      <NavLink to={{pathname:'/backlog', project:`${project.id}`}}>Project Name:{project.projectName}</NavLink>
-      {/* <li><a href={`/backlog?project=${project.id}`}>Project Name:{project.projectName}</a></li> */}
-      <li>Company:{project.company}</li>
+      <NavLink to={{pathname:'/backlog', sprint:`${project.totalSprints}`, project:`${project.id}`}}>Project Name:{project.projectName}</NavLink>
+      <li>Company:{company.companyName}</li>
       <li>Total Sprints:{project.totalSprints}</li>
-      {user && user.isScrumMaster?<button onClick={()=>deleteProject(project.id)}>Delete Project</button>:""}
+      {user && user.isScrumMaster?<button onClick={()=>deleteProject(project.id,user.id)}>Delete Project</button>:""}
       </div>
     );
   }
   
+  // async function getCompany(company) {
+  //   let companyData = await api.getCompanyById(company);
+  //   // let memberData = null;
+  //   // if (members) {
+  //   //   memberData = members.map((member) => getMemberById(member));
+  //   // }
+  //   return Promise.all(companyData);
+  // }
 
   if (user && projectData && Array.isArray(projectData)) {
     card = projectData.map((project) => {
-     //if(user.company===project.company){
+      //let company = getCompany(project.company)
         return(
           buildCard(project)
           )
-     // }  
     });
   }
 
   return (
     <div>
       <ul>{card}</ul>
-      {/* <NavLink to= '/newproject'>New Project</NavLink>  */}
       {user && user.isScrumMaster?<NavLink to= '/newproject'>New Project</NavLink> :"" }
     </div>
   );
