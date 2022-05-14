@@ -136,10 +136,10 @@ const upsertStory = async (projectId, createdBy, assignedTo, comments, createdAt
   if (!createdAt) errorParams.push('Created At');
   if (!description) errorParams.push('Description');
   if (!modifiedAt) errorParams.push('Modified By');
-  if (!priority) errorParams.push('Priority');
-  if (!sprint) errorParams.push('Sprint');
+  if (priority === undefined) errorParams.push('Priority');
+  if (sprint === undefined) errorParams.push('Sprint');
   if (!status) errorParams.push('Status');
-  if (!storyPoint) errorParams.push('Story Point');
+  if (storyPoint === undefined) errorParams.push('Story Point');
   if (!title) errorParams.push('Title');
   if (!type) errorParams.push('Type');
   if (!id) errorParams.push('Id');
