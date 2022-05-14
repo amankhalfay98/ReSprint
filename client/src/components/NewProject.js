@@ -51,7 +51,7 @@ function NewProject() {
 				if (user) {
 					setUser(user);
 					try {
-						const { users } = await api.getAllMembers(user.company);
+						const { users } = await api.getAllMembers(user.company,'');
 						console.log(users);
 						if (users){ setMemberList(users);
                         const {company} = await api.getCompanyById(user.company)
