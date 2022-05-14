@@ -6,7 +6,7 @@ import Api from '../services/api'
 
 const Projects = () => {
   const { currentUser } = useContext(AuthContext);
-	console.log('This is coming from the Project Component: ', currentUser.uid);
+	//console.log('This is coming from the Project Component: ', currentUser.uid);
   let card = null;
   const [projectData, setProjectData] = useState(undefined);
   const [user, setUser] = useState(undefined);
@@ -17,14 +17,14 @@ const Projects = () => {
     async function getUserById() {
       try {
         const {user } = await api.getUserById(currentUser.uid) ; 
-        console.log(user);
+        //console.log(user);
         if (user) {
           setUser(user);
           try {
             const{company} = await api.getCompanyById(user.company);
             setCompany(company);
             const {projects } = await api.getAllProjects(user.company) ;
-            console.log(projects);
+            //console.log(projects);
             if (projects) setProjectData(projects);
           } catch (error) {
             console.log(error.message);
