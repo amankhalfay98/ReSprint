@@ -13,10 +13,10 @@ const validateParams = async (args) => {
   if (projectId && !uuidValidate(projectId)) {
     throw TypeError('Project Id is of invalid type');
   }
-  if (createdBy && !uuidValidate(createdBy)) {
+  if (createdBy && !verify.validString(createdBy)) {
     throw TypeError('Created by is of invalid type');
   }
-  if (assignedTo && !uuidValidate(assignedTo)) {
+  if (assignedTo && !verify.validString(assignedTo)) {
     throw TypeError('Assigned to is of invalid type');
   }
   if (comments && !Array.isArray(comments)) {
@@ -136,10 +136,10 @@ const upsertStory = async (projectId, createdBy, assignedTo, comments, createdAt
   if (!createdAt) errorParams.push('Created At');
   if (!description) errorParams.push('Description');
   if (!modifiedAt) errorParams.push('Modified By');
-  if (!priority) errorParams.push('Priority');
-  if (!sprint) errorParams.push('Sprint');
+  if (priority === undefined) errorParams.push('Priority');
+  if (sprint === undefined) errorParams.push('Sprint');
   if (!status) errorParams.push('Status');
-  if (!storyPoint) errorParams.push('Story Point');
+  if (storyPoint === undefined) errorParams.push('Story Point');
   if (!title) errorParams.push('Title');
   if (!type) errorParams.push('Type');
   if (!id) errorParams.push('Id');
