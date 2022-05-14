@@ -63,11 +63,11 @@ router.put('/', async (req, res) => {
   if (!comments) errorParams.push('Comments');
   if (!createdAt) errorParams.push('Created At');
   if (!description) errorParams.push('Description');
-  if (!modifiedAt) errorParams.push('Modified By');
-  if (!priority) errorParams.push('Priority');
-  if (!sprint) errorParams.push('Sprint');
+  if (!modifiedAt) errorParams.push('Modified At');
+  if (priority === undefined) errorParams.push('Priority');
+  if (sprint === undefined) errorParams.push('Sprint');
   if (!status) errorParams.push('Status');
-  if (!storyPoint) errorParams.push('Story Point');
+  if (storyPoint === undefined) errorParams.push('Story Point');
   if (!title) errorParams.push('Title');
   if (!type) errorParams.push('Type');
   if (errorParams.length > 0)

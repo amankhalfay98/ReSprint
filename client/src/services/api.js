@@ -1,12 +1,25 @@
 import axios, { post, get, put, patch } from 'axios';
-//import { auth } from '../firebase/Firebase';
+import { useContext } from 'react';
+import { AuthContext } from '../firebase/Auth';
 
 const host = 'http://resprint.herokuapp.com';
 //const host = 'https://cf0f-98-109-149-176.ngrok.io';
 // Change token here
-const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
+let token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
+//const to = '';
 
 export default class Api {
+	getToken = async () => {
+		const { currentUser } = useContext(AuthContext);
+		currentUser.getIdToken(true).then((idToken) => {
+			console.log(idToken);
+			// token = idToken;
+			token = idToken;
+			return token;
+		});
+	};
+	// getToken();
+
 	//tested
 	getAllProjects = async (company) => {
 		const url = `${host}/projects?company=${company}`;

@@ -2,20 +2,23 @@ const { validate: uuidValidate } = require('uuid');
 const uuid = require('uuid');
 const verify = require('../middlewares/validation');
 const mongoCollections = require('../config/mongoCollections');
+const userData = require('./users');
 
 const projectSchema = mongoCollections.projects;
+const storiesSchema = mongoCollections.stories;
+const commentSchema = mongoCollections.comments;
 
-const getAllProjects = async (memberId, company, projectName) => {
-  const query = { members: { $in: [memberId] } };
+const getAllProjects = async (company, projectName) => {
+  const query = {};
   if (company) {
     query.company = company;
   }
   if (projectName) {
     query.projectName = projectName;
   }
-  if (!uuidValidate(memberId)) {
-    return { error: true, message: 'Invalid member id' };
-  }
+  // if (!uuidValidate(memberId)) {
+  //   return { error: true, message: 'Invalid member id' };
+  // }
   try {
     const projectsCollection = await projectSchema();
     let projects = await projectsCollection.find(query).collation({ locale: 'en', strength: 2 }).toArray();
@@ -58,19 +61,19 @@ const upsertProject = async (members, master, projectName, userStories, totalSpr
   if (!uuidValidate(id)) {
     throw TypeError('Id is of invalid type');
   }
-  if (!uuidValidate(memberId)) {
+  if (!verify.validString(memberId)) {
     throw TypeError('Member id is of invalid type');
   }
   if (!Array.isArray(members)) {
     throw TypeError('Members is of invalid type');
   }
-  if (!uuidValidate(master)) {
+  if (!verify.validString(master)) {
     throw TypeError('Master is of invalid type');
   }
   if (!verify.validString(projectName)) {
     throw TypeError('Project Name is of invalid type');
   }
-  if (!verify.validString(company)) {
+  if (!uuidValidate(company)) {
     throw TypeError('Company is of invalid type');
   }
   if (!Array.isArray(userStories)) {
@@ -80,7 +83,7 @@ const upsertProject = async (members, master, projectName, userStories, totalSpr
     throw TypeError('Total Sprints is of invalid type');
   }
   for (let index = 0; index < members.length; index += 1) {
-    if (!uuidValidate(members[index])) {
+    if (!verify.validString(members[index])) {
       throw TypeError('Member is of invalid type');
     }
   }
@@ -111,6 +114,17 @@ const upsertProject = async (members, master, projectName, userStories, totalSpr
         /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
         delete project._id;
       }
+      for (let index = 0; index < members.length; index += 1) {
+        // eslint-disable-next-line
+        const user = await userData.getUserById(members[index]);
+        if (user !== null) {
+          user.projects.push(project.id);
+          // eslint-disable-next-line
+          const { id, email, isScrumMaster, userName, projects, company } = user;
+          // eslint-disable-next-line
+          await userData.updateUser(id, email, isScrumMaster, userName, projects, company);
+        }
+      }
     }
     return { updatedExisting, project };
   } catch (error) {
@@ -128,7 +142,12 @@ const deleteProject = async (id) => {
   }
   try {
     const projectsCollection = await projectSchema();
+    const storiesCollection = await storiesSchema();
+    const commentsCollection = await commentSchema();
+
     project = await projectsCollection.deleteOne({ _id: id });
+    await storiesCollection.deleteMany({ projectId: id });
+    await commentsCollection.deleteMany({ projectId: id });
     return project;
   } catch (error) {
     throw Error(error.message);
