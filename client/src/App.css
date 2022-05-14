@@ -26,10 +26,10 @@ input {
 }
 
 .App-header {
-	background-color: #1e8678;
-	height: 200px;
+	/* background-color: #1e8678; */
+	/* height: 120px;
 	padding: 20px;
-	color: #222;
+	color: #222; */
 }
 
 .App-title {
@@ -265,3 +265,8 @@ dd {
 /* .current{
 
 } */
+
+.label-form{
+	text-align: left !important;
+	float: left;
+}
