@@ -179,11 +179,20 @@ export default class Api {
 		}
 	};
 
-	addComment = async (comment) => {
+	addComment = async (userId ,
+		name ,
+		comment,
+		projectId ,
+		storyId 
+		) => {
 		const url = `${host}/comment`;
 		try {
 			const { data } = await post(url, {
-				comment,
+			  userId ,
+              name ,
+              comment,
+              projectId ,
+              storyId 
 			});
 			return data;
 		} catch (e) {

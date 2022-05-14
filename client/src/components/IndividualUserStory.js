@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Api from '../services/api';
 
 import {
@@ -11,7 +11,6 @@ import {
   makeStyles,
 	Typography
 } from '@material-ui/core';
-import { NavLink } from 'react-bootstrap';
 
 const useStyles = makeStyles({
 	card: {
@@ -43,41 +42,16 @@ const useStyles = makeStyles({
 	},
 	disabledButton: {
 		color: '#767676 !important',
-		// backgroundColor: theme.palette.primary || 'red'
 	  }
 });
 
 const UserStories = (props) => {
   const classes = useStyles();
 	console.log(props.location);
-	//let card = null;
 	const [storyy, setstoryy] = useState(undefined);
   const [user, setUser] = useState(undefined);
 
-  // useEffect(() => {
-  //   const api = new Api();
-  //   async function getStories() {
-  //     try {
-  //       const { story } = await api.getStoryById(props.location.story);
-  //       console.log(story);
-  //       if (story) {
-  //         setstoryy(story);
-  //         try {
-  //           const{company} = await api.getCompanyById(user.company);
-  //           setCompany(company);
-  //           const {projects } = await api.getAllProjects(user.company) ;
-  //           console.log(projects);
-  //           if (projects) setProjectData(projects);
-  //         } catch (error) {
-  //           console.log(error.message);
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  //   getStories();
-  // }, [props.location.story]);
+
 
 	useEffect(() => {
 		const api = new Api();
@@ -102,29 +76,32 @@ const UserStories = (props) => {
 		getStories();
 	}, [props.location.story]);
 
-  // useEffect(() => {
-  //   const api = new Api();
-  //   async function getUserById() {
-  //     try {
-  //       const {user } = await api.getUserById(storyy.assignedTo) ; 
-  //       console.log(user);
-  //       if (user) {
-  //         setUser(user);
-  //       }
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  //   getUserById();
-  // }, [storyy.assignedTo]);
-
 	if (storyy && user) {
-		return (
+    return (
+    <div>
+       <div>
+      <Link to={{pathname:`/reportissue/${storyy.id}`, project:`${storyy.projectId}`}}>Report an Issue</Link>
+      </div>
+      {/* <ul>
+        <li>{storyy.title}</li>
+        <li>Description: {storyy.description}</li>
+        <li>Assigned To: {user.userName} </li>
+        <li>Comments: {storyy.comments} </li>
+        <li>Created Date: {storyy.createdAt}</li>
+        <li>Modified Date: {storyy.modifiedAt}</li>
+        <li>Status: {storyy.status} </li>
+        <li>Sprint: {storyy.sprint} </li>
+        <li>Type: {storyy.type} </li>
+        <li>Story Point: {storyy.storyPoint}</li>
+        <li>Priority: {storyy.priority}</li>
+      </ul> */}
 			<div>
+      <Grid container className={classes.grid} spacing={5}>
 				<Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={storyy.id}>
 					<Card className={classes.card} variant="outlined">
 						<CardActionArea>
 								<CardContent>
+                  <Link to={`/reportissue/${storyy.id}`}>
 									<Typography
 										className={classes.titleHead}
 										gutterBottom
@@ -133,6 +110,7 @@ const UserStories = (props) => {
 									>
 										{storyy.title}
 									</Typography>
+                  </Link>
                   <Typography variant='body2' color='textSecondary' component='p'>
                   Description: {storyy.description}     
                   </Typography>
@@ -167,22 +145,9 @@ const UserStories = (props) => {
 						</CardActionArea>
 					</Card>
 				</Grid>
-        
-				{/* <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={storyy.id}>
-				<Card  variant="outlined">
-					<CardActionArea>
-							<CardContent>
-								<Typography variant="body2" color="textSecondary" component="p">
-								{storyy.title}
-								</Typography>
-							</CardContent>
-					</CardActionArea>
-				</Card>
-			</Grid> */}
-      <div>
-      <NavLink to={`/reportissue/${storyy.id}`}>Report An Issue</NavLink>
-      </div>
+        </Grid>
 			</div>
+      </div>
 		);
 	} else {
 		return <h2>Loading...</h2>;

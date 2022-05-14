@@ -117,6 +117,8 @@ function Storyform(props) {
 						alert(err.message);
 					}
                     alert('Story is created');
+                    window.history.pushState({project:`${props.location.project}`},'/backlog')
+                    window.history.back();
 						//window.location.pathname = '/projects';
 				}}
 			>
