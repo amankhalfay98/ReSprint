@@ -185,6 +185,7 @@ function SignUp() {
               {companies}
             </select>
           </label>
+		  
         </div>
         <button id="submitButton" name="submitButton" type="submit">
           Sign Up
