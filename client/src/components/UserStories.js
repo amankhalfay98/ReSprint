@@ -38,7 +38,7 @@ import React, { useState, useEffect } from "react";
 import '../App.css';
 import { NavLink } from 'react-router-dom';
 import Api from '../services/api'
-import ReportIssue from './ReportIssue'
+//import ReportIssue from './ReportIssue'
 //import { Link } from 'react-router-dom';
 import {
 	Card,
