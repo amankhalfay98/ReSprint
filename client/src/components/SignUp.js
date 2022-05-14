@@ -1,7 +1,11 @@
+<<<<
 import React, { useContext, useState, useEffect } from "react";
-import { doCreateUserWithEmailAndPassword } from "../firebase/FirebaseFunctions";
-import { AuthContext } from "../firebase/Auth";
-import Api from "../services/api";
+// import { Redirect } from 'react-router-dom';
+import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
+import { AuthContext } from '../firebase/Auth';
+import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
+// import SocialSignIn from './SocialSignIn';
+import Api from '../services/api';
 
 function SignUp() {
   const { currentUser } = useContext(AuthContext);
@@ -121,77 +125,99 @@ function SignUp() {
 	//   }
   
 
-  return (
-    <div>
-      <h6>Sign up</h6>
-      {pwMatch && <h4 className="error">{pwMatch}</h4>}
-      <form onSubmit={handleSignUp}>
-        <div className="form-group">
-          <label>
-            Full Name:
-            <input
-              className="form-control"
-              required
-              name="displayName"
-              type="text"
-              placeholder="Full Name"
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Email:
-            <input
-              className="form-control"
-              required
-              name="email"
-              type="email"
-              placeholder="Email"
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Password:
-            <input
-              className="form-control"
-              id="passwordOne"
-              name="passwordOne"
-              type="password"
-              placeholder="Password"
-              required
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Confirm Password:
-            <input
-              className="form-control"
-              name="passwordTwo"
-              type="password"
-              placeholder="Confirm Password"
-              required
-            />
-          </label>
-          <p>Are you a Scrum Master or a Developer?</p>
-          <input type="radio" value="true" name="isScrumMaster" /> Scrum Master
-          <input type="radio" value="false" name="isScrumMaster" /> Developer
-          <p>What is the name of your company?</p>
-          <label>
-            Company Name:
-            <select name="companyName" id="companyName">
-              <option value="">--Please choose an option--</option>
-              {companies}
-            </select>
-          </label>
-        </div>
-        <button id="submitButton" name="submitButton" type="submit">
-          Sign Up
-        </button>
-      </form>
-    </div>
-  );
+	return (
+		<div>
+			<h1>Sign up</h1>
+			{pwMatch && <h4 className="error">{pwMatch}</h4>}
+			<form onSubmit={handleSignUp}>
+				<div className="form-group">
+					<label>
+						Full Name:
+						<input
+							className="form-control"
+							required
+							name="displayName"
+							type="text"
+							placeholder="Full Name"
+						/>
+					</label>
+				</div>
+				{/* <div className="form-group">
+					<label>
+						Last Name:
+						<input
+							className="form-control"
+							required
+							name="lastName"
+							type="text"
+							placeholder="Last Name"
+						/>
+					</label>
+				</div> */}
+				<div className="form-group">
+					<label>
+						Email:
+						<input
+							className="form-control"
+							required
+							name="email"
+							type="email"
+							placeholder="Email"
+						/>
+					</label>
+				</div>
+				<div className="form-group">
+					<label>
+						Password:
+						<input
+							className="form-control"
+							id="passwordOne"
+							name="passwordOne"
+							type="password"
+							placeholder="Password"
+							required
+						/>
+					</label>
+				</div>
+				<div className="form-group">
+					<label>
+						Confirm Password:
+						<input
+							className="form-control"
+							name="passwordTwo"
+							type="password"
+							placeholder="Confirm Password"
+							required
+						/>
+					</label>
+					<p>Are you a Scrum Master or a Developer?</p>
+					<input type="radio" value="true" name="isScrumMaster" /> Scrum Master
+					<input type="radio" value="false" name="isScrumMaster" /> Developer
+					<p>What is the name of your company?</p>
+					<label>
+						Company Name:
+						<input
+							className="form-control"
+							required
+							id="companyName"
+							name="companyName"
+							type="text"
+							placeholder="Company Name"
+						/>
+					</label>
+				</div>
+				<br />
+				<UploadImageToS3WithNativeSdk />
+				<br />
+				<button id="submitButton" name="submitButton" type="submit">
+					Sign Up
+				</button>
+			</form>
+
+			{/* <br />
+			<SocialSignIn /> */}
+		</div>
+	);
 }
 
 export default SignUp;
