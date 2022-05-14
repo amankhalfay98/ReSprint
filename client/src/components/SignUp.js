@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 // import { Redirect } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
+import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
 // import SocialSignIn from './SocialSignIn';
 import Api from '../services/api';
 function SignUp() {
@@ -161,10 +162,14 @@ function SignUp() {
 						/>
 					</label>
 				</div>
+				<br />
+				<UploadImageToS3WithNativeSdk />
+				<br />
 				<button id="submitButton" name="submitButton" type="submit">
 					Sign Up
 				</button>
 			</form>
+
 			{/* <br />
 			<SocialSignIn /> */}
 		</div>
