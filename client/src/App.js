@@ -112,7 +112,6 @@ function App() {
 						<PrivateRoute path="/individualUserStory" component={individualUserStory} />
 						<PrivateRoute path='/storyform' component={Storyform} />
 						<PrivateRoute path="/newproject" component={NewProject} />
-						<PrivateRoute path='/storyform' component={Storyform} />
 					</div>
 				</div>
 			</Router>

@@ -2,16 +2,16 @@ import axios, { post, get, put, patch } from 'axios';
 //import { auth } from '../firebase/Firebase';
 
 const host = 'http://resprint.herokuapp.com';
+//const host = 'http://b879-98-109-149-176.ngrok.io';
 // Change token here
 const token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
 
 export default class Api {
 	//tested
-	getAllProjects = async () => {
-		const url = `${host}/projects`;
+	getAllProjects = async (company) => {
+		const url = `${host}/projects?company=${company}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -61,7 +61,6 @@ export default class Api {
 					authorization: `Bearer ${token}`,
 				},
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -74,8 +73,11 @@ export default class Api {
 	deleteProject = async (id) => {
 		const url = `${host}/projects/${id}`;
 		try {
-			const { data } = await axios.delete(url);
-			//console.log(data);
+			const { data } = await axios.delete(url,{
+				headers: {
+					authorization: `Bearer ${token}`,
+				},
+			});
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -102,7 +104,7 @@ export default class Api {
 		projectId,
 		id,
 	}) => {
-		const url = `${host}`;
+		const url = `${host}/story`;
 		try {
 			const { data } = await put(url, {
 				createdBy,
@@ -120,7 +122,6 @@ export default class Api {
 				projectId,
 				id,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -143,7 +144,6 @@ export default class Api {
 
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -157,7 +157,6 @@ export default class Api {
 		const url = `${host}/story/${id}`;
 		try {
 			const { data } = await axios.delete(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -171,7 +170,6 @@ export default class Api {
 		const url = `${host}/story/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -187,7 +185,6 @@ export default class Api {
 			const { data } = await post(url, {
 				comment,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -201,7 +198,6 @@ export default class Api {
 		const url = `${host}/comment`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -215,7 +211,6 @@ export default class Api {
 		const url = `${host}/comment/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -232,7 +227,6 @@ export default class Api {
 				id,
 				comment,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -246,7 +240,6 @@ export default class Api {
 		const url = `${host}/comment/${id}`;
 		try {
 			const { data } = await axios.delete(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -296,7 +289,6 @@ export default class Api {
 		const url = `${host}/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -310,7 +302,6 @@ export default class Api {
 		const url = `${host}/company`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -324,7 +315,6 @@ export default class Api {
 		const url = `${host}/company/${id}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -340,7 +330,6 @@ export default class Api {
 			const { data } = await post(url, {
 				companyName,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -357,7 +346,6 @@ export default class Api {
 				id,
 				companyName,
 			});
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {
@@ -371,7 +359,6 @@ export default class Api {
 		const url = `${host}/?company=${companyName}`;
 		try {
 			const { data } = await get(url);
-			//console.log(data);
 			return data;
 		} catch (e) {
 			if (e.response?.data?.message) {

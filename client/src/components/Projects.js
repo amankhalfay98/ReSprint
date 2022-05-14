@@ -11,14 +11,23 @@ const Projects = () => {
   const [projectData, setProjectData] = useState(undefined);
   const [user, setUser] = useState(undefined);
 
-  useEffect((currentUser) => {
+  useEffect(() => {
     const api = new Api();
     async function getUserById() {
       try {
-        const {user } = await api.getUserById('9LaXAim6PZVppWwMajyH93vG0dt2') ; //get session id
-        //const {user } = await api.getUserById(currentUser.uid) ; 
+        //const {user } = await api.getUserById('9LaXAim6PZVppWwMajyH93vG0dt2') ; //get session id
+        const {user } = await api.getUserById(currentUser.uid) ; 
         console.log(user);
-        if (user) setUser(user);
+        if (user) {
+          setUser(user);
+          try {
+            const {projects } = await api.getAllProjects(user.company) ;
+            console.log(projects);
+            if (projects) setProjectData(projects);
+          } catch (error) {
+            console.log(error.message);
+          }
+        }
       } catch (error) {
         console.log(error.message);
       }
@@ -26,19 +35,19 @@ const Projects = () => {
     getUserById();
   }, [currentUser]);
   
-  useEffect(() => {
-    const api = new Api();
-    async function getAllProjects() {
-      try {
-        const {projects } = await api.getAllProjects() ;
-        console.log(projects);
-        if (projects) setProjectData(projects);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    getAllProjects();
-  }, []);
+  // useEffect(() => {
+  //   const api = new Api();
+  //   async function getAllProjects() {
+  //     try {
+  //       const {projects } = await api.getAllProjects() ;
+  //       console.log(projects);
+  //       if (projects) setProjectData(projects);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  //   getAllProjects();
+  // }, []);
 
   
 
@@ -66,20 +75,19 @@ const Projects = () => {
       {/* <li><a href={`/backlog?project=${project.id}`}>Project Name:{project.projectName}</a></li> */}
       <li>Company:{project.company}</li>
       <li>Total Sprints:{project.totalSprints}</li>
-      {user && user.isScrumMaster?<button onClick={(e)=>deleteProject(project.id)}>Delete Project</button>:""}
+      {user && user.isScrumMaster?<button onClick={()=>deleteProject(project.id)}>Delete Project</button>:""}
       </div>
     );
   }
   
 
-  if (projectData && Array.isArray(projectData)) {
+  if (user && projectData && Array.isArray(projectData)) {
     card = projectData.map((project) => {
-      // if(user.company===project.company){
-
-      // }
-      return(
-      buildCard(project)
-      )
+     //if(user.company===project.company){
+        return(
+          buildCard(project)
+          )
+     // }  
     });
   }
 
