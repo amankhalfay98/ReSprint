@@ -4,6 +4,7 @@ const router = express.Router();
 const { validate: uuidValidate } = require('uuid');
 const verify = require('../middlewares/validation');
 const projectData = require('../data/projects');
+const userData = require('../data/users');
 // const checkIfAuthenticated = require('../middlewares/auth');
 
 const paramsValidation = (params) => {
@@ -12,10 +13,10 @@ const paramsValidation = (params) => {
   if (!Array.isArray(members)) {
     errorParams.push('Members');
   }
-  if (!uuidValidate(master)) {
+  if (!verify.validString(master)) {
     errorParams.push('Master');
   }
-  if (!uuidValidate(memberId)) {
+  if (!verify.validString(memberId)) {
     errorParams.push('Member Id');
   }
   if (id && !uuidValidate(id)) {
@@ -24,7 +25,7 @@ const paramsValidation = (params) => {
   if (!verify.validString(projectName)) {
     errorParams.push('Project Name');
   }
-  if (!verify.validString(company)) {
+  if (!uuidValidate(company)) {
     errorParams.push('Company');
   }
   if (!Array.isArray(userStories)) {
@@ -34,8 +35,8 @@ const paramsValidation = (params) => {
     errorParams.push('Total Sprints');
   }
   for (let index = 0; index < members.length; index += 1) {
-    if (!uuidValidate(members[index])) {
-      errorParams.push(`Member`);
+    if (!verify.validString(members[index])) {
+      errorParams.push(`Member ${members[index]}`);
       break;
     }
   }
@@ -51,11 +52,11 @@ const paramsValidation = (params) => {
 router.get('/', async (req, res) => {
   const errorParams = [];
   let projects;
-  const { memberId } = req.body;
+  // const { memberId } = req.body;
   const { company, projectName } = req.query;
-  if (memberId && !uuidValidate(memberId)) {
-    errorParams.push('memberId');
-  }
+  // if (memberId && !uuidValidate(memberId)) {
+  //   errorParams.push('memberId');
+  // }
   if (errorParams.length > 0) {
     return res.status(422).json({
       status: 'error',
@@ -63,7 +64,7 @@ router.get('/', async (req, res) => {
     });
   }
   try {
-    projects = await projectData.getAllProjects(memberId, company, projectName);
+    projects = await projectData.getAllProjects(company, projectName);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
@@ -78,15 +79,15 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const { memberId } = req.body;
+  // const { memberId } = req.body;
   let project;
   const errorParams = [];
   if (!uuidValidate(id)) {
     errorParams.push('Id');
   }
-  if (memberId && !uuidValidate(memberId)) {
-    errorParams.push('memberId');
-  }
+  // if (memberId && !uuidValidate(memberId)) {
+  //   errorParams.push('memberId');
+  // }
   if (errorParams.length > 0) {
     return res.status(422).json({
       status: 'error',
@@ -100,12 +101,12 @@ router.get('/:id', async (req, res) => {
         status: 'error',
         message: 'Project Not Found',
       });
-    if (!project.members.includes(memberId)) {
-      return res.status(403).json({
-        status: 'error',
-        message: 'User Not Authorized',
-      });
-    }
+    // if (!project.members.includes(memberId)) {
+    //   return res.status(403).json({
+    //     status: 'error',
+    //     message: 'User Not Authorized',
+    //   });
+    // }
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
@@ -151,19 +152,15 @@ router.put('/', async (req, res) => {
   });
 });
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { memberId } = req.body;
+router.delete('/:id/:userId', async (req, res) => {
+  const { id, userId } = req. params;
   let project;
   const errorParams = [];
   if (!uuidValidate(id)) {
-    res.status(422).json({
-      status: 'error',
-      message: 'Project Id is of invalid type',
-    });
+    errorParams.push('Id');
   }
-  if (memberId && !uuidValidate(memberId)) {
-    errorParams.push('memberId');
+  if (userId && !verify.validString(userId)) {
+    errorParams.push('User Id');
   }
   if (errorParams.length > 0) {
     return res.status(422).json({
@@ -178,7 +175,8 @@ router.delete('/:id', async (req, res) => {
         status: 'error',
         message: 'Project Not Found',
       });
-    if (!project.members.includes(memberId)) {
+    const userDetails = await userData.getUserById(userId);
+    if (userDetails.status === 'success' && userDetails.isScrumMaster) {
       return res.status(403).json({
         status: 'error',
         message: 'User Not Authorized',
