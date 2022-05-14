@@ -90,10 +90,10 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const { company } = req.query;
+  const { company, projectId } = req.query;
   let users;
   try {
-    users = await userData.getUser(company);
+    users = await userData.getUser(company, projectId);
     if (users === null)
       return res.status(404).json({
         status: 'error',

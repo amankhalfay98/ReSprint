@@ -13,11 +13,20 @@ function NewProject() {
 	);
 	let totalSprints;
 	let projectName;
-	let companyName;
+	let company;
 	let employees = [];
 	//const [companyList,setCompanyList] = useState(undefined);
 	const [memberList, setMemberList] = useState(undefined);
 	const [user, setUser] = useState(undefined);
+    const [companyName, setCompanyName]= useState(undefined);
+
+    // async function getCompanyName(allCities) {
+    //     let data = null;
+    //     if (allCities) {
+    //       data = allCities.map((city) => getSingleCityWeather(city));
+    //     }
+    //     return Promise.all(data);
+    //   }
 
 	// useEffect(() => {
 	//   const api = new Api();
@@ -42,9 +51,12 @@ function NewProject() {
 				if (user) {
 					setUser(user);
 					try {
-						const { users } = await api.getAllMembers(user.company);
+						const { users } = await api.getAllMembers(user.company,'');
 						console.log(users);
-						if (users) setMemberList(users);
+						if (users){ setMemberList(users);
+                        const {company} = await api.getCompanyById(user.company)
+                        if(company) setCompanyName(company);
+                        }
 					} catch (error) {
 						console.log(error.message);
 					}
@@ -98,7 +110,7 @@ function NewProject() {
 			//}
 		});
 
-	if (user) {
+	if (user && companyName) {
 		return (
 			<form
 				className="form"
@@ -106,7 +118,7 @@ function NewProject() {
 				onSubmit={(e) => {
 					console.log(totalSprints.value);
 					console.log(projectName.value);
-					console.log(companyName.value);
+					console.log(company.value);
 					e.preventDefault();
 					employees = Array.prototype.slice
 						.call(document.querySelectorAll('#member option:checked'), 0)
@@ -122,7 +134,7 @@ function NewProject() {
 							//variables: {
 							master: user.id,
 							projectName: projectName.value,
-							company: companyName.value,
+							company: companyName.id,
 							userStories: [],
 							members: employees,
 							totalSprints: parseInt(totalSprints.value),
@@ -131,13 +143,13 @@ function NewProject() {
 						});
 						totalSprints.value = '';
 						projectName.value = '';
-						companyName.value = '';
-						
+                        setCompanyName('');
+						//companyName.value = '';
 					} catch (err) {
 						alert(err.message);
 					}
-                    alert('Project is created');
-						//window.location.pathname = '/projects';
+					alert('Project is created');
+					window.location.pathname = '/projects';
 				}}
 			>
 				<h2>Add New Project</h2>
@@ -173,23 +185,13 @@ function NewProject() {
 					<label>
 						Company Name:
 						<br />
-						{/* <p>{
-                {user.companyName}
-            ref={(node) => {
-                companyName = node;
-              }} 
-            </p> */}
 						<input
 							disabled
-							value={user.company}
+							value={companyName.companyName}
 							ref={(node) => {
-								companyName = node;
+								company = node;
 							}}
 						/>
-						{/* <select name="company" id="company">
-    <option value="">--Please choose an option--</option>
-    {companies}
-</select> */}
 					</label>
 				</div>
 				<label>

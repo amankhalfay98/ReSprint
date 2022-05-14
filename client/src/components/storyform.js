@@ -10,11 +10,13 @@ function Storyform(props) {
   const api = new Api();
   const { currentUser } = useContext(AuthContext);
   const [projectData, setProjectData] = useState(undefined);
+  const [projectUsers, setProjectUsers] = useState(undefined);
   console.log(props);
   let description;
 	let title;
 	let story_point;
 	let priority;
+  let members;
   //let memberName;
 
   useEffect(() => {
@@ -31,17 +33,49 @@ function Storyform(props) {
     getAllProjects();
   }, [props.location.project]);
 
+  useEffect(() => {
+    const api = new Api();
+    async function getAllUsers() {
+      try {
+        const {users } = await api.getAllMembers('',props.location.project);
+        console.log(users);
+        if (users) setProjectUsers(users);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getAllUsers();
+  }, [props.location.project]);
+
   const optionGenerator = (member) => {
 		return (
-			<option key={member} value={member}>
-				{member}
+			<option key={member.id} value={member.id}>
+				{member.userName}
 			</option>
 		);
 	};
 
-	let members = projectData && projectData.members.map((member) => {
-			return optionGenerator(member);
-		});
+
+  // async function getMemberDetails(users) {
+  //   for(let i =0; i<users.length;i++){
+  //    let member = await api.getUserById(users[i])
+  //    members = optionGenerator(member);
+  //   }
+    
+  //   // if (users) {
+  //   //   memberData = Promise.all(users.map((user) => getMemberById(user)));
+  //   // }
+  //   //return Promise.all(memberData);
+  // }
+
+
+	if(projectData&& projectUsers){
+    //getMemberDetails(projectData.members);
+     members = projectUsers && projectUsers.map((user) => {
+        return optionGenerator(user);
+      });
+  }
+  
 
   return (
     <form

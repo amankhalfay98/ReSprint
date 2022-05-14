@@ -16,11 +16,13 @@ const client = redis.createClient(redisConfig);
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-client.on('connect', (error) => {
+client.on('connect', () => {
+  // eslint-disable-next-line no-console
   console.log('Redis Connection Successful!!');
 });
 
 client.on('error', (error) => {
+  // eslint-disable-next-line no-console
   console.log(`${error}`);
 });
 
@@ -93,14 +95,29 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
   return createdUserData;
 };
 
-const getUser = async (company) => {
+const getUser = async (company, projectId) => {
   // const query = {};
   if (company && !uuidValidate(company)) {
     throw TypeError('Company id is of invalid type');
   }
+  if (projectId && !uuidValidate(projectId)) {
+    throw TypeError('Project id is of invalid type');
+  }
   // if (company) query.company = company;
   // const usersCollection = await userSchema();
   // return usersCollection.findOne(query);
+  if (projectId !== undefined) {
+    const users = await client
+      .lrangeAsync('users', 0, -1)
+      .map(JSON.parse)
+      .filter((value) => {
+        if (projectId && value && value.projects.length > 0) {
+          if (value.projects.includes(projectId)) return value;
+        }
+
+      });
+    return users
+  }
   const users = await client
     .lrangeAsync('users', 0, -1)
     .map(JSON.parse)

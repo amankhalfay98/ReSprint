@@ -142,8 +142,10 @@ import {
  const Backlog = (props) => {
   const api = new Api();
   let card = null;
+
   //let cards= null;
   //const [projectData, setProjectData] = useState(undefined);
+
   const [storyData, setStoryData] = useState(undefined);
   //const [Flag, setFlag] = useState(false);
 
@@ -164,12 +166,6 @@ import {
     
   }, [props.location.project]);
 
-
-  // useEffect(()=>{
-  //   if(props.location.sprint){
-  //     setFlag(true)
-  //   }
-  // },[])
   
   if (storyData && Array.isArray(storyData)) {
     card = storyData.map((story) => {
@@ -289,6 +285,7 @@ import {
     <NavLink to={{pathname:'/storyform', project:`${props.location.project}`}}>Add New User Story</NavLink>
 
     {/* <p>{sprintt}</p> */}
+
     </div>
   );
 };
