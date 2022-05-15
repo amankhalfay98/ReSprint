@@ -421,6 +421,9 @@ import { Link } from 'react-router-dom';
                     alert(`Added User Story To Sprint ${nextsprint}`);
 						//window.location.pathname = '/projects';
 				}} >ADD USER STORY TO NEXT SPRINT</button>
+        <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
+        <button>Go to Kanban</button>
+        </Link>
               </div>
 			
       )
