@@ -45,7 +45,8 @@ const getUserById = async (id) => {
   }
 };
 
-const createUser = async (userId, email, isScrumMaster, userName, projects, company) => {
+const createUser = async (userId, email, isScrumMaster, userName, projects, company, fileName) => {
+  let photoURL = null;
   if (!verify.validString(userName)) {
     throw TypeError('Username is missing or is of invalid type');
   }
@@ -61,6 +62,11 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
   if (!uuidValidate(company)) {
     throw TypeError('Company is missing or is of invalid type');
   }
+  if (fileName == 'undefined') {
+    photoURL = 'https://resprint-media.s3.amazonaws.com/man.png';
+  } else {
+    photoURL = `https://resprint-media.s3.amazonaws.com/${fileName}`;
+  }
   if (projects.length > 0) {
     for (let index = 0; index < projects.length; index += 1) {
       if (!uuidValidate(projects[index])) {
@@ -75,6 +81,7 @@ const createUser = async (userId, email, isScrumMaster, userName, projects, comp
     userName,
     projects,
     company,
+    photoURL,
   };
   // const usersCollection = await userSchema();
   // const user = await usersCollection.insertOne(userDocument);
@@ -114,9 +121,8 @@ const getUser = async (company, projectId) => {
         if (projectId && value && value.projects.length > 0) {
           if (value.projects.includes(projectId)) return value;
         }
-
       });
-    return users
+    return users;
   }
   const users = await client
     .lrangeAsync('users', 0, -1)

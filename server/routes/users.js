@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { userId, email, isScrumMaster, userName, projects, company } = req.body;
+  const { userId, email, isScrumMaster, userName, projects, company, fileName } = req.body;
   let newUser;
   const errorParams = [];
   if (!verify.validEmail(email)) {
@@ -41,6 +41,9 @@ router.post('/', async (req, res) => {
   }
   if (!verify.validString(userName)) {
     errorParams.push('Username');
+  }
+  if (!verify.validString(fileName)) {
+    errorParams.push('photoUrl');
   }
   if (!Array.isArray(projects)) {
     errorParams.push('Projects');
@@ -76,7 +79,7 @@ router.post('/', async (req, res) => {
     if (newUser !== null) {
       return res.status(200).json({ user: newUser, status: 'success' });
     }
-    newUser = await userData.createUser(userId, email, isScrumMaster, userName, projects, company);
+    newUser = await userData.createUser(userId, email, isScrumMaster, userName, projects, company, fileName);
   } catch (error) {
     if (error instanceof TypeError) {
       return res.status(422).json({ status: 'error', message: error.message });
