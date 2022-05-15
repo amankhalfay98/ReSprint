@@ -51,13 +51,13 @@ const ReportIssue = (props) => {
 						comment.value = '';
             alert('Comment has been added');
             //window.location.story.set
-            window.history.pushState({story:storyId})
+            //window.history.pushState({story:storyId})
 					// window.location.pathname = '/individualUserStory';
 					} catch (err) {
 						alert(err.message);
 					}
-					 alert('Project is created');
-					 window.location.pathname = '/projects';
+					//  alert('Project is created');
+					//  window.location.pathname = '/projects';
 				}}
 			>
 				<h2>Describe Issue Here</h2>

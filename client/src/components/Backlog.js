@@ -130,7 +130,7 @@ import React, { useState, useEffect  } from "react";
 // { AuthContext } from '../firebase/Auth';
 import '../App.css';
 import Api from '../services/api'
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
 	Card,
 	CardActionArea,
@@ -158,7 +158,7 @@ import {
     //console.log("Props.location.project", typeof(props.location.project))
     async function getStories() {
       try {
-        const {stories } = await api.getStories(project) ;
+        const {stories } = await api.getStories(project,'') ;
         console.log(stories);
         if (stories) setStoryData(stories);
       } catch (error) {
