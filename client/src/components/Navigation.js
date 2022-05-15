@@ -28,6 +28,11 @@ const NavigationAuth = () => {
 					Account
 				</NavLink>
 			</Nav.Item>
+		       	<Nav.Item>
+				<NavLink to="/stats" activeClassName="active">
+					Statistics
+				</NavLink>
+			</Nav.Item>
 
 			<Nav.Item>
 				<SignOutButton />

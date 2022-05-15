@@ -148,7 +148,8 @@
 
 
 
-import React, { useState, useEffect } from 'react';
+
+import React, { useState,  useEffect } from 'react';
 import '../App.css';
 import Api from '../services/api'
 import {  Link } from 'react-router-dom';
@@ -161,11 +162,6 @@ import {
 } from '@material-ui/core';
 
 function Kanban2(props) {
-  //  localStorage.setItem('project',`${props.location.project}`)
-  //   localStorage.setItem('sprint', `${props.location.sprint}`)
-    //console.log('Project: '+project+' Sprint: '+sprint)
-    //const [dragging,setDragging] = useState(false)
-    //const dragItem = useRef();
     let cardfortodo= null;
     let cardforinprogress= null;
     let cardforreview= null;
