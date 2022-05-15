@@ -44,7 +44,7 @@ const ReportIssue = (props) => {
 							comments = comment.value,
 							projectId = props.location.project,
 							storyId = props.match.params.id;
-						let addComment =  api.addComment(
+						let addComment = api.addComment(
 							userId,
 							name,
 							comments,
@@ -55,7 +55,7 @@ const ReportIssue = (props) => {
 						if (addComment.status === 'success') {
 							alert('Comment has been added');
 							window.location.pathname = '/individualUserStory';
-						} 
+						}
 					} catch (err) {
 						alert(err.message);
 					}

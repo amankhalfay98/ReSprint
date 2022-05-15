@@ -13,7 +13,7 @@ const Home = () => {
 		const api = new Api();
 		async function getCurrentUserData() {
 			try {
-				const { user } = await api.getUserById(id);
+				const { user } = await api.getUserById(currentUser.uid);
 				console.log(user);
 				if (user) setUserData(user);
 			} catch (error) {
@@ -21,7 +21,7 @@ const Home = () => {
 			}
 		}
 		getCurrentUserData();
-	}, []);
+	}, [currentUser]);
 	console.log(userData);
 
 	if (userData) {

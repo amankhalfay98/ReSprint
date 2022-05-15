@@ -59,7 +59,7 @@ export default function SignUp() {
 				if (err) console.log(err);
 			});
 	};
-
+  
 	useEffect(() => {
 		const api = new Api();
 		async function getAllCompanies() {
@@ -119,6 +119,7 @@ export default function SignUp() {
 			company,
 			fileName
 		) {
+
 			let projects = [];
 			let addUser;
 			try {
@@ -130,6 +131,7 @@ export default function SignUp() {
 					projects,
 					company,
 					fileName
+
 				);
 			} catch (error) {
 				console.log(error.message);
@@ -141,6 +143,7 @@ export default function SignUp() {
 		if (currentUser && currentUser.uid && currentUser.email) {
 			try {
 				createUser(currentUser, isScrumMaster, nameRef, company, fileName);
+
 			} catch (error) {
 				alert(error.message);
 			}
@@ -209,6 +212,7 @@ export default function SignUp() {
 								</Form.Group>
 								<Form.Group>
 									{/* <Form.Label className="label-form">Select Company</Form.Label> */}
+
 									<Form.Select
 										name="companyName"
 										aria-label="Select Company"
@@ -252,13 +256,4 @@ export default function SignUp() {
 			</Container>
 		</>
 	);
-
-	// <div>
-	// 	<div>Native SDK File Upload Progress is {progress}%</div>
-	// 	<input name="file" type="file" onChange={handleFileInput} />
-	// 	<button type="button" onClick={() => uploadFile(selectedFile)}>
-	// 		Upload
-	// 	</button>
-	// </div>
-	//
 }
