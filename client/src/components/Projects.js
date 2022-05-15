@@ -36,6 +36,13 @@ const Projects = () => {
     }
     getUserById();
   }, [currentUser]);
+
+  const handelClick = (proj)=>{
+    localStorage.setItem('sprint',`${proj.totalSprints}`);
+   localStorage.setItem('project',`${proj.id}`);
+   window.location.href = '/backlog';
+
+  }
   
   // useEffect(() => {
   //   const api = new Api();
@@ -73,7 +80,8 @@ const Projects = () => {
   const buildCard = (project)=>{
     return (
       <div className="project_card" key={project.id}>
-      <NavLink to={{pathname:'/backlog', sprint:`${project.totalSprints}`, project:`${project.id}`}}>Project Name:{project.projectName}</NavLink>
+        <button onClick={(e)=>{ e.preventDefault();handelClick(project)}}>{project.projectName}</button>
+      {/* <NavLink to={{pathname:'/backlog', sprint:`${project.totalSprints}`, project:`${project.id}`}}>Project Name:{project.projectName}</NavLink> */}
       <li>Company:{company.companyName}</li>
       <li>Total Sprints:{project.totalSprints}</li>
       {user && user.isScrumMaster?<button onClick={()=>deleteProject(project.id,user.id)}>Delete Project</button>:""}
