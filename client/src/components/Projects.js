@@ -34,7 +34,7 @@ const Projects = () => {
 		getUserById();
 	}, [currentUser]);
 
-  const handelEdit = (proj) => {
+	const handelEdit = (proj) => {
 		localStorage.setItem('project', `${proj.id}`);
 		window.location.href = '/editproject';
 	};
@@ -45,10 +45,10 @@ const Projects = () => {
 		window.location.href = '/backlog';
 	};
 
-	const handelEdit = (proj) => {
-		localStorage.setItem('project', `${proj.id}`);
-		window.location.href = '/editproject';
-	};
+	// const handelEdit = (proj) => {
+	// 	localStorage.setItem('project', `${proj.id}`);
+	// 	window.location.href = '/editproject';
+	// };
 
 	const deleteProject = async (id, memId) => {
 		const api = new Api();
@@ -77,22 +77,26 @@ const Projects = () => {
 				</button>
 				<li>Company:{company.companyName}</li>
 				<li>Total Sprints:{project.totalSprints}</li>
-        {user && user.isScrumMaster ? (
-					<button onClick={(e)=>{
-						e.preventDefault();
-						handelEdit(project);
-					}}>Edit Project</button>
-				) : (
-					''
-				)}
 				{user && user.isScrumMaster ? (
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							handelEdit(project);
+						}}
+					>
+						Edit Project
+					</button>
+				) : (
+					''
+				)}
+				{/* {user && user.isScrumMaster ? (
 					<button onClick={(e)=>{
 						e.preventDefault();
 						handelEdit(project);
 					}}>Edit Project</button>
 				) : (
 					''
-				)}
+				)} */}
 				{user && user.isScrumMaster ? (
 					<button onClick={() => deleteProject(project.id, user.id)}>
 						Delete Project
@@ -104,10 +108,27 @@ const Projects = () => {
 		);
 	};
 
-	if (user && projectData && Array.isArray(projectData)) {
+	if(user){
+
+	if (
+		projectData &&
+		Array.isArray(projectData) &&
+		projectData.length > 0
+	) {
 		card = projectData.map((project) => {
 			return buildCard(project);
 		});
+	} else if (
+		projectData &&
+		projectData.length === 0 &&
+		Array.isArray(projectData)
+	) {
+		return (
+			<div>
+				<p>Currently there are no Projects</p>
+				<p>Scrum Master Needs to add Projects</p>
+			</div>
+		);
 	}
 
 	return (
@@ -121,6 +142,11 @@ const Projects = () => {
 			<ul>{card}</ul>
 		</div>
 	);
+			}else{
+				return(
+				<h2>Loading...</h2>
+				)
+			}
 };
 
 export default Projects;

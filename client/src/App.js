@@ -31,10 +31,10 @@ function App() {
 				<div className="App">
 					<Navigation />
 					<div className="App-body">
-						<Route exact path="/" component={Home} />
+						{/* <Route exact path="/" component={Home} /> */}
 						<Route path="/signin" component={SignIn} />
 						<Route path="/signup" component={SignUp} />
-						{/* <PrivateRoute path="/home" component={Home} /> */}
+						<PrivateRoute path="/home" component={Home} />
 						<PrivateRoute path="/account" component={Account} />
 						<PrivateRoute path="/projects" component={Projects} />
 						<PrivateRoute path="/kanban" component={Kanban} />
