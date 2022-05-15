@@ -46,7 +46,43 @@ function EditProject() {
 			}
 		}
 		getUserById();
-	}, [currentUser,projectId]);
+
+	}, [currentUser]);
+
+    function Editingform(){
+        try {
+            if (!projectName.value) {
+                throw Error('Project Name is Required');
+            }
+            if (employees.length === 0) {
+                throw Error(
+                    'Project cannot not be created with 0 members. Please add all members to the project.'
+                );
+            }
+            api.upsertProject({
+                master: user.id,
+                projectName: projectName.value,
+                company: companyName.id,
+                userStories: updateProject.userStories,
+                members: employees,
+                totalSprints: parseInt(totalSprints.value),
+                memberId: user.id,
+                id: updateProject.id
+            });
+            totalSprints.value = '';
+            projectName.value = '';
+            setCompanyName('');
+            alert('Project has been edited');
+            window.location.pathname = '/projects';
+        } catch (err) {
+            alert(err.message);
+        }
+
+    }
+
+
+	//}, [currentUser,projectId]);
+
 
 	const optionGenerator = (member) => {
 		return (
@@ -78,33 +114,37 @@ function EditProject() {
 						.map(function (v) {
 							return v.value;
 						});
-					console.log('Employees: ', employees);
-					try {
-						if (!projectName.value) {
-							throw Error('Project Name is Required');
-						}
-						if (employees.length === 0) {
-							throw Error(
-								'Project cannot not be created with 0 members. Please add all members to the project.'
-							);
-						}
-						api.upsertProject({
-							master: user.id,
-							projectName: projectName.value,
-							company: companyName.id,
-							userStories: updateProject.userStories,
-							members: employees,
-							totalSprints: parseInt(totalSprints.value),
-							memberId: user.id,
-						});
-						totalSprints.value = '';
-						projectName.value = '';
-						setCompanyName('');
-						alert('Project is created');
-						window.location.pathname = '/projects';
-					} catch (err) {
-						alert(err.message);
-					}
+					// console.log('Employees: ', employees);
+                    Editingform()
+				
+
+// 					console.log('Employees: ', employees);
+// 					try {
+// 						if (!projectName.value) {
+// 							throw Error('Project Name is Required');
+// 						}
+// 						if (employees.length === 0) {
+// 							throw Error(
+// 								'Project cannot not be created with 0 members. Please add all members to the project.'
+// 							);
+// 						}
+// 						api.upsertProject({
+// 							master: user.id,
+// 							projectName: projectName.value,
+// 							company: companyName.id,
+// 							userStories: updateProject.userStories,
+// 							members: employees,
+// 							totalSprints: parseInt(totalSprints.value),
+// 							memberId: user.id,
+// 						});
+// 						totalSprints.value = '';
+// 						projectName.value = '';
+// 						setCompanyName('');
+// 						alert('Project is created');
+// 						window.location.pathname = '/projects';
+// 					} catch (err) {
+// 						alert(err.message);
+// 					}
 				}}
 			>
 				<h2>Edit Project</h2>
@@ -169,4 +209,7 @@ function EditProject() {
 	}
 }
 
+
 export default EditProject;
+//export default EditProject;
+

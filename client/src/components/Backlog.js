@@ -23,10 +23,69 @@ const Backlog = (props) => {
 		getStories();
 	}, [projectId]);
 
+  function AddtoBacklog(story){
+    try {
+      api.upsertStory({
+        createdBy: story.createdBy,
+        assignedTo: story.assignedTo,
+        comments: story.comments,
+        createdAt: story.createdAt,
+        description: story.description,
+        modifiedAt: story.modifiedAt,
+        priority: story.priority,
+        sprint: 0,
+        status: story.status,
+        storyPoint: story.storyPoint,
+        title: story.title,
+        type: story.type,
+        id: story.id,
+        projectId: projectId,
+      });
+      alert('Added User Story To Backlog');
+      window.location.pathname = '/backlog';
+    } catch (err) {
+      alert(err.message);
+    }
+    
+  }
+
+  function AddtoNextSprint(story){
+    let nextsprint = story.sprint + 1;
+    console.log('nextsprint', nextsprint);
+    try {
+      api.upsertStory({
+        createdBy: story.createdBy,
+        assignedTo: story.assignedTo,
+        comments: story.comments,
+        createdAt: story.createdAt,
+        description: story.description,
+        modifiedAt: story.modifiedAt,
+        priority: story.priority,
+        sprint: nextsprint,
+        status: story.status,
+        storyPoint: story.storyPoint,
+        title: story.title,
+        type: story.type,
+        id: story.id,
+        projectId: projectId,
+      });
+    alert(`Added User Story To Sprint ${nextsprint}`);
+    window.location.pathname = '/backlog';
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
   const handelClick = (stor) => {
 		localStorage.setItem('story', `${stor.id}`);
 		window.location.href = '/individualUserStory';
 	};
+
+  const handelKanban = (stor) => {
+		localStorage.setItem('IndSprint', `${stor}`);
+		window.location.href = '/kanban';
+	};
+
 
 	if (storyData && Array.isArray(storyData)) {
 		{
@@ -54,27 +113,7 @@ const Backlog = (props) => {
 								onClick={(e) => {
 									e.preventDefault();
 									console.log('story is', story);
-									try {
-										api.upsertStory({
-											createdBy: story.createdBy,
-											assignedTo: story.assignedTo,
-											comments: story.comments,
-											createdAt: story.createdAt,
-											description: story.description,
-											modifiedAt: story.modifiedAt,
-											priority: story.priority,
-											sprint: 0,
-											status: story.status,
-											storyPoint: story.storyPoint,
-											title: story.title,
-											type: story.type,
-											id: story.id,
-											projectId: projectId,
-										});
-									} catch (err) {
-										alert(err.message);
-									}
-									alert('Added User Story To Backlog');
+									AddtoBacklog(story)
 								}}
 							>
 								ADD USER STORY TO BACKLOG
@@ -84,42 +123,18 @@ const Backlog = (props) => {
 								onClick={(e) => {
 									e.preventDefault();
 									console.log('story is', story);
-									let nextsprint = story.sprint + 1;
-									console.log('nextsprint', nextsprint);
-									try {
-										api.upsertStory({
-											createdBy: story.createdBy,
-											assignedTo: story.assignedTo,
-											comments: story.comments,
-											createdAt: story.createdAt,
-											description: story.description,
-											modifiedAt: story.modifiedAt,
-											priority: story.priority,
-											sprint: nextsprint,
-											status: story.status,
-											storyPoint: story.storyPoint,
-											title: story.title,
-											type: story.type,
-											id: story.id,
-											projectId: projectId,
-										});
-									} catch (err) {
-										alert(err.message);
-									}
-									alert(`Added User Story To Sprint ${nextsprint}`);
+							    AddtoNextSprint(story)
 								}}
 							>
 								ADD USER STORY TO NEXT SPRINT
 							</button>
-							{/* <Link
-								to={{
-									pathname: '/kanban',
-									sprint: `${story.sprint}`,
-									project: `${props.location.pr}`,
-								}}
-							> */}
-								<button>Go to Kanban</button>
-							{/* </Link> */}
+              <button
+					onClick={(e) => {
+						e.preventDefault();
+						handelKanban(story.sprint);
+					}}
+				>Go to Kanban</button>
+						
 						</div>
 					);
 				} else {
@@ -140,29 +155,7 @@ const Backlog = (props) => {
 								onClick={(e) => {
 									e.preventDefault();
 									console.log('story is', story);
-									let nextsprint = story.sprint + 1;
-									console.log('nextsprint', nextsprint);
-									try {
-										api.upsertStory({
-											createdBy: story.createdBy,
-											assignedTo: story.assignedTo,
-											comments: story.comments,
-											createdAt: story.createdAt,
-											description: story.description,
-											modifiedAt: story.modifiedAt,
-											priority: story.priority,
-											sprint: nextsprint,
-											status: story.status,
-											storyPoint: story.storyPoint,
-											title: story.title,
-											type: story.type,
-											id: story.id,
-											projectId: projectId,
-										});
-									} catch (err) {
-										alert(err.message);
-									}
-									alert(`Added User Story To Sprint ${nextsprint}`);
+							    AddtoNextSprint(story)
 								}}
 							>
 								ADD USER STORY TO NEXT SPRINT

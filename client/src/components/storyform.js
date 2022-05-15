@@ -111,19 +111,25 @@ function Storyform(props) {
         <div className="w-100" style={{ maxWidth: "600px" }}>
           <Card>
             <Card.Body>
-              <h2 className="text-center mb-4">Create User Story</h2>
+              <h1 className="text-center mb-4">Create User Story</h1>
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="title">
-                  <Form.Label className="label-form">Title</Form.Label>
+                  <Form.Label htmlFor="title" className="label-form">
+                    Title
+                  </Form.Label>
                   <Form.Control
+                    id="title"
                     type="text"
                     ref={titleRef}
                     required
                   ></Form.Control>
                 </Form.Group>
                 <Form.Group id="description">
-                  <Form.Label className="label-form">Description</Form.Label>
+                  <Form.Label htmlFor="description" className="label-form">
+                    Description
+                  </Form.Label>
                   <Form.Control
+                    id="description"
                     type="text"
                     ref={descriptionRef}
                     required
@@ -156,16 +162,22 @@ function Storyform(props) {
                   </Form.Select>
                 </Form.Group>
                 <Form.Group id="priority">
-                  <Form.Label className="label-form">Priority</Form.Label>
+                  <Form.Label htmlFor="priority" className="label-form">
+                    Priority
+                  </Form.Label>
                   <Form.Control
+                    id="priority"
                     type="number"
                     ref={priorityRef}
                     required
                   ></Form.Control>
                 </Form.Group>
                 <Form.Group id="points">
-                  <Form.Label className="label-form">Story Point</Form.Label>
+                  <Form.Label htmlFor="points" className="label-form">
+                    Story Point
+                  </Form.Label>
                   <Form.Control
+                    id="points"
                     type="number"
                     ref={pointsRef}
                     required

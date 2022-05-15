@@ -34,6 +34,11 @@ const Projects = () => {
 		getUserById();
 	}, [currentUser]);
 
+  const handelEdit = (proj) => {
+		localStorage.setItem('project', `${proj.id}`);
+		window.location.href = '/editproject';
+	};
+
 	const handelClick = (proj) => {
 		localStorage.setItem('sprint', `${proj.totalSprints}`);
 		localStorage.setItem('project', `${proj.id}`);
@@ -72,6 +77,14 @@ const Projects = () => {
 				</button>
 				<li>Company:{company.companyName}</li>
 				<li>Total Sprints:{project.totalSprints}</li>
+        {user && user.isScrumMaster ? (
+					<button onClick={(e)=>{
+						e.preventDefault();
+						handelEdit(project);
+					}}>Edit Project</button>
+				) : (
+					''
+				)}
 				{user && user.isScrumMaster ? (
 					<button onClick={(e)=>{
 						e.preventDefault();
