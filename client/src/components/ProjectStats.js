@@ -11,7 +11,7 @@ const Projects = () => {
 	const [user, setUser] = useState(undefined);
 	const [company, setCompany] = useState(undefined);
 	let initialarray = [];
-	const [storyData, setStoryData] = useState(initialarray);
+	const [storyData, setStoryData] = useState({});
 
 	const api = new Api();
 	useEffect(() => {
@@ -30,8 +30,7 @@ const Projects = () => {
 						for (let i = 0; i < projectData.length; i++) {
 							const { stories } = await api.getStories(projectData[i].id);
 							console.log('story', stories);
-							if (stories)
-								setStoryData((initialarray) => [...initialarray, stories]);
+							if (stories) setStoryData();
 
 							console.log('storyData:', storyData);
 						}

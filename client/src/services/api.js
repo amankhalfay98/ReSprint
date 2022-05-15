@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../firebase/Auth';
 
 const host = 'http://resprint.herokuapp.com';
+// const host = 'http://localhost:4000';
 //const host = 'https://cf0f-98-109-149-176.ngrok.io';
 // Change token here
 let token = '2bbbb2cb-e892-4876-8866-4b79bd7b4bf7';
@@ -44,6 +45,7 @@ export default class Api {
 		totalSprints,
 		memberId,
 	}) => {
+		console.log('These are the members: ', members);
 		const url = `${host}/projects`;
 		try {
 			const { data } = await put(url, {
@@ -83,10 +85,10 @@ export default class Api {
 		}
 	};
 
-	deleteProject = async (id,memId) => {
+	deleteProject = async (id, memId) => {
 		const url = `${host}/projects/${id}/${memId}`;
 		try {
-			const { data } = await axios.delete(url,{
+			const { data } = await axios.delete(url, {
 				headers: {
 					authorization: `Bearer ${token}`,
 				},
@@ -192,20 +194,15 @@ export default class Api {
 		}
 	};
 
-	addComment = async (userId ,
-		name ,
-		comment,
-		projectId ,
-		storyId 
-		) => {
+	addComment = async (userId, name, comment, projectId, storyId) => {
 		const url = `${host}/comment`;
 		try {
 			const { data } = await post(url, {
-			  userId ,
-              name ,
-              comment,
-              projectId ,
-              storyId 
+				userId,
+				name,
+				comment,
+				projectId,
+				storyId,
 			});
 			return data;
 		} catch (e) {
@@ -277,7 +274,8 @@ export default class Api {
 		isScrumMaster,
 		userName,
 		projects,
-		company
+		company,
+		fileName
 	) => {
 		const url = `${host}/`;
 		try {
@@ -290,6 +288,7 @@ export default class Api {
 					userName,
 					projects,
 					company,
+					fileName,
 				},
 				{
 					headers: {
@@ -321,15 +320,22 @@ export default class Api {
 		}
 	};
 
-      updateUserById = async (id,email,isScrumMaster,userName,projects,company) => {
+	updateUserById = async (
+		id,
+		email,
+		isScrumMaster,
+		userName,
+		projects,
+		company
+	) => {
 		const url = `${host}/${id}`;
 		try {
-			const { data } = await put(url,{
+			const { data } = await put(url, {
 				email,
 				isScrumMaster,
 				userName,
 				projects,
-				company
+				company,
 			});
 			console.log(data);
 			return data;
@@ -398,15 +404,15 @@ export default class Api {
 		}
 	};
 
-	getAllMembers = async (companyName,project) => {
-		let url=`${host}/`;
-		if(companyName && project.length === 0){
-			 url = `${host}/?company=${companyName}`;
+	getAllMembers = async (companyName, project) => {
+		let url = `${host}/`;
+		if (companyName && project.length === 0) {
+			url = `${host}/?company=${companyName}`;
 		}
-		if(project && companyName.length === 0){
-			 url = `${host}/?projectId=${project}`;
+		if (project && companyName.length === 0) {
+			url = `${host}/?projectId=${project}`;
 		}
-		
+
 		try {
 			const { data } = await get(url);
 			return data;

@@ -2,9 +2,24 @@ import React, { useContext, useState, useEffect } from 'react';
 // import { Redirect } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
-import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
+// import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
 // import SocialSignIn from './SocialSignIn';
 import Api from '../services/api';
+import AWS from 'aws-sdk';
+require('dotenv').config();
+
+const S3_BUCKET = 'resprint-media';
+const REGION = 'us-east-1';
+
+AWS.config.update({
+	accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+});
+
+const myBucket = new AWS.S3({
+	params: { Bucket: S3_BUCKET },
+	region: REGION,
+});
 
 function SignUp() {
 	const { currentUser } = useContext(AuthContext);
@@ -13,6 +28,34 @@ function SignUp() {
 	const [userCompany, setUserCompany] = useState(undefined);
 	const [companyList, setCompanyList] = useState(undefined);
 	const [pwMatch, setPwMatch] = useState('');
+
+	const [progress, setProgress] = useState(0);
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [fileName, setFileName] = useState(undefined);
+
+	const handleFileInput = (e) => {
+		//console.log(e.target.files[0]);
+		setFileName(e.target.files[0].name);
+		setSelectedFile(e.target.files[0]);
+	};
+
+	const uploadFile = (file) => {
+		const params = {
+			// ACL: 'public-read',
+			Body: file,
+			Bucket: S3_BUCKET,
+			Key: file.name,
+		};
+
+		myBucket
+			.putObject(params)
+			.on('httpUploadProgress', (evt) => {
+				setProgress(Math.round((evt.loaded / evt.total) * 100));
+			})
+			.send((err) => {
+				if (err) console.log(err);
+			});
+	};
 
 	const handleSignUp = async (e) => {
 		e.preventDefault();
@@ -52,7 +95,13 @@ function SignUp() {
 
 		if (currentUser && currentUser.uid !== null) {
 			try {
-				createUser(currentUser, userRole, userDisplayName, userCompany);
+				createUser(
+					currentUser,
+					userRole,
+					userDisplayName,
+					userCompany,
+					fileName
+				);
 			} catch (e) {
 				console.log(e);
 			}
@@ -85,7 +134,8 @@ function SignUp() {
 		currentUser,
 		userRole,
 		userDisplayName,
-		userCompany
+		userCompany,
+		fileName
 	) => {
 		const api = new Api();
 		const projects = [];
@@ -97,7 +147,8 @@ function SignUp() {
 				userRole,
 				userDisplayName,
 				projects,
-				userCompany
+				userCompany,
+				fileName
 			);
 			console.log(user);
 			if (user) {
@@ -189,7 +240,14 @@ function SignUp() {
 					</label>
 				</div>
 				<br />
-				<UploadImageToS3WithNativeSdk />
+				{/* <UploadImageToS3WithNativeSdk /> */}
+				<div>
+					<div>Native SDK File Upload Progress is {progress}%</div>
+					<input name="file" type="file" onChange={handleFileInput} />
+					<button type="button" onClick={() => uploadFile(selectedFile)}>
+						Upload
+					</button>
+				</div>
 				<br />
 				<button id="submitButton" name="submitButton" type="submit">
 					Sign Up
