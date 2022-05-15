@@ -1,10 +1,28 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../firebase/Auth';
 import '../App.css';
+import Api from '../services/api';
 
 const Home = () => {
+	const [userData, setUserData] = useState(undefined);
 	const { currentUser } = useContext(AuthContext);
 	console.log('This is coming from the Home Component: ', currentUser.uid);
+	// let id = currentUser.uid;
+	let id = 'LHo68FuetIOy2gwSlMjV0EtCLSp2';
+	useEffect(() => {
+		const api = new Api();
+		async function getCurrentUserData() {
+			try {
+				const { user } = await api.getUserById(id);
+				console.log(user);
+				if (user) setUserData(user);
+			} catch (error) {
+				console.log(error.message);
+			}
+		}
+		getCurrentUserData();
+	}, []);
+	console.log(userData);
 	return (
 		<div>
 			Welcome to ReSprint.....

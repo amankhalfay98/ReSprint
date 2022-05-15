@@ -11,6 +11,7 @@ const Projects = () => {
 	const [projectData, setProjectData] = useState(undefined);
 	const [user, setUser] = useState(undefined);
 	const [company, setCompany] = useState(undefined);
+
     let titleArray = [];
 	let sprintArray = [];
 	const [storyData, setStoryData] = useState(undefined);
@@ -33,6 +34,7 @@ const Projects = () => {
 						const { projects } = await api.getAllProjects(user.company);
 						console.log(projects);
 						if (projects) setProjectData(projects);
+
 				
 							const { stories } = await api.getStories();
 							console.log('story is', stories);

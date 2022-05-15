@@ -18,15 +18,15 @@ function NewProject() {
 	//const [companyList,setCompanyList] = useState(undefined);
 	const [memberList, setMemberList] = useState(undefined);
 	const [user, setUser] = useState(undefined);
-    const [companyName, setCompanyName]= useState(undefined);
+	const [companyName, setCompanyName] = useState(undefined);
 
-    // async function getCompanyName(allCities) {
-    //     let data = null;
-    //     if (allCities) {
-    //       data = allCities.map((city) => getSingleCityWeather(city));
-    //     }
-    //     return Promise.all(data);
-    //   }
+	// async function getCompanyName(allCities) {
+	//     let data = null;
+	//     if (allCities) {
+	//       data = allCities.map((city) => getSingleCityWeather(city));
+	//     }
+	//     return Promise.all(data);
+	//   }
 
 	// useEffect(() => {
 	//   const api = new Api();
@@ -51,12 +51,13 @@ function NewProject() {
 				if (user) {
 					setUser(user);
 					try {
-						const { users } = await api.getAllMembers(user.company,'');
+						const { users } = await api.getAllMembers(user.company, '');
 						console.log(users);
-						if (users){ setMemberList(users);
-                        const {company} = await api.getCompanyById(user.company)
-                        if(company) setCompanyName(company);
-                        }
+						if (users) {
+							setMemberList(users);
+							const { company } = await api.getCompanyById(user.company);
+							if (company) setCompanyName(company);
+						}
 					} catch (error) {
 						console.log(error.message);
 					}
@@ -125,10 +126,15 @@ function NewProject() {
 						.map(function (v) {
 							return v.value;
 						});
-					console.log('Employees' + employees);
+					console.log('Employees: ', employees);
 					try {
 						if (!projectName.value) {
 							throw Error('Project Name is Required');
+						}
+						if (employees.length === 0) {
+							throw Error(
+								'Project cannot not be created with 0 members. Please add all members to the project.'
+							);
 						}
 						api.upsertProject({
 							//variables: {
@@ -143,13 +149,13 @@ function NewProject() {
 						});
 						totalSprints.value = '';
 						projectName.value = '';
-                        setCompanyName('');
+						setCompanyName('');
 						//companyName.value = '';
+						alert('Project is created');
+						window.location.pathname = '/projects';
 					} catch (err) {
 						alert(err.message);
 					}
-					alert('Project is created');
-					window.location.pathname = '/projects';
 				}}
 			>
 				<h2>Add New Project</h2>
@@ -194,6 +200,7 @@ function NewProject() {
 						/>
 					</label>
 				</div>
+				<br />
 				<label>
 					Employee Name:
 					<select multiple name="member" id="member">
