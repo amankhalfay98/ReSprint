@@ -75,7 +75,7 @@ import Home from './components/Home';
 import Projects from './components/Projects';
 import Backlog from './components/Backlog';
 import Kanban from './components/Kanban2';
-import Retrospective from './components/Retrospective';
+// import Retrospective from './components/Retrospective';
 import UserStories from './components/UserStories';
 import individualUserStory from './components/IndividualUserStory';
 import Landing from './components/Landing';
@@ -87,6 +87,7 @@ import Storyform from './components/storyform';
 import { AuthProvider } from './firebase/Auth';
 import NewProject from './components/NewProject';
 import PrivateRoute from './components/PrivateRoute';
+import ProjectStats from './components/ProjectStats';
 function App() {
 	return (
 		<AuthProvider>
@@ -107,10 +108,13 @@ function App() {
 						<PrivateRoute path="/kanban" component={Kanban} />
 						<PrivateRoute path="/backlog" component={Backlog} />
 						<PrivateRoute path="/userstories" component={UserStories} />
-						<PrivateRoute path="/retrospective" component={Retrospective} />
+						<Route path="/stats" component={ProjectStats} />
 						<PrivateRoute path="/reportissue/:id" component={ReportIssue} />
-						<PrivateRoute path="/individualUserStory" component={individualUserStory} />
-						<PrivateRoute path='/storyform' component={Storyform} />
+						<PrivateRoute
+							path="/individualUserStory"
+							component={individualUserStory}
+						/>
+						<PrivateRoute path="/storyform" component={Storyform} />
 						<PrivateRoute path="/newproject" component={NewProject} />
 					</div>
 				</div>

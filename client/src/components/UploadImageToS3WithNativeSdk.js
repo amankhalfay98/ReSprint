@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import AWS from 'aws-sdk';
+require('dotenv').config();
 
 const S3_BUCKET = 'resprint-media';
 const REGION = 'us-east-1';
 
 AWS.config.update({
-	accessKeyId: 'AKIA4ET3VQ5PT2FBSJ6H',
-	secretAccessKey: '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',
+	accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
 });
 
 const myBucket = new AWS.S3({

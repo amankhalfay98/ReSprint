@@ -124,13 +124,205 @@
 
 
 
+// //Adding Add to sprints buttons:
+
+// import React, { useState, useEffect  } from "react";
+// // { AuthContext } from '../firebase/Auth';
+// import '../App.css';
+// import Api from '../services/api'
+// import { NavLink, Link } from 'react-router-dom';
+// import {
+// 	Card,
+// 	CardActionArea,
+// 	CardContent,
+// 	Grid,
+// 	Typography,
+// } from '@material-ui/core';
+
+//  const Backlog = (props) => {
+//   const api = new Api();
+//   let card = null;
+//   let Totalsprints = props.location.sprint;
+//   //let cards= null;
+//   //const [projectData, setProjectData] = useState(undefined);
+
+//   const [storyData, setStoryData] = useState(undefined);
+//   //const [Flag, setFlag] = useState(false);
+
+
+//   useEffect(() => {
+//     console.log("Props.location.project", typeof(props.location.project))
+//     async function getStories() {
+//       try {
+//         const {stories } = await api.getStories(props.location.project) ;
+//         console.log(stories);
+//         if (stories) setStoryData(stories);
+//       } catch (error) {
+//         console.log(error.message);
+//       }
+//     }
+//     getStories();
+
+    
+//   }, [props.location.project]);
+
+
+
+  
+//   if (storyData && Array.isArray(storyData)) {
+//     console.log("Totalsprints are", Totalsprints)
+//     while(Totalsprints!=0){
+//       console.log("Totalsprints", Totalsprints)
+//     card = storyData.map((story) => {
+//       if(story.sprint==Totalsprints){
+//       return (
+      
+//       <Grid item key={story.id}>
+// 				<Card  variant="outlined">
+// 					<CardActionArea>
+//           <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
+//           {/* <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}> */}
+// 							<CardContent>
+// 								<Typography variant="body2" color="textSecondary" component="p">
+//                    <NavLink to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>{story.title}</NavLink> 
+// 							{/* {story.title} */}
+
+//                 {/* <button>Move To Right</button> */}
+// 								</Typography>
+// 							</CardContent>
+//               </Link>
+// 					</CardActionArea>
+//           <button 	onClick={(e) => {
+// 					e.preventDefault();
+//           console.log("story is",story)
+//           // const {
+//           //   member
+//           // } = e.target.elements;
+// 					try {
+						
+// 						api.upsertStory({
+// 						createdBy:story.createdBy,
+//             assignedTo: story.assignedTo,
+//             comments:story.comments,
+//             createdAt: story.createdAt,
+//             description: story.description,
+//             modifiedAt: story.modifiedAt,
+//             priority:story.priority,
+//             sprint:1,
+//             status:story.status,
+//             storyPoint:story.storyPoint,
+//             title:story.title,
+//             type:story.type,
+//             id:story.id,
+//             projectId:props.location.project
+// 						});
+						
+// 					} catch (err) {
+// 						alert(err.message);
+// 					}
+//                     alert('Added to sprint 1');
+// 						//window.location.pathname = '/projects';
+// 				}} >Add To Sprint 1</button>
+// 				</Card>
+// 			</Grid>)
+//       }
+//     });
+//     Totalsprints=Totalsprints-1;
+//     console.log(Totalsprints)
+//   }
+//   }
+
+//   // sprintt = projectData.totalSprints.map((total) => {
+//   //   return (
+//   //     <div className="dnd-group">
+//   //     <div className="group-title">sprint `${total}`</div>
+//   //       <div className="dnd-item">
+//   //         <div>
+//   //           <p>ITEM 1</p>
+//   //         </div>
+//   //       </div>
+//   //       <div className="dnd-item">
+//   //         <div>
+//   //           <p>ITEM 2</p>
+//   //         </div>
+//   //       </div>
+//   //     </div>
+//   //   )
+//   // });
+
+// // 
+
+//   return (
+//     <div className="drag-n-drop">
+//     <div className="dnd-group">
+//       <div className="group-title">Backlog</div>
+//         <div>
+        
+//       </div>
+//     </div>
+//        <div className="dnd-group">
+//        <div className="group-title">sprint 1</div>
+//         <div className="dnd-item">
+//           <div>
+//             {card}
+//         </div>
+//      </div>
+
+//     </div>
+//     <div className="dnd-group">
+//        <div className="group-title">sprint 2</div>
+//         <div className="dnd-item">
+//           <div>
+       
+//         </div>
+//      </div>
+//     </div>
+//     <div className="dnd-group">
+//        <div className="group-title">sprint 3</div>
+//         <div className="dnd-item">
+//           <div>
+//             <p>ITEM 1</p>
+//         </div>
+//      </div>
+//       <div className="dnd-item">
+//         <div>
+//           <p>ITEM 2</p>
+//          </div>
+//        </div>
+//     </div>
+
+//     <NavLink to={{pathname:'/storyform', project:`${props.location.project}`}}>Add New User Story</NavLink>
+
+//     {/* <p>{sprintt}</p> */}
+
+//     </div>
+//   );
+// };
+
+// export default Backlog;
+
+
+
+
+
+
+
+
+
+
+
+
+
+//FINAL
+
+
 //Adding Add to sprints buttons:
 
 import React, { useState, useEffect  } from "react";
 // { AuthContext } from '../firebase/Auth';
 import '../App.css';
 import Api from '../services/api'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {
 	Card,
 	CardActionArea,
@@ -144,12 +336,7 @@ import {
   //  localStorage.setItem('project',`${props.location.project}`);
   const api = new Api();
   let card = null;
-
-  //let cards= null;
-  //const [projectData, setProjectData] = useState(undefined);
-
   const [storyData, setStoryData] = useState(undefined);
-  //const [Flag, setFlag] = useState(false);
 
 
   useEffect(() => {
@@ -173,10 +360,14 @@ import {
     window.location.href='/individualUserStory';
   }
 
+
+
   
   if (storyData && Array.isArray(storyData)) {
+ { 
     card = storyData.map((story) => {
-      if(parseInt(story.sprint)===0){
+
+      if(parseInt(story.sprint)!==0){
         //localStorage.setItem('story',`${story.story}`)
       return (
       
@@ -196,12 +387,12 @@ import {
               
               {/* </Link> */}
 					</CardActionArea>
+          </Card>
+          
           <button 	onClick={(e) => {
+
 					e.preventDefault();
           console.log("story is",story)
-          // const {
-          //   member
-          // } = e.target.elements;
 					try {
 						
 						api.upsertStory({
@@ -212,7 +403,7 @@ import {
             description: story.description,
             modifiedAt: story.modifiedAt,
             priority:story.priority,
-            sprint:1,
+            sprint:0,
             status:story.status,
             storyPoint:story.storyPoint,
             title:story.title,
@@ -224,40 +415,102 @@ import {
 					} catch (err) {
 						alert(err.message);
 					}
-                    alert('Added to sprint 1');
+                    alert('Added User Story To Backlog');
 						//window.location.pathname = '/projects';
-				}} >Add To Sprint 1</button>
-				</Card>
-			</Grid>)
-      }else{
-        return(
-          <h2>Loading...</h2>
+
+				}} >ADD USER STORY TO BACKLOG</button>
+
+<button 	onClick={(e) => {
+					e.preventDefault();
+          console.log("story is",story)
+          let nextsprint=story.sprint+1
+          console.log("nextsprint",nextsprint)
+					try {
+						
+						api.upsertStory({
+						createdBy:story.createdBy,
+            assignedTo: story.assignedTo,
+            comments:story.comments,
+            createdAt: story.createdAt,
+            description: story.description,
+            modifiedAt: story.modifiedAt,
+            priority:story.priority,
+            sprint:nextsprint,
+            status:story.status,
+            storyPoint:story.storyPoint,
+            title:story.title,
+            type:story.type,
+            id:story.id,
+            projectId:props.location.project
+						});
+						
+					} catch (err) {
+						alert(err.message);
+					}
+                    alert(`Added User Story To Sprint ${nextsprint}`);
+						//window.location.pathname = '/projects';
+				}} >ADD USER STORY TO NEXT SPRINT</button>
+        <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
+        <button>Go to Kanban</button>
+        </Link>
+        </Grid>
+			
+      )}else{
+        return (
+      
+          <div className="project_card" key={story.id}>
+            <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
+                
+               <h2>USER STORY : {story.title} </h2> </Link>
+               <h2>SPRINT NO: {story.sprint} </h2>
+        
+            <button 	onClick={(e) => {
+            e.preventDefault();
+            console.log("story is",story)
+            let nextsprint=story.sprint+1
+            console.log("nextsprint",nextsprint)
+            try {
+              
+              api.upsertStory({
+              createdBy:story.createdBy,
+              assignedTo: story.assignedTo,
+              comments:story.comments,
+              createdAt: story.createdAt,
+              description: story.description,
+              modifiedAt: story.modifiedAt,
+              priority:story.priority,
+              sprint:nextsprint,
+              status:story.status,
+              storyPoint:story.storyPoint,
+              title:story.title,
+              type:story.type,
+              id:story.id,
+              projectId:props.location.project
+              });
+              
+            } catch (err) {
+              alert(err.message);
+            }
+                      alert(`Added User Story To Sprint ${nextsprint}`);
+              //window.location.pathname = '/projects';
+          }} >ADD USER STORY TO NEXT SPRINT</button>
+          <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
+          <button>Go to Kanban</button>
+          </Link>
+                </div>
+        
+
         )
       }
+     
+      
     });
   }
+  }
 
-  // sprintt = projectData.totalSprints.map((total) => {
-  //   return (
-  //     <div className="dnd-group">
-  //     <div className="group-title">sprint `${total}`</div>
-  //       <div className="dnd-item">
-  //         <div>
-  //           <p>ITEM 1</p>
-  //         </div>
-  //       </div>
-  //       <div className="dnd-item">
-  //         <div>
-  //           <p>ITEM 2</p>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // });
-
-// 
 
   return (
+
     <div className="drag-n-drop">
     <div className="dnd-group">
     <NavLink to={{pathname:'/kanban', sprint:`0`, project:`${props.location.project}`}}>
@@ -307,6 +560,7 @@ import {
     <NavLink to={{pathname:'/storyform', project:`${props.location.project}`}}>Add New User Story</NavLink>
 
     {/* <p>{sprintt}</p> */}
+
 
     </div>
   );
