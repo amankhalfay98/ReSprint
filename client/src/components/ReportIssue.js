@@ -23,6 +23,7 @@ const ReportIssue = (props) => {
 					setUser(user);
 				}
 			} catch (error) {
+				alert(error.message);
 				console.log(error.message);
 			}
 		}

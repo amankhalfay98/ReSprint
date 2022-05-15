@@ -48,6 +48,7 @@ function Storyform(props) {
         console.log(users);
         if (users) setProjectUsers(users);
       } catch (error) {
+        alert(error.message);
         console.log(error.message);
       }
     }

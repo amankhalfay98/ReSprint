@@ -1,16 +1,13 @@
-import React from 'react';
-import SignOutButton from './SignOut';
-import '../App.css';
-import ChangePassword from './ChangePassword';
+import React from "react";
+import "../App.css";
+import ChangePassword from "./ChangePassword";
 
 function Account() {
-	return (
-		<div>
-			<h2>Account Page</h2>
-			<ChangePassword />
-			<SignOutButton />
-		</div>
-	);
+  return (
+    <div>
+      <ChangePassword />
+    </div>
+  );
 }
 
 export default Account;
