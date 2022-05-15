@@ -12,9 +12,6 @@ function Storyform(props) {
   const [loading, setLoading] = useState(false);
   const [memberName, setMemberName] = useState(false);
   const [type, setType] = useState("");
-
-  console.log(props);
-
   const titleRef = useRef();
   const descriptionRef = useRef();
   const priorityRef = useRef();
@@ -24,7 +21,6 @@ function Storyform(props) {
   const createdAt = new Date().toISOString();
   const modifiedAt = new Date().toISOString();
   const sprint = 0;
-  // const status = "To do";
   let members;
   let projectId = localStorage.getItem("project");
 
@@ -78,22 +74,6 @@ function Storyform(props) {
     e.preventDefault();
     try {
       setLoading(true);
-      debugger;
-      // const story = await api.upsertStory(
-      //   createdBy,
-      //   memberName,
-      //   comments,
-      //   createdAt,
-      //   descriptionRef.current.value,
-      //   modifiedAt,
-      //   priorityRef.current.value,
-      //   sprint,
-      //   status,
-      //   pointsRef.current.value,
-      //   titleRef.current.value,
-      //   type.current.value,
-      //   projectId
-      // );
       const story = await api.upsertStory({
         createdBy,
         assignedTo: memberName,
