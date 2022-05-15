@@ -148,7 +148,7 @@
 
 
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState,  useEffect } from 'react';
 import '../App.css';
 import Api from '../services/api'
 import {  Link } from 'react-router-dom';
@@ -164,8 +164,8 @@ function Kanban2(props) {
     let project = props.location.project;
     let sprint = props.location.sprint
     console.log('Project: '+project+' Sprint: '+sprint)
-    const [dragging,setDragging] = useState(false)
-    const dragItem = useRef();
+    // const [dragging,setDragging] = useState(false)
+    // const dragItem = useRef();
     let cardfortodo= null;
     let cardforinprogress= null;
     let cardforreview= null;
@@ -186,25 +186,25 @@ function Kanban2(props) {
     getStories();
   }, [project,sprint]);
 
-    const handleDragStart=(e,params)=>{
-        console.log('drag start...', params)
-        dragItem.current = params;
-        setDragging(true);
+    // const handleDragStart=(e,params)=>{
+    //     console.log('drag start...', params)
+    //     dragItem.current = params;
+    //     setDragging(true);
 
-    }
+    // }
 
-    const renderStories=(story)=>{
-        return(
-            <div draggable className={dragging?'current dndn-item':'dnd-item'} key={story.id}>
-                    <div>
-                        <p>
-                            {story.title}
-                        </p>
-                    </div>
-                </div>
-        )
+    // const renderStories=(story)=>{
+    //     return(
+    //         <div draggable className={dragging?'current dndn-item':'dnd-item'} key={story.id}>
+    //                 <div>
+    //                     <p>
+    //                         {story.title}
+    //                     </p>
+    //                 </div>
+    //             </div>
+    //     )
 
-    }
+    // }
 
     
   if (storyData && Array.isArray(storyData)) {
