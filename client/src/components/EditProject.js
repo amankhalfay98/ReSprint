@@ -46,6 +46,7 @@ function EditProject() {
 			}
 		}
 		getUserById();
+
 	}, [currentUser]);
 
     function Editingform(){
@@ -78,6 +79,9 @@ function EditProject() {
         }
 
     }
+
+
+	//}, [currentUser,projectId]);
 
 
 	const optionGenerator = (member) => {
@@ -113,6 +117,34 @@ function EditProject() {
 					// console.log('Employees: ', employees);
                     Editingform()
 				
+
+// 					console.log('Employees: ', employees);
+// 					try {
+// 						if (!projectName.value) {
+// 							throw Error('Project Name is Required');
+// 						}
+// 						if (employees.length === 0) {
+// 							throw Error(
+// 								'Project cannot not be created with 0 members. Please add all members to the project.'
+// 							);
+// 						}
+// 						api.upsertProject({
+// 							master: user.id,
+// 							projectName: projectName.value,
+// 							company: companyName.id,
+// 							userStories: updateProject.userStories,
+// 							members: employees,
+// 							totalSprints: parseInt(totalSprints.value),
+// 							memberId: user.id,
+// 						});
+// 						totalSprints.value = '';
+// 						projectName.value = '';
+// 						setCompanyName('');
+// 						alert('Project is created');
+// 						window.location.pathname = '/projects';
+// 					} catch (err) {
+// 						alert(err.message);
+// 					}
 				}}
 			>
 				<h2>Edit Project</h2>
@@ -177,4 +209,7 @@ function EditProject() {
 	}
 }
 
+
 export default EditProject;
+//export default EditProject;
+
