@@ -40,6 +40,11 @@ const Projects = () => {
 		window.location.href = '/backlog';
 	};
 
+	const handelEdit = (proj) => {
+		localStorage.setItem('project', `${proj.id}`);
+		window.location.href = '/editproject';
+	};
+
 	const deleteProject = async (id, memId) => {
 		const api = new Api();
 		try {
@@ -68,6 +73,14 @@ const Projects = () => {
 				<li>Company:{company.companyName}</li>
 				<li>Total Sprints:{project.totalSprints}</li>
 				{user && user.isScrumMaster ? (
+					<button onClick={(e)=>{
+						e.preventDefault();
+						handelEdit(project);
+					}}>Edit Project</button>
+				) : (
+					''
+				)}
+				{user && user.isScrumMaster ? (
 					<button onClick={() => deleteProject(project.id, user.id)}>
 						Delete Project
 					</button>
@@ -86,12 +99,13 @@ const Projects = () => {
 
 	return (
 		<div>
-			<ul>{card}</ul>
 			{user && user.isScrumMaster ? (
 				<NavLink to="/newproject">New Project</NavLink>
 			) : (
 				''
 			)}
+
+			<ul>{card}</ul>
 		</div>
 	);
 };
