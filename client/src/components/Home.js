@@ -7,13 +7,12 @@ const Home = () => {
 	const [userData, setUserData] = useState(undefined);
 	const { currentUser } = useContext(AuthContext);
 	console.log('This is coming from the Home Component: ', currentUser.uid);
-	// let id = currentUser.uid;
 	let id = 'LHo68FuetIOy2gwSlMjV0EtCLSp2';
 	useEffect(() => {
 		const api = new Api();
 		async function getCurrentUserData() {
 			try {
-				const { user } = await api.getUserById(id);
+				const { user } = await api.getUserById(currentUser.uid);
 				console.log(user);
 				if (user) setUserData(user);
 			} catch (error) {
@@ -21,7 +20,7 @@ const Home = () => {
 			}
 		}
 		getCurrentUserData();
-	}, []);
+	}, [currentUser]);
 	console.log(userData);
 	return (
 		<div>
