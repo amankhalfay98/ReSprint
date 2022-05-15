@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom';
 const Backlog = (props) => {
 	const api = new Api();
 	let card = null;
+  let projectId = localStorage.getItem('project');
 	const [storyData, setStoryData] = useState(undefined);
 
 	useEffect(() => {
-		console.log('Props.location.project', typeof props.location.project);
+		// console.log('Props.location.project', typeof props.location.project);
 		async function getStories() {
 			try {
-				const { stories } = await api.getStories(props.location.project);
+				const { stories } = await api.getStories(projectId, "");
 				console.log(stories);
 				if (stories) setStoryData(stories);
 			} catch (error) {
@@ -20,7 +21,12 @@ const Backlog = (props) => {
 			}
 		}
 		getStories();
-	}, [props.location.project]);
+	}, [projectId]);
+
+  const handelClick = (stor) => {
+		localStorage.setItem('story', `${stor.id}`);
+		window.location.href = '/individualUserStory';
+	};
 
 	if (storyData && Array.isArray(storyData)) {
 		{
@@ -29,11 +35,19 @@ const Backlog = (props) => {
 				if (story.sprint != 0) {
 					return (
 						<div className="project_card" key={story.id}>
-							<Link
+              <button
+					onClick={(e) => {
+						e.preventDefault();
+						handelClick(story);
+					}}
+				>
+					USER STORY : {story.title}
+				</button>
+							{/* <Link
 								to={{ pathname: '/individualUserStory', story: `${story.id}` }}
 							>
 								<h2>USER STORY : {story.title} </h2>{' '}
-							</Link>
+							</Link> */}
 							<h2>SPRINT NO: {story.sprint} </h2>
 
 							<button
@@ -55,7 +69,7 @@ const Backlog = (props) => {
 											title: story.title,
 											type: story.type,
 											id: story.id,
-											projectId: props.location.project,
+											projectId: projectId,
 										});
 									} catch (err) {
 										alert(err.message);
@@ -87,7 +101,7 @@ const Backlog = (props) => {
 											title: story.title,
 											type: story.type,
 											id: story.id,
-											projectId: props.location.project,
+											projectId: projectId,
 										});
 									} catch (err) {
 										alert(err.message);
@@ -97,26 +111,29 @@ const Backlog = (props) => {
 							>
 								ADD USER STORY TO NEXT SPRINT
 							</button>
-							<Link
+							{/* <Link
 								to={{
 									pathname: '/kanban',
 									sprint: `${story.sprint}`,
-									project: `${props.location.project}`,
+									project: `${props.location.pr}`,
 								}}
-							>
+							> */}
 								<button>Go to Kanban</button>
-							</Link>
+							{/* </Link> */}
 						</div>
 					);
 				} else {
 					//If story is in sprint 0 that means already in Backlog hence only display add to next sprint button
 					return (
 						<div className="project_card" key={story.id}>
-							<Link
-								to={{ pathname: '/individualUserStory', story: `${story.id}` }}
-							>
-								<h2>USER STORY : {story.title} </h2>{' '}
-							</Link>
+              <button
+					onClick={(e) => {
+						e.preventDefault();
+						handelClick(story);
+					}}
+				>
+					USER STORY : {story.title}
+				</button>
 							<h2>SPRINT NO: {story.sprint} </h2>
 
 							<button
@@ -140,7 +157,7 @@ const Backlog = (props) => {
 											title: story.title,
 											type: story.type,
 											id: story.id,
-											projectId: props.location.project,
+											projectId: projectId,
 										});
 									} catch (err) {
 										alert(err.message);
@@ -150,15 +167,15 @@ const Backlog = (props) => {
 							>
 								ADD USER STORY TO NEXT SPRINT
 							</button>
-							<Link
+							{/* <Link
 								to={{
 									pathname: '/kanban',
 									sprint: `${story.sprint}`,
 									project: `${props.location.project}`,
 								}}
-							>
+							> */}
 								<button>Go to Kanban</button>
-							</Link>
+							{/* </Link> */}
 						</div>
 					);
 				}
@@ -169,6 +186,11 @@ const Backlog = (props) => {
 	return (
 		<div>
 			<h1>Backlogs</h1>
+      {/* <Button onClick={(e)=>{
+        	e.preventDefault();
+          handelClick(story);
+      }}>Add New User Story</Button> */}
+       <Link to={{pathname:'/storyform'}}>Add New User Story</Link>
 			{card}
 		</div>
 	);
