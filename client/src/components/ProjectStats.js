@@ -30,7 +30,7 @@ const Projects = () => {
 						const { company } = await api.getCompanyById(user.company);
 						setCompany(company);
 						const { projects } = await api.getAllProjects(user.company);
-						//console.log(projects);
+						console.log(projects);
 						if (projects) setProjectData(projects);
 				
 							const { stories } = await api.getStories();
@@ -40,8 +40,11 @@ const Projects = () => {
 							
 							
 							for (let i = 0; i<stories.length; i++){
-								titleArray.push(stories[i].title)
-								sprintArray.push(stories[i].priority)
+								for(let j=0; j<projects.length; j++){
+									if(stories[i].projectId==projects[j].id)
+									titleArray.push(stories[i].title)
+									sprintArray.push(stories[i].priority)
+								}
 							}
 							setStoryData(titleArray)
 							setSprintData(sprintArray)
