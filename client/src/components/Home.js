@@ -9,8 +9,8 @@ const Home = () => {
 		'https://resprint-media.s3.amazonaws.com/man.png'
 	);
 	const { currentUser } = useContext(AuthContext);
-	console.log('This is coming from the Home Component: ', currentUser.uid);
-	let id = currentUser.uid;
+	// console.log('This is coming from the Home Component: ', currentUser.uid);
+	// let id = currentUser.uid;
 	// let id = 'LHo68FuetIOy2gwSlMjV0EtCLSp2';
 	useEffect(() => {
 		const api = new Api();
@@ -27,7 +27,8 @@ const Home = () => {
 					}
 				}
 			} catch (error) {
-				console.log(error.message);
+				alert(error.message);
+
 			}
 		}
 		getCurrentUserData();

@@ -28,6 +28,7 @@ const UserStories = (props) => {
 							setComments(comments);
 						}
 					} catch (error) {
+						alert(error.message);
 						console.log(error.message);
 					}
 				}

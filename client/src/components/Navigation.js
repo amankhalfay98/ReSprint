@@ -25,7 +25,7 @@ const NavigationAuth = () => {
         <Container>
           <Navbar.Brand href="/home">
             <img
-              alt=""
+              alt="company"
               src={logo}
               width="30"
               height="30"
@@ -35,7 +35,6 @@ const NavigationAuth = () => {
           </Navbar.Brand>
           <Nav className="ms-auto">
             <Nav.Link href="/projects">Projects</Nav.Link>
-            <Nav.Link href="/kanban">Kanban</Nav.Link>
             <Nav.Link href="/account">Account</Nav.Link>
 			<Nav.Link href="/stats">Statistics</Nav.Link>
             <Nav.Link onClick={() => logout()} href="/signin">
@@ -55,7 +54,7 @@ const NavigationNonAuth = () => {
         <Container>
           <Navbar.Brand href="/home">
             <img
-              alt=""
+              alt="company"
               src={logo}
               width="30"
               height="30"

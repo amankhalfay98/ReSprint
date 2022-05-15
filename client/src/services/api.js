@@ -44,6 +44,7 @@ export default class Api {
 		members,
 		totalSprints,
 		memberId,
+		id
 	}) => {
 		console.log('These are the members: ', members);
 		const url = `${host}/projects`;
@@ -56,6 +57,7 @@ export default class Api {
 				members,
 				totalSprints,
 				memberId,
+				id
 			});
 			console.log(data);
 			return data;

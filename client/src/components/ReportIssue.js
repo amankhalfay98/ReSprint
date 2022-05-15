@@ -9,6 +9,8 @@ const ReportIssue = (props) => {
 	const api = new Api();
 	const { currentUser } = useContext(AuthContext);
 	const [user, setUser] = useState(undefined);
+	let project = localStorage.getItem('project');
+	let story = localStorage.getItem('story');
 	let comment;
 
 	useEffect(() => {
@@ -21,11 +23,41 @@ const ReportIssue = (props) => {
 					setUser(user);
 				}
 			} catch (error) {
+				alert(error.message);
 				console.log(error.message);
 			}
 		}
 		getUserById();
 	}, [currentUser]);
+
+
+
+	async function AddComment(){
+		try {
+			if (!comment.value) {
+				throw Error('Comment is Required');
+			}
+			let userId = user.id,
+				name = user.userName,
+				comments = comment.value,
+				projectId = project,
+				storyId = story;
+			let addComment = await api.addComment(
+				userId,
+				name,
+				comments,
+				projectId,
+				storyId
+			);
+			comment.value = '';
+			if (addComment.status === 'success') {
+				alert('Comment has been added');
+				window.location.pathname = '/individualUserStory';
+			}
+		} catch (err) {
+			alert(err.message);
+		}
+	}
 
 	if (user) {
 		return (
@@ -35,30 +67,7 @@ const ReportIssue = (props) => {
 				onSubmit={(e) => {
 					console.log(comment.value);
 					e.preventDefault();
-					try {
-						if (!comment.value) {
-							throw Error('Comment is Required');
-						}
-						let userId = user.id,
-							name = user.userName,
-							comments = comment.value,
-							projectId = props.location.project,
-							storyId = props.match.params.id;
-						let addComment = api.addComment(
-							userId,
-							name,
-							comments,
-							projectId,
-							storyId
-						);
-						comment.value = '';
-						if (addComment.status === 'success') {
-							alert('Comment has been added');
-							window.location.pathname = '/individualUserStory';
-						}
-					} catch (err) {
-						alert(err.message);
-					}
+				    AddComment();
 				}}
 			>
 				<h2>Add Comment</h2>

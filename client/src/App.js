@@ -20,6 +20,10 @@ import { AuthProvider } from './firebase/Auth';
 import NewProject from './components/NewProject';
 import PrivateRoute from './components/PrivateRoute';
 import Stats from './components/ProjectStats';
+import EditProject from './components/EditProject';
+
+//import EditProject from './components/EditProject'
+
 function App() {
 	return (
 		<AuthProvider>
@@ -27,10 +31,10 @@ function App() {
 				<div className="App">
 					<Navigation />
 					<div className="App-body">
-						<Route exact path="/" component={Home} />
+						{/* <Route exact path="/" component={Home} /> */}
 						<Route path="/signin" component={SignIn} />
 						<Route path="/signup" component={SignUp} />
-						{/* <PrivateRoute path="/home" component={Home} /> */}
+						<PrivateRoute path="/home" component={Home} />
 						<PrivateRoute path="/account" component={Account} />
 						<PrivateRoute path="/projects" component={Projects} />
 						<PrivateRoute path="/kanban" component={Kanban} />
@@ -45,7 +49,9 @@ function App() {
 						<PrivateRoute path="/storyform" component={Storyform} />
 						<PrivateRoute path="/editform" component={Editform} />
 						<PrivateRoute path="/newproject" component={NewProject} />
+            <PrivateRoute path="/editproject" component={EditProject} />
 						<PrivateRoute path="/stats" component={Stats} />
+						<PrivateRoute path="/editproject" component={EditProject} />
 					</div>
 				</div>
 			</Router>

@@ -34,11 +34,21 @@ const Projects = () => {
 		getUserById();
 	}, [currentUser]);
 
+	const handelEdit = (proj) => {
+		localStorage.setItem('project', `${proj.id}`);
+		window.location.href = '/editproject';
+	};
+
 	const handelClick = (proj) => {
 		localStorage.setItem('sprint', `${proj.totalSprints}`);
 		localStorage.setItem('project', `${proj.id}`);
 		window.location.href = '/backlog';
 	};
+
+	// const handelEdit = (proj) => {
+	// 	localStorage.setItem('project', `${proj.id}`);
+	// 	window.location.href = '/editproject';
+	// };
 
 	const deleteProject = async (id, memId) => {
 		const api = new Api();
@@ -50,6 +60,7 @@ const Projects = () => {
 				window.location.reload();
 			}
 		} catch (error) {
+      alert(error.message);
 			console.log(error.message);
 		}
 	};
@@ -68,6 +79,26 @@ const Projects = () => {
 				<li>Company:{company.companyName}</li>
 				<li>Total Sprints:{project.totalSprints}</li>
 				{user && user.isScrumMaster ? (
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							handelEdit(project);
+						}}
+					>
+						Edit Project
+					</button>
+				) : (
+					''
+				)}
+				{/* {user && user.isScrumMaster ? (
+					<button onClick={(e)=>{
+						e.preventDefault();
+						handelEdit(project);
+					}}>Edit Project</button>
+				) : (
+					''
+				)} */}
+				{user && user.isScrumMaster ? (
 					<button onClick={() => deleteProject(project.id, user.id)}>
 						Delete Project
 					</button>
@@ -78,22 +109,45 @@ const Projects = () => {
 		);
 	};
 
-	if (user && projectData && Array.isArray(projectData)) {
+	if(user){
+
+	if (
+		projectData &&
+		Array.isArray(projectData) &&
+		projectData.length > 0
+	) {
 		card = projectData.map((project) => {
 			return buildCard(project);
 		});
+	} else if (
+		projectData &&
+		projectData.length === 0 &&
+		Array.isArray(projectData)
+	) {
+		return (
+			<div>
+				<p>Currently there are no Projects</p>
+				<p>Scrum Master Needs to add Projects</p>
+			</div>
+		);
 	}
 
 	return (
 		<div>
-			<ul>{card}</ul>
 			{user && user.isScrumMaster ? (
 				<NavLink to="/newproject">New Project</NavLink>
 			) : (
 				''
 			)}
+
+			<ul>{card}</ul>
 		</div>
 	);
+			}else{
+				return(
+				<h2>Loading...</h2>
+				)
+			}
 };
 
 export default Projects;
