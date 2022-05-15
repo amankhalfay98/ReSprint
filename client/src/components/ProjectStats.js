@@ -53,10 +53,12 @@ const Projects = () => {
 						}
 						
 					} catch (error) {
+						alert(error.message);
 						console.log(error.message);
 					}
 				}
 			} catch (error) {
+				alert(error.message);
 				console.log(error.message);
 			}
 		}
