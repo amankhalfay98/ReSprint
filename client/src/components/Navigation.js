@@ -25,7 +25,7 @@ const NavigationAuth = () => {
         <Container>
           <Navbar.Brand href="/home">
             <img
-              alt=""
+              alt="company"
               src={logo}
               width="30"
               height="30"
@@ -55,7 +55,7 @@ const NavigationNonAuth = () => {
         <Container>
           <Navbar.Brand href="/home">
             <img
-              alt=""
+              alt="company"
               src={logo}
               width="30"
               height="30"
