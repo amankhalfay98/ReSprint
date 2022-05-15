@@ -72,9 +72,9 @@ router.post('/', async (req, res) => {
   const { userId, name, comment, projectId, storyId } = req.body;
   let newComment;
   const errorParams = [];
-  if (!uuidValidate(userId)) {
-    errorParams.push('User Id');
-  }
+  // if (!uuidValidate(userId)) {
+  //   errorParams.push('User Id');
+  // }
   if (!verify.validString(name)) {
     errorParams.push('Name');
   }

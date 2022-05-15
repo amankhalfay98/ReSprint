@@ -59,9 +59,9 @@ const getCommentById = async (id) => {
 };
 
 const addComment = async (userId, name, comment, projectId, storyId) => {
-  if (!uuidValidate(userId)) {
-    throw TypeError('User Id is of invalid type');
-  }
+  // if (!uuidValidate(userId)) {
+  //   throw TypeError('User Id is of invalid type');
+  // }
   if (!uuidValidate(projectId)) {
     throw TypeError('Project Id is of invalid type');
   }
