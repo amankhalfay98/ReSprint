@@ -128,7 +128,7 @@ function NewProject() {
                   </Form.Group>
                   <Form.Group id="member">
                     <Form.Label htmlFor="member" className="label-form">
-                      Project Members
+                      Project Members (Add all Members for this Project)
                     </Form.Label>
                     <Form.Select
                       multiple

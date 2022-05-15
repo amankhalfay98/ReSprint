@@ -31,7 +31,7 @@ const Home = () => {
 				<p>
 					Agile methodology has become the new trend of project management to
 					which companies are now switching. ReSprint brings a
-					webbasedsolutionforenterpriseswhoworkon Agile based software
+					web based solution for enterprises who work on Agile based software
 					development lifecycle. Project managers can use this application to
 					list down every user story onto the Kanban board which can help the
 					team to track the progress of each user story (feature) and maximize
