@@ -351,10 +351,9 @@ import { Link } from 'react-router-dom';
 
   
   if (storyData && Array.isArray(storyData)) {
- {
+ { 
     card = storyData.map((story) => {
-
-      return (
+      if(story.sprint!=0){ return (
       
         <div className="project_card" key={story.id}>
           <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
@@ -426,7 +425,53 @@ import { Link } from 'react-router-dom';
         </Link>
               </div>
 			
-      )
+      )}else{
+        return (
+      
+          <div className="project_card" key={story.id}>
+            <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
+                
+               <h2>USER STORY : {story.title} </h2> </Link>
+               <h2>SPRINT NO: {story.sprint} </h2>
+        
+            <button 	onClick={(e) => {
+            e.preventDefault();
+            console.log("story is",story)
+            let nextsprint=story.sprint+1
+            console.log("nextsprint",nextsprint)
+            try {
+              
+              api.upsertStory({
+              createdBy:story.createdBy,
+              assignedTo: story.assignedTo,
+              comments:story.comments,
+              createdAt: story.createdAt,
+              description: story.description,
+              modifiedAt: story.modifiedAt,
+              priority:story.priority,
+              sprint:nextsprint,
+              status:story.status,
+              storyPoint:story.storyPoint,
+              title:story.title,
+              type:story.type,
+              id:story.id,
+              projectId:props.location.project
+              });
+              
+            } catch (err) {
+              alert(err.message);
+            }
+                      alert(`Added User Story To Sprint ${nextsprint}`);
+              //window.location.pathname = '/projects';
+          }} >ADD USER STORY TO NEXT SPRINT</button>
+          <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
+          <button>Go to Kanban</button>
+          </Link>
+                </div>
+        
+        )
+      }
+     
       
     });
   }
