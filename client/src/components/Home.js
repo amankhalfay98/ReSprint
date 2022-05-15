@@ -6,8 +6,8 @@ import Api from '../services/api';
 const Home = () => {
 	const [userData, setUserData] = useState(undefined);
 	const { currentUser } = useContext(AuthContext);
-	console.log('This is coming from the Home Component: ', currentUser.uid);
-	let id = currentUser.uid;
+	// console.log('This is coming from the Home Component: ', currentUser.uid);
+	// let id = currentUser.uid;
 	// let id = 'LHo68FuetIOy2gwSlMjV0EtCLSp2';
 	useEffect(() => {
 		const api = new Api();

@@ -81,6 +81,12 @@ const Backlog = (props) => {
 		window.location.href = '/individualUserStory';
 	};
 
+  const handelKanban = (stor) => {
+		localStorage.setItem('IndSprint', `${stor}`);
+		window.location.href = '/kanban';
+	};
+
+
 	if (storyData && Array.isArray(storyData)) {
 		{
 			card = storyData.map((story) => {
@@ -122,15 +128,13 @@ const Backlog = (props) => {
 							>
 								ADD USER STORY TO NEXT SPRINT
 							</button>
-							{/* <Link
-								to={{
-									pathname: '/kanban',
-									sprint: `${story.sprint}`,
-									project: `${props.location.pr}`,
-								}}
-							> */}
-								<button>Go to Kanban</button>
-							{/* </Link> */}
+              <button
+					onClick={(e) => {
+						e.preventDefault();
+						handelKanban(story.sprint);
+					}}
+				>Go to Kanban</button>
+						
 						</div>
 					);
 				} else {
