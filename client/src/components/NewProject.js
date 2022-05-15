@@ -15,38 +15,15 @@ function NewProject() {
 	let projectName;
 	let company;
 	let employees = [];
-	//const [companyList,setCompanyList] = useState(undefined);
 	const [memberList, setMemberList] = useState(undefined);
 	const [user, setUser] = useState(undefined);
 	const [companyName, setCompanyName] = useState(undefined);
-
-	// async function getCompanyName(allCities) {
-	//     let data = null;
-	//     if (allCities) {
-	//       data = allCities.map((city) => getSingleCityWeather(city));
-	//     }
-	//     return Promise.all(data);
-	//   }
-
-	// useEffect(() => {
-	//   const api = new Api();
-	//   async function getAllCompanies() {
-	//     try {
-	//       const {companies } = await api.getAllCompanies() ;
-	//       console.log(companies);
-	//       if (companies) setCompanyList(companies);
-	//     } catch (error) {
-	//       console.log(error.message);
-	//     }
-	//   }
-	//   getAllCompanies();
-	// }, []);
 
 	useEffect(() => {
 		const api = new Api();
 		async function getUserById() {
 			try {
-				const { user } = await api.getUserById(currentUser.uid); //get session id
+				const { user } = await api.getUserById(currentUser.uid);
 				console.log(user);
 				if (user) {
 					setUser(user);
@@ -69,30 +46,6 @@ function NewProject() {
 		getUserById();
 	}, [currentUser]);
 
-	//   useEffect(() => {
-	//     const api = new Api();
-	//     async function getAllMembers() {
-	//       try {
-	//      //if(companyName.value.length>0){
-	//         const {members } = await api.getAllMembers() ;
-	//         console.log(members);
-	//         if (members) setMemberList(members);
-	//        //}
-	//       } catch (error) {
-	//         console.log(error.message);
-	//       }
-	//     }
-	//     getAllMembers();
-	//   }, []);
-
-	// let companies = companyList.length > 0
-	// 	&& companyList.map((company, i) => {
-	// 	return (
-	//   optionGenerator(company)
-	// 		<option key={i} value={item.id}>{item.name}</option>
-	// 	)
-	// });
-
 	const optionGenerator = (member) => {
 		return (
 			<option key={member.id} value={member.id}>
@@ -105,10 +58,7 @@ function NewProject() {
 		user &&
 		memberList &&
 		memberList.map((member) => {
-			//if (user.company === member.company) {
 			return optionGenerator(member);
-			// <option key={i} value={item.id}>{item.name}</option>
-			//}
 		});
 
 	if (user && companyName) {
@@ -137,7 +87,6 @@ function NewProject() {
 							);
 						}
 						api.upsertProject({
-							//variables: {
 							master: user.id,
 							projectName: projectName.value,
 							company: companyName.id,
@@ -145,12 +94,10 @@ function NewProject() {
 							members: employees,
 							totalSprints: parseInt(totalSprints.value),
 							memberId: user.id,
-							// }
 						});
 						totalSprints.value = '';
 						projectName.value = '';
 						setCompanyName('');
-						//companyName.value = '';
 						alert('Project is created');
 						window.location.pathname = '/projects';
 					} catch (err) {

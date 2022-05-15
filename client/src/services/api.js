@@ -149,7 +149,7 @@ export default class Api {
 	//tested
 	getStories = async (project, sprint) => {
 		let url;
-		if (project && sprint.length===0) {
+		if (project && sprint.length === 0) {
 			url = `${host}/story?projectId=${project}`;
 		} else if (project && sprint) {
 			url = `${host}/story?projectId=${project}&sprint=${sprint}`;
@@ -215,8 +215,8 @@ export default class Api {
 
 	getAllComments = async (story) => {
 		let url = `${host}/comment`;
-		if(story){
-		 url =`${host}/comment?storyId=${story}`
+		if (story) {
+			url = `${host}/comment?storyId=${story}`;
 		}
 		try {
 			const { data } = await get(url);
