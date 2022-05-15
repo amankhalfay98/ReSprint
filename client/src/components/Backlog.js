@@ -140,6 +140,8 @@ import {
 } from '@material-ui/core';
 
  const Backlog = (props) => {
+  //  localStorage.setItem('sprint',`${props.location.sprint}`);
+  //  localStorage.setItem('project',`${props.location.project}`);
   const api = new Api();
   let card = null;
 
@@ -151,40 +153,48 @@ import {
 
 
   useEffect(() => {
-    console.log("Props.location.project", typeof(props.location.project))
+    const api = new Api();
+    let project = localStorage.getItem('project')
+    //console.log("Props.location.project", typeof(props.location.project))
     async function getStories() {
       try {
-        const {stories } = await api.getStories(props.location.project) ;
+        const {stories } = await api.getStories(project) ;
         console.log(stories);
         if (stories) setStoryData(stories);
       } catch (error) {
         console.log(error.message);
       }
     }
-    getStories();
+    getStories(); 
+  }, []);
 
-    
-  }, [props.location.project]);
+  const handelClick=(stor)=>{
+    localStorage.setItem('story',`${stor.id}`)
+    window.location.href='/individualUserStory';
+  }
 
   
   if (storyData && Array.isArray(storyData)) {
     card = storyData.map((story) => {
-      if(story.sprint==0){
+      if(parseInt(story.sprint)===0){
+        //localStorage.setItem('story',`${story.story}`)
       return (
       
       <Grid item key={story.id}>
 				<Card  variant="outlined">
 					<CardActionArea>
-          <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
+            <button onClick={(e)=>{e.preventDefault(); handelClick(story)}}>More Details</button>
+          {/* <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}> */}
           {/* <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}> */}
 							<CardContent>
 								<Typography variant="body2" color="textSecondary" component="p">
-                   <NavLink to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>{story.title}</NavLink> 
-							{/* {story.title} */}
+                   {/* <NavLink to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>{story.title}</NavLink>  */}
+							{story.title}
                 {/* <button>Move To Right</button> */}
 								</Typography>
 							</CardContent>
-              </Link>
+              
+              {/* </Link> */}
 					</CardActionArea>
           <button 	onClick={(e) => {
 					e.preventDefault();
@@ -219,6 +229,10 @@ import {
 				}} >Add To Sprint 1</button>
 				</Card>
 			</Grid>)
+      }else{
+        return(
+          <h2>Loading...</h2>
+        )
       }
     });
   }
@@ -246,13 +260,17 @@ import {
   return (
     <div className="drag-n-drop">
     <div className="dnd-group">
+    <NavLink to={{pathname:'/kanban', sprint:`0`, project:`${props.location.project}`}}>
       <div className="group-title">Backlog</div>
+      </NavLink> 
         <div>
         
       </div>
     </div>
        <div className="dnd-group">
+       <NavLink to={{pathname:'/kanban', sprint:`1`, project:`${props.location.project}`}}> 
        <div className="group-title">sprint 1</div>
+       </NavLink> 
         <div className="dnd-item">
           <div>
             {card}
@@ -261,7 +279,9 @@ import {
 
     </div>
     <div className="dnd-group">
+    <NavLink to={{pathname:'/kanban', sprint:`2`, project:`${props.location.project}`}}>
        <div className="group-title">sprint 2</div>
+       </NavLink>
         <div className="dnd-item">
           <div>
        
@@ -269,7 +289,9 @@ import {
      </div>
     </div>
     <div className="dnd-group">
+    <NavLink to={{pathname:'/kanban', sprint:`3`, project:`${props.location.project}`}}>
        <div className="group-title">sprint 3</div>
+       </NavLink>
         <div className="dnd-item">
           <div>
             <p>ITEM 1</p>

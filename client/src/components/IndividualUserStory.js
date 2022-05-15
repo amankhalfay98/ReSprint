@@ -8,8 +8,8 @@ import {
 	CardActionArea,
 	CardContent,
 	Grid,
-  makeStyles,
-	Typography
+	makeStyles,
+	Typography,
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -20,83 +20,116 @@ const useStyles = makeStyles({
 		marginRight: 'auto',
 		borderRadius: 5,
 		border: '1px solid #4879e2',
-		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
+		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);',
 	},
 	titleHead: {
 		borderBottom: '1px solid #4879e2',
-		fontWeight: 'bold'
+		fontWeight: 'bold',
 	},
 	grid: {
 		flexGrow: 1,
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	media: {
 		height: '100%',
-		width: '100%'
+		width: '100%',
 	},
 	button: {
-		backgroundColor:'#ffffff',
+		backgroundColor: '#ffffff',
 		color: '#767676',
 		fontWeight: 'bold',
-		fontSize: 12
+		fontSize: 12,
 	},
 	disabledButton: {
 		color: '#767676 !important',
-	  }
+	},
 });
 
 const UserStories = (props) => {
-  const classes = useStyles();
+	const classes = useStyles();
 	console.log(props.location);
 	const [storyy, setstoryy] = useState(undefined);
-  const [user, setUser] = useState(undefined);
-
-
+	const [user, setUser] = useState(undefined);
+	const [comments, setComments] = useState(undefined);
+  // localStorage.setItem('story',`${props.location.story}`)
 
 	useEffect(() => {
 		const api = new Api();
+    let storyId = localStorage.getItem('story')
 		async function getStories() {
 			try {
-				const { story } = await api.getStoryById(props.location.story);
-        console.log(story);
-				if (story){
-          setstoryy(story);
-          try {
-            const {user } = await api.getUserById(story.assignedTo) ; 
-            //console.log(user);
-              setUser(user);
-          } catch (error) {
-            console.log(error.message);
-          }
-        } 
+				const { story } = await api.getStoryById(storyId);
+				console.log(story);
+				if (story) {
+					setstoryy(story);
+					try {
+						const { user } = await api.getUserById(story.assignedTo);
+						console.log(user);
+						if (user) setUser(user);
+						const { comments } = await api.getAllMembers(story.id);
+						console.log(comments);
+						if (comments) {
+							setComments(comments);
+						}
+					} catch (error) {
+						console.log(error.message);
+					}
+				}
 			} catch (error) {
 				console.log(error.message);
 			}
 		}
 		getStories();
-	}, [props.location.story]);
+	}, []);
+
+  const optionGenerator = (com) => {
+		return (
+      <div key={com.id}><p>{com.comment}</p>{com.name}</div>
+			// <option key={member.id} value={member.id}>
+			// 	{member.userName}
+			// </option>
+		);
+	};
+
+	let comment =
+		user &&
+		comments &&
+		comments.map((com) => {
+			//if (user.company === member.company) {
+			return optionGenerator(com);
+			// <option key={i} value={item.id}>{item.name}</option>
+			//}
+		});
 
 	if (storyy && user) {
-    return (
-    <div>
-       <div>
-      <Link to={{pathname:`/reportissue/${storyy.id}`, project:`${storyy.projectId}`}}>Report an Issue</Link>
-      </div>
-      {/* <ul>
-        <li>{storyy.title}</li>
-        <li>Description: {storyy.description}</li>
-        <li>Assigned To: {user.userName} </li>
-        <li>Comments: {storyy.comments} </li>
-        <li>Created Date: {storyy.createdAt}</li>
-        <li>Modified Date: {storyy.modifiedAt}</li>
-        <li>Status: {storyy.status} </li>
-        <li>Sprint: {storyy.sprint} </li>
-        <li>Type: {storyy.type} </li>
-        <li>Story Point: {storyy.storyPoint}</li>
-        <li>Priority: {storyy.priority}</li>
-      </ul> */}
+		return (
 			<div>
-      <Grid container className={classes.grid} spacing={5}>
+				<div>
+					<Link
+						to={{
+							pathname: `/reportissue/${storyy.id}`,
+							project: `${storyy.projectId}`,
+						}}
+					>
+						Report an Issue
+					</Link>
+				</div>
+				<ul>
+					<li>{storyy.title}</li>
+					<li>Description: {storyy.description}</li>
+					<li>Assigned To: {user.userName} </li>
+          <li>{comment}</li>
+					{/* <li>Comments: {storyy.comments} </li> */}
+					<li>Created Date: {storyy.createdAt}</li>
+					<li>Modified Date: {storyy.modifiedAt}</li>
+					<li>Status: {storyy.status} </li>
+					<li>Sprint: {storyy.sprint} </li>
+					<li>Type: {storyy.type} </li>
+					<li>Story Point: {storyy.storyPoint}</li>
+					<li>Priority: {storyy.priority}</li>
+				</ul>
+				<div>
+					{/* <Grid container className={classes.grid} spacing={5}>
 				<Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={storyy.id}>
 					<Card className={classes.card} variant="outlined">
 						<CardActionArea>
@@ -145,9 +178,9 @@ const UserStories = (props) => {
 						</CardActionArea>
 					</Card>
 				</Grid>
-        </Grid>
+        </Grid> */}
+				</div>
 			</div>
-      </div>
 		);
 	} else {
 		return <h2>Loading...</h2>;

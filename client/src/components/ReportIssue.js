@@ -5,7 +5,7 @@ import { AuthContext } from '../firebase/Auth';
 import React, { useContext, useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
 
-const Projects = (props) => {
+const ReportIssue = (props) => {
 	console.log(props.match.params.id);
 	const api = new Api();
 	const { currentUser } = useContext(AuthContext);
@@ -86,4 +86,4 @@ const Projects = (props) => {
 	}
 };
 
-export default Projects;
+export default ReportIssue;

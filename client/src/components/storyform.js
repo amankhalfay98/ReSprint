@@ -12,6 +12,7 @@ function Storyform(props) {
   const [projectData, setProjectData] = useState(undefined);
   const [projectUsers, setProjectUsers] = useState(undefined);
   console.log(props);
+  //sessionStorage.setItem('project',`${props.location.project}`)
   let description;
 	let title;
 	let story_point;
@@ -21,9 +22,10 @@ function Storyform(props) {
 
   useEffect(() => {
     const api = new Api();
+    let projectId = localStorage.getItem('project');
     async function getAllProjects() {
       try {
-        const {project } = await api.getProjectById(props.location.project) ;
+        const {project } = await api.getProjectById(projectId) ;
         console.log(project);
         if (project) setProjectData(project);
       } catch (error) {
@@ -31,13 +33,14 @@ function Storyform(props) {
       }
     }
     getAllProjects();
-  }, [props.location.project]);
+  }, []);
 
   useEffect(() => {
     const api = new Api();
+    let projectId = localStorage.getItem('project');
     async function getAllUsers() {
       try {
-        const {users } = await api.getAllMembers('',props.location.project);
+        const {users } = await api.getAllMembers('',projectId);
         console.log(users);
         if (users) setProjectUsers(users);
       } catch (error) {
@@ -45,7 +48,7 @@ function Storyform(props) {
       }
     }
     getAllUsers();
-  }, [props.location.project]);
+  }, []);
 
   const optionGenerator = (member) => {
 		return (
@@ -117,12 +120,12 @@ function Storyform(props) {
 						alert(err.message);
 					}
                     alert('Story is created');
-                    window.history.pushState({project:`${props.location.project}`},'/backlog')
-                    window.history.back();
-						//window.location.pathname = '/projects';
+                    //window.history.pushState({project:`${props.location.project}`},'/backlog')
+                    //window.history.back();
+						window.location.pathname = '/backlog';
 				}}
 			>
-				<h2>Add New Project</h2>
+				<h2>Add New User Story</h2>
         <div className="form-group">
         <label>
 					Assigned To:

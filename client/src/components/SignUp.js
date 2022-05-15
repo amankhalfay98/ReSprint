@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 // import { Redirect } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { AuthContext } from '../firebase/Auth';
-import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
+//import UploadImageToS3WithNativeSdk from './UploadImageToS3WithNativeSdk';
 // import SocialSignIn from './SocialSignIn';
 import Api from '../services/api';
 
