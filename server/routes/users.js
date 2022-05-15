@@ -42,9 +42,9 @@ router.post('/', async (req, res) => {
   if (!verify.validString(userName)) {
     errorParams.push('Username');
   }
-  if (!verify.validString(fileName)) {
-    errorParams.push('photoUrl');
-  }
+  // if (!verify.validString(fileName)) {
+  //   errorParams.push('photoUrl');
+  // }
   if (!Array.isArray(projects)) {
     errorParams.push('Projects');
   }
