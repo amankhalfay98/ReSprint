@@ -17,7 +17,8 @@ const Home = () => {
 				console.log(user);
 				if (user) setUserData(user);
 			} catch (error) {
-				console.log(error.message);
+				alert(error.message);
+
 			}
 		}
 		getCurrentUserData();

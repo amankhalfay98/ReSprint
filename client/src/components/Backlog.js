@@ -160,15 +160,12 @@ const Backlog = (props) => {
 							>
 								ADD USER STORY TO NEXT SPRINT
 							</button>
-							{/* <Link
-								to={{
-									pathname: '/kanban',
-									sprint: `${story.sprint}`,
-									project: `${props.location.project}`,
-								}}
-							> */}
-								<button>Go to Kanban</button>
-							{/* </Link> */}
+						  <button
+					onClick={(e) => {
+						e.preventDefault();
+						handelKanban(story.sprint);
+					}}>Go to Kanban</button>
+						
 						</div>
 					);
 				}
