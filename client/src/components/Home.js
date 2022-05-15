@@ -5,6 +5,9 @@ import Api from '../services/api';
 
 const Home = () => {
 	const [userData, setUserData] = useState(undefined);
+	const [userPhoto, setUserPhoto] = useState(
+		'https://resprint-media.s3.amazonaws.com/man.png'
+	);
 	const { currentUser } = useContext(AuthContext);
 	// console.log('This is coming from the Home Component: ', currentUser.uid);
 	// let id = currentUser.uid;
@@ -15,7 +18,14 @@ const Home = () => {
 			try {
 				const { user } = await api.getUserById(currentUser.uid);
 				console.log(user);
-				if (user) setUserData(user);
+				if (user) {
+					setUserData(user);
+					if (
+						user.photoURL != 'https://resprint-media.s3.amazonaws.com/undefined'
+					) {
+						setUserPhoto(user.photoURL);
+					}
+				}
 			} catch (error) {
 				alert(error.message);
 
@@ -40,7 +50,7 @@ const Home = () => {
 				</p>
 				<div>
 					<img
-						src={`${userData.photoURL}`}
+						src={`${userPhoto}`}
 						alt="profile_photo"
 						width="150"
 						height="150"
