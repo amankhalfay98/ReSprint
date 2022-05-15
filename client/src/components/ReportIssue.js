@@ -1,4 +1,3 @@
-//import React from 'react';
 import '../App.css';
 import Api from '../services/api';
 import { AuthContext } from '../firebase/Auth';
@@ -40,27 +39,29 @@ const ReportIssue = (props) => {
 						if (!comment.value) {
 							throw Error('Comment is Required');
 						}
-            let userId=user.id , name=user.userName , comments=comment.value, projectId= props.location.project , storyId=props.match.params.id ;
-             api.addComment(
-              userId,
-              name,
-              comments,
-              projectId,
-              storyId
-             );
+						let userId = user.id,
+							name = user.userName,
+							comments = comment.value,
+							projectId = props.location.project,
+							storyId = props.match.params.id;
+						let addComment =  api.addComment(
+							userId,
+							name,
+							comments,
+							projectId,
+							storyId
+						);
 						comment.value = '';
-            alert('Comment has been added');
-            //window.location.story.set
-            //window.history.pushState({story:storyId})
-					// window.location.pathname = '/individualUserStory';
+						if (addComment.status === 'success') {
+							alert('Comment has been added');
+							window.location.pathname = '/individualUserStory';
+						} 
 					} catch (err) {
 						alert(err.message);
 					}
-					//  alert('Project is created');
-					//  window.location.pathname = '/projects';
 				}}
 			>
-				<h2>Describe Issue Here</h2>
+				<h2>Add Comment</h2>
 				<div className="form-group">
 					<label>
 						Comment:
@@ -81,7 +82,7 @@ const ReportIssue = (props) => {
 				</Button>
 			</form>
 		);
-	}else {
+	} else {
 		return <h2>Loading...</h2>;
 	}
 };

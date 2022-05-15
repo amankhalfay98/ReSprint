@@ -85,6 +85,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import ReportIssue from "./components/ReportIssue";
 import Storyform from "./components/storyform";
+import Editform from './components/EditStory';
 import { AuthProvider } from "./firebase/Auth";
 import NewProject from "./components/NewProject";
 import PrivateRoute from "./components/PrivateRoute";
@@ -106,13 +107,11 @@ function App() {
             <PrivateRoute path="/userstories" component={UserStories} />
             <PrivateRoute path="/retrospective" component={Retrospective} />
             <PrivateRoute path="/reportissue/:id" component={ReportIssue} />
-            <PrivateRoute
-              path="/individualUserStory"
-              component={individualUserStory}
-            />
+            <PrivateRoute path="/individualUserStory" component={individualUserStory}/>
             <PrivateRoute path="/storyform" component={Storyform} />
+            <PrivateRoute path="/editform" component={Editform} />
             <PrivateRoute path="/newproject" component={NewProject} />
-            <PrivateRoute path="/storyform" component={Storyform} />
+            
           </div>
         </div>
       </Router>

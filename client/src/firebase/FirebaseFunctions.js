@@ -39,6 +39,7 @@ async function doPasswordUpdate(password) {
 
 async function doSignOut() {
 	await firebase.auth().signOut();
+	localStorage.clear();
 }
 
 // async function getCurrentUser() {
