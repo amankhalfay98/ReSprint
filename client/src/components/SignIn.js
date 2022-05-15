@@ -20,18 +20,18 @@
 // 		}
 // 	};
 
-// 	const passwordReset = (event) => {
-// 		event.preventDefault();
-// 		let email = document.getElementById('email').value;
-// 		if (email) {
-// 			doPasswordReset(email);
-// 			alert('Password reset email was sent');
-// 		} else {
-// 			alert(
-// 				'Please enter an email address below before you click the forgot password link'
-// 			);
-// 		}
-// 	};
+	// const passwordReset = (event) => {
+	// 	event.preventDefault();
+	// 	let email = document.getElementById('email').value;
+	// 	if (email) {
+	// 		doPasswordReset(email);
+	// 		alert('Password reset email was sent');
+	// 	} else {
+	// 		alert(
+	// 			'Please enter an email address below before you click the forgot password link'
+	// 		);
+	// 	}
+	// };
 // 	if (currentUser) {
 // 		return <Redirect to="/home" />;
 // 	}
@@ -82,7 +82,7 @@
 import React, { useState, useRef, useContext } from "react";
 import { Form, Button, Card, Container } from "react-bootstrap";
 import { AuthContext } from "../firebase/Auth";
-import { doSignInWithEmailAndPassword } from "../firebase/FirebaseFunctions";
+import { doSignInWithEmailAndPassword ,doPasswordReset} from "../firebase/FirebaseFunctions";
 import { Link } from "react-router-dom";
 
 function SignIn() {
@@ -104,6 +104,21 @@ function SignIn() {
     }
     setLoading(false);
   }
+
+  const passwordReset = (event) => {
+		event.preventDefault();
+		let email = document.getElementById('email').value;
+		if (email) {
+			doPasswordReset(email);
+			alert('Password reset email was sent');
+		} else {
+			alert(
+				'Please enter an email address below before you click the forgot password link'
+			);
+		}
+	};
+
+
   if (currentUser !== null) {
     window.location.href = '/home';
   }
@@ -144,6 +159,9 @@ function SignIn() {
           <div className="w-100 text-center mt-2">
             Need to Register? <Link to={"/signup"}>Sign Up</Link>
           </div>
+          {/* <div className="w-100 text-center mt-2">
+            Forgot Password? <Button disabled={loading} className="w-40 h-15" onClick={passwordReset} type='button'>Click to Reset</Button>
+          </div> */}
         </div>
       </Container>
     </>

@@ -126,9 +126,10 @@ import {
         return (
       
           <div className="project_card" key={story.id}>
-            <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
-                
-               <h2>USER STORY : {story.title} </h2> </Link>
+            {/* <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}> */}
+               <button onClick={(e)=>{e.preventDefault();handelClick(story)}}>{story.title}</button> 
+               {/* <h2>USER STORY : {story.title} </h2>  */}
+               {/* </Link> */}
                <h2>SPRINT NO: {story.sprint} </h2>
         
             <button 	onClick={(e) => {
