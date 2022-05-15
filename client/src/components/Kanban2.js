@@ -148,6 +148,7 @@
 
 
 
+
 import React, { useState,  useEffect } from 'react';
 import '../App.css';
 import Api from '../services/api'
@@ -161,11 +162,6 @@ import {
 } from '@material-ui/core';
 
 function Kanban2(props) {
-    let project = props.location.project;
-    let sprint = props.location.sprint
-    console.log('Project: '+project+' Sprint: '+sprint)
-    // const [dragging,setDragging] = useState(false)
-    // const dragItem = useRef();
     let cardfortodo= null;
     let cardforinprogress= null;
     let cardforreview= null;
@@ -174,6 +170,9 @@ function Kanban2(props) {
 
     const [storyData, setStoryData] = useState(undefined);
   useEffect(() => {
+    const api = new Api();
+    let project = localStorage.getItem('project')
+    let sprint = localStorage.getItem('sprint')
     async function getStories() {
       try {
         const {stories } = await api.getStories(project,sprint) ;
@@ -184,7 +183,7 @@ function Kanban2(props) {
       }
     }
     getStories();
-  }, [project,sprint]);
+  }, []);
 
     // const handleDragStart=(e,params)=>{
     //     console.log('drag start...', params)
@@ -209,7 +208,7 @@ function Kanban2(props) {
     
   if (storyData && Array.isArray(storyData)) {
     cardfortodo = storyData.map((story) => {
-      if(story.status=="To do"){
+      if(story.status==="To do"){
       return (
       
       <Grid item key={story.id}>
@@ -261,13 +260,17 @@ function Kanban2(props) {
 
 				</Card>
 			</Grid>)
+      }else{
+        return(
+          <h2>Loading...</h2>
+        )
       }
     });
   }
 
   if (storyData && Array.isArray(storyData)) {
     cardforinprogress = storyData.map((story) => {
-      if(story.status=="In Progress"){
+      if(story.status==="In Progress"){
       return (
       
       <Grid item key={story.id}>
@@ -320,13 +323,17 @@ function Kanban2(props) {
 
 				</Card>
 			</Grid>)
+      }else{
+        return(
+          <h2>Loading...</h2>
+        )
       }
     });
   }
 
   if (storyData && Array.isArray(storyData)) {
     cardforreview = storyData.map((story) => {
-      if(story.status=="Review"){
+      if(story.status==="Review"){
       return (
       
       <Grid item key={story.id}>
@@ -379,13 +386,17 @@ function Kanban2(props) {
 
 				</Card>
 			</Grid>)
+      }else{
+        return(
+          <h2>Loading...</h2>
+        )
       }
     });
   }
 
   if (storyData && Array.isArray(storyData)) {
     cardforcompleted = storyData.map((story) => {
-      if(story.status=="Completed"){
+      if(story.status==="Completed"){
       return (
       
       <Grid item key={story.id}>
@@ -404,6 +415,10 @@ function Kanban2(props) {
 					</CardActionArea>
 				</Card>
 			</Grid>)
+      }else{
+        return(
+          <h2>Loading...</h2>
+        )
       }
     });
   }

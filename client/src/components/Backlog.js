@@ -326,26 +326,33 @@ import { Link } from 'react-router-dom';
 
 
  const Backlog = (props) => {
+  //  localStorage.setItem('sprint',`${props.location.sprint}`);
+  //  localStorage.setItem('project',`${props.location.project}`);
   const api = new Api();
   let card = null;
   const [storyData, setStoryData] = useState(undefined);
 
 
   useEffect(() => {
-    console.log("Props.location.project", typeof(props.location.project))
+    const api = new Api();
+    let project = localStorage.getItem('project')
+    //console.log("Props.location.project", typeof(props.location.project))
     async function getStories() {
       try {
-        const {stories } = await api.getStories(props.location.project) ;
+        const {stories } = await api.getStories(project) ;
         console.log(stories);
         if (stories) setStoryData(stories);
       } catch (error) {
         console.log(error.message);
       }
     }
-    getStories();
+    getStories(); 
+  }, []);
 
-    
-  }, [props.location.project]);
+  const handelClick=(stor)=>{
+    localStorage.setItem('story',`${stor.id}`)
+    window.location.href='/individualUserStory';
+  }
 
 
 
@@ -353,15 +360,29 @@ import { Link } from 'react-router-dom';
   if (storyData && Array.isArray(storyData)) {
  { 
     card = storyData.map((story) => {
-      if(story.sprint!=0){ return (
+
+      if(parseInt(story.sprint)!==0){
+        //localStorage.setItem('story',`${story.story}`)
+      return (
       
-        <div className="project_card" key={story.id}>
-          <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
+      <Grid item key={story.id}>
+				<Card  variant="outlined">
+					<CardActionArea>
+            <button onClick={(e)=>{e.preventDefault(); handelClick(story)}}>More Details</button>
+          {/* <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}> */}
+          {/* <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}> */}
+							<CardContent>
+								<Typography variant="body2" color="textSecondary" component="p">
+                   {/* <NavLink to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>{story.title}</NavLink>  */}
+							{story.title}
+                {/* <button>Move To Right</button> */}
+								</Typography>
+							</CardContent>
               
-             <h2>USER STORY : {story.title} </h2> </Link>
-             <h2>SPRINT NO: {story.sprint} </h2>
-				
-                <button 	onClick={(e) => {
+              {/* </Link> */}
+					</CardActionArea>
+          <button 	onClick={(e) => {
+
 					e.preventDefault();
           console.log("story is",story)
 					try {
@@ -388,6 +409,7 @@ import { Link } from 'react-router-dom';
 					}
                     alert('Added User Story To Backlog');
 						//window.location.pathname = '/projects';
+
 				}} >ADD USER STORY TO BACKLOG</button>
 
 <button 	onClick={(e) => {
@@ -469,6 +491,7 @@ import { Link } from 'react-router-dom';
           </Link>
                 </div>
         
+
         )
       }
      
@@ -479,9 +502,58 @@ import { Link } from 'react-router-dom';
 
 
   return (
-    <div >
-      <h1>Backlogs</h1>
-  {card}
+
+    <div className="drag-n-drop">
+    <div className="dnd-group">
+    <NavLink to={{pathname:'/kanban', sprint:`0`, project:`${props.location.project}`}}>
+      <div className="group-title">Backlog</div>
+      </NavLink> 
+        <div>
+        
+      </div>
+    </div>
+       <div className="dnd-group">
+       <NavLink to={{pathname:'/kanban', sprint:`1`, project:`${props.location.project}`}}> 
+       <div className="group-title">sprint 1</div>
+       </NavLink> 
+        <div className="dnd-item">
+          <div>
+            {card}
+        </div>
+     </div>
+
+    </div>
+    <div className="dnd-group">
+    <NavLink to={{pathname:'/kanban', sprint:`2`, project:`${props.location.project}`}}>
+       <div className="group-title">sprint 2</div>
+       </NavLink>
+        <div className="dnd-item">
+          <div>
+       
+        </div>
+     </div>
+    </div>
+    <div className="dnd-group">
+    <NavLink to={{pathname:'/kanban', sprint:`3`, project:`${props.location.project}`}}>
+       <div className="group-title">sprint 3</div>
+       </NavLink>
+        <div className="dnd-item">
+          <div>
+            <p>ITEM 1</p>
+        </div>
+     </div>
+      <div className="dnd-item">
+        <div>
+          <p>ITEM 2</p>
+         </div>
+       </div>
+    </div>
+
+    <NavLink to={{pathname:'/storyform', project:`${props.location.project}`}}>Add New User Story</NavLink>
+
+    {/* <p>{sprintt}</p> */}
+
+
     </div>
   );
 };
