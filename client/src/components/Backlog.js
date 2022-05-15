@@ -322,8 +322,14 @@ import React, { useState, useEffect  } from "react";
 // { AuthContext } from '../firebase/Auth';
 import '../App.css';
 import Api from '../services/api'
-import { Link } from 'react-router-dom';
-
+import { NavLink, Link } from 'react-router-dom';
+import {
+	Card,
+	CardActionArea,
+	CardContent,
+	Grid,
+	Typography,
+} from '@material-ui/core';
 
  const Backlog = (props) => {
   //  localStorage.setItem('sprint',`${props.location.sprint}`);
@@ -339,7 +345,7 @@ import { Link } from 'react-router-dom';
     //console.log("Props.location.project", typeof(props.location.project))
     async function getStories() {
       try {
-        const {stories } = await api.getStories(project) ;
+        const {stories } = await api.getStories(project,'') ;
         console.log(stories);
         if (stories) setStoryData(stories);
       } catch (error) {
@@ -381,6 +387,8 @@ import { Link } from 'react-router-dom';
               
               {/* </Link> */}
 					</CardActionArea>
+          </Card>
+          
           <button 	onClick={(e) => {
 
 					e.preventDefault();
@@ -445,7 +453,7 @@ import { Link } from 'react-router-dom';
         <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
         <button>Go to Kanban</button>
         </Link>
-              </div>
+        </Grid>
 			
       )}else{
         return (
