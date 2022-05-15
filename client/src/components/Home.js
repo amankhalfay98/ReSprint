@@ -7,30 +7,29 @@ const Home = () => {
 	console.log('This is coming from the Home Component: ', currentUser.uid);
 	return (
 		<div>
+			Welcome to ReSprint.....
 			<p>
-				This is a simple example of using React to Query the TV Maze API. Start
-				by clicking the "Shows" button above
+				Agile methodology has become the new trend of project management to
+				which companies are now switching. ReSprint brings a
+				webbasedsolutionforenterpriseswhoworkon Agile based software development
+				lifecycle. Project managers can use this application to list down every
+				user story onto the Kanban board which can help the team to track the
+				progress of each user story (feature) and maximize team efficiency.{' '}
 			</p>
-
+			<div>
+				<img
+					src={'https://resprint-media.s3.amazonaws.com/499714.png'}
+					alt="profile_photo"
+					width="150"
+					height="150"
+				/>
+			</div>
 			<p>
-				The application queries two of TV Maze's end-points:{' '}
-				<a
-					rel="noopener noreferrer"
-					target="_blank"
-					href="http://api.tvmaze.com/shows"
-				>
-					http://api.tvmaze.com/shows
-				</a>{' '}
-				and{' '}
-				<a
-					rel="noopener noreferrer"
-					target="_blank"
-					href="http://api.tvmaze.com/search/shows?q=SEARCH_TERM"
-				>
-					http://api.tvmaze.com/search/shows?q=SEARCH_TERM
-				</a>{' '}
-				for searching the shows in the API (Where SEARCH_TERM is what the user
-				types into the search input)
+				{' '}
+				Teams can keep track of the backlog features and divide their task to
+				different sprints for feature tracking. This application will also
+				manage sprint retro activities in order to improve on agile based
+				project management.
 			</p>
 		</div>
 	);

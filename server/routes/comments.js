@@ -72,7 +72,7 @@ router.post('/', async (req, res) => {
   const { userId, name, comment, projectId, storyId } = req.body;
   let newComment;
   const errorParams = [];
-  if (!uuidValidate(userId)) {
+  if (!verify.validString(userId)) {
     errorParams.push('User Id');
   }
   if (!verify.validString(name)) {
@@ -120,7 +120,7 @@ router.patch('/:id', async (req, res) => {
   if (id && !uuidValidate(id)) {
     errorParams.push('Id');
   }
-  if (userId && !uuidValidate(userId)) {
+  if (userId && !validString(userId)) {
     errorParams.push('User Id');
   }
   if (comment && !verify.validString(comment)) {
