@@ -1,8 +1,14 @@
 import React, { useState, useEffect  } from "react";
 import '../App.css';
 import Api from '../services/api'
-import { Link } from 'react-router-dom';
-
+import { NavLink, Link } from 'react-router-dom';
+import {
+	Card,
+	CardActionArea,
+	CardContent,
+	Grid,
+	Typography,
+} from '@material-ui/core';
 
  const Backlog = (props) => {
   const api = new Api();
@@ -14,7 +20,11 @@ import { Link } from 'react-router-dom';
     console.log("Props.location.project", typeof(props.location.project))
     async function getStories() {
       try {
-        const {stories } = await api.getStories(props.location.project) ;
+
+        const {stories } = await api.getStories(project,'') ;
+
+        //const {stories } = await api.getStories(props.location.project) ;
+
         console.log(stories);
         if (stories) setStoryData(stories);
       } catch (error) {
@@ -37,11 +47,19 @@ import { Link } from 'react-router-dom';
       
         <div className="project_card" key={story.id}>
           <Link to={{pathname:'/individualUserStory', story:`${story.id}`}}>
-              
-             <h2>USER STORY : {story.title} </h2> </Link>
-             <h2>SPRINT NO: {story.sprint} </h2>
+
+              {/* </Link> */}
+					</CardActionArea>
+          </Card>
+          
+          <button 	onClick={(e) => {
+
+
+//              <h2>USER STORY : {story.title} </h2> </Link>
+//              <h2>SPRINT NO: {story.sprint} </h2>
 				
-                <button 	onClick={(e) => {
+//                 <button 	onClick={(e) => {
+
 					e.preventDefault();
           console.log("story is",story)
 					try {
@@ -101,7 +119,7 @@ import { Link } from 'react-router-dom';
         <Link to={{pathname:'/kanban', sprint:`${story.sprint}`, project:`${props.location.project}`}}>
         <button>Go to Kanban</button>
         </Link>
-              </div>
+        </Grid>
 			
       )}else{
         //If story is in sprint 0 that means already in Backlog hence only display add to next sprint button

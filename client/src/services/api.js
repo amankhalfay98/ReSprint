@@ -216,8 +216,11 @@ export default class Api {
 		}
 	};
 
-	getAllComments = async () => {
-		const url = `${host}/comment`;
+	getAllComments = async (story) => {
+		let url = `${host}/comment`;
+		if(story){
+		 url =`${host}/comment?storyId=${story}`
+		}
 		try {
 			const { data } = await get(url);
 			return data;

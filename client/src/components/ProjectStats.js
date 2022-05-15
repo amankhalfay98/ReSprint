@@ -4,10 +4,10 @@ import { AuthContext } from '../firebase/Auth';
 import '../App.css';
 import Api from '../services/api';
 import { Bar } from "react-chartjs-2";
-import Chart from 'chart.js/auto';
+//import Chart from 'chart.js/auto';
 const Projects = () => {
 	const { currentUser } = useContext(AuthContext);
-	let card = null;
+	//let card = null;
 	const [projectData, setProjectData] = useState(undefined);
 	const [user, setUser] = useState(undefined);
 	const [company, setCompany] = useState(undefined);
@@ -18,8 +18,9 @@ const Projects = () => {
 	
 
 
-	const api = new Api();
+	
 	useEffect(() => {
+		const api = new Api();
 		async function getUserById() {
 			try {
 				const { user } = await api.getUserById(currentUser.uid);
@@ -41,7 +42,7 @@ const Projects = () => {
 							
 							for (let i = 0; i<stories.length; i++){
 								for(let j=0; j<projects.length; j++){
-									if(stories[i].projectId==projects[j].id)
+									if(stories[i].projectId===projects[j].id)
 									titleArray.push(stories[i].title)
 									sprintArray.push(stories[i].priority)
 								}
@@ -61,7 +62,7 @@ const Projects = () => {
 			}
 		}
 		getUserById();
-	}, [currentUser]);
+	}, [currentUser,sprintArray,titleArray]);
 
 	// const buildCard = (project) => {
 	// 	storyData.map((story) => {

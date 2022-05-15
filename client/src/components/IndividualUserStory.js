@@ -3,50 +3,50 @@ import '../App.css';
 import { Link } from 'react-router-dom';
 import Api from '../services/api';
 
-import {
-	Card,
-	CardActionArea,
-	CardContent,
-	Grid,
-	makeStyles,
-	Typography,
-} from '@material-ui/core';
+// import {
+// 	Card,
+// 	CardActionArea,
+// 	CardContent,
+// 	Grid,
+// 	makeStyles,
+// 	Typography,
+// } from '@material-ui/core';
 
-const useStyles = makeStyles({
-	card: {
-		maxWidth: 250,
-		height: 'auto',
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		borderRadius: 5,
-		border: '1px solid #4879e2',
-		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);',
-	},
-	titleHead: {
-		borderBottom: '1px solid #4879e2',
-		fontWeight: 'bold',
-	},
-	grid: {
-		flexGrow: 1,
-		flexDirection: 'row',
-	},
-	media: {
-		height: '100%',
-		width: '100%',
-	},
-	button: {
-		backgroundColor: '#ffffff',
-		color: '#767676',
-		fontWeight: 'bold',
-		fontSize: 12,
-	},
-	disabledButton: {
-		color: '#767676 !important',
-	},
-});
+// const useStyles = makeStyles({
+// 	card: {
+// 		maxWidth: 250,
+// 		height: 'auto',
+// 		marginLeft: 'auto',
+// 		marginRight: 'auto',
+// 		borderRadius: 5,
+// 		border: '1px solid #4879e2',
+// 		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);',
+// 	},
+// 	titleHead: {
+// 		borderBottom: '1px solid #4879e2',
+// 		fontWeight: 'bold',
+// 	},
+// 	grid: {
+// 		flexGrow: 1,
+// 		flexDirection: 'row',
+// 	},
+// 	media: {
+// 		height: '100%',
+// 		width: '100%',
+// 	},
+// 	button: {
+// 		backgroundColor: '#ffffff',
+// 		color: '#767676',
+// 		fontWeight: 'bold',
+// 		fontSize: 12,
+// 	},
+// 	disabledButton: {
+// 		color: '#767676 !important',
+// 	},
+// });
 
 const UserStories = (props) => {
-	const classes = useStyles();
+	//const classes = useStyles();
 	console.log(props.location);
 	const [storyy, setstoryy] = useState(undefined);
 	const [user, setUser] = useState(undefined);
@@ -66,7 +66,7 @@ const UserStories = (props) => {
 						const { user } = await api.getUserById(story.assignedTo);
 						console.log(user);
 						if (user) setUser(user);
-						const { comments } = await api.getAllMembers(story.id);
+						const { comments } = await api.getAllComments(story.id);
 						console.log(comments);
 						if (comments) {
 							setComments(comments);
@@ -118,7 +118,7 @@ const UserStories = (props) => {
 					<li>{storyy.title}</li>
 					<li>Description: {storyy.description}</li>
 					<li>Assigned To: {user.userName} </li>
-          <li>{comment}</li>
+          <li>Comments: {comment}</li>
 					{/* <li>Comments: {storyy.comments} </li> */}
 					<li>Created Date: {storyy.createdAt}</li>
 					<li>Modified Date: {storyy.modifiedAt}</li>
