@@ -15,8 +15,8 @@ function Kanban2(props) {
 	let cardforinprogress = null;
 	let cardforreview = null;
 	let cardforcompleted = null;
-  let project = localStorage.getItem('project');
-  let sprint = localStorage.getItem('IndSprint');
+	let project = localStorage.getItem('project');
+	let sprint = localStorage.getItem('IndSprint');
 	const api = new Api();
 
 	const [storyData, setStoryData] = useState(undefined);
@@ -28,88 +28,113 @@ function Kanban2(props) {
 				console.log('All stories are', stories);
 				if (stories) setStoryData(stories);
 			} catch (error) {
-        alert(error.message);
+				alert(error.message);
 				console.log(error.message);
 			}
 		}
 		getStories();
-	}, []);
+	}, [project, sprint]);
 
-  function inprogress(story){
-    try {
-      api.upsertStory({
-        createdBy: story.createdBy,
-        assignedTo: story.assignedTo,
-        comments: story.comments,
-        createdAt: story.createdAt,
-        description: story.description,
-        modifiedAt: story.modifiedAt,
-        priority: story.priority,
-        sprint: story.sprint,
-        status: 'In Progress',
-        storyPoint: story.storyPoint,
-        title: story.title,
-        type: story.type,
-        id: story.id,
-        projectId: project,
-      });
-      alert('User Story Moved to IN PROGRESS');
-      window.location.pathname = '/kanban';
-    } catch (err) {
-      alert(err.message);
-    }
-  }
+	const handleEndSprint = () => {
+		if (storyData) {
+			storyData.map((story) => {
+				if (story.status !== 'Completed') {
+					api.upsertStory({
+						createdBy: story.createdBy,
+						assignedTo: story.assignedTo,
+						comments: story.comments,
+						createdAt: story.createdAt,
+						description: story.description,
+						modifiedAt: story.modifiedAt,
+						priority: story.priority,
+						sprint: 0,
+						status: 'To do',
+						storyPoint: story.storyPoint,
+						title: story.title,
+						type: story.type,
+						projectId: project,
+						id: story.id,
+					});
+				}
+			});
+			window.location.href = '/backlog'
+		}
+	};
 
-  function completed(story){
-    try {
-      api.upsertStory({
-        createdBy: story.createdBy,
-        assignedTo: story.assignedTo,
-        comments: story.comments,
-        createdAt: story.createdAt,
-        description: story.description,
-        modifiedAt: story.modifiedAt,
-        priority: story.priority,
-        sprint: story.sprint,
-        status: 'Completed',
-        storyPoint: story.storyPoint,
-        title: story.title,
-        type: story.type,
-        id: story.id,
-        projectId: project,
-      });
-      alert('User Story Moved to COMPLETED');
-      window.location.pathname = '/kanban';
-    } catch (err) {
-      alert(err.message);
-    }
-    
-  }
+	function inprogress(story) {
+		try {
+			api.upsertStory({
+				createdBy: story.createdBy,
+				assignedTo: story.assignedTo,
+				comments: story.comments,
+				createdAt: story.createdAt,
+				description: story.description,
+				modifiedAt: story.modifiedAt,
+				priority: story.priority,
+				sprint: story.sprint,
+				status: 'In Progress',
+				storyPoint: story.storyPoint,
+				title: story.title,
+				type: story.type,
+				projectId: project,
+				id: story.id,
+			});
+			alert('User Story Moved to IN PROGRESS');
+			window.location.pathname = '/kanban';
+		} catch (err) {
+			alert(err.message);
+		}
+	}
 
-  function review(story){
-    try {
-      api.upsertStory({
-        createdBy: story.createdBy,
-        assignedTo: story.assignedTo,
-        comments: story.comments,
-        createdAt: story.createdAt,
-        description: story.description,
-        modifiedAt: story.modifiedAt,
-        priority: story.priority,
-        sprint: story.sprint,
-        status: 'Review',
-        storyPoint: story.storyPoint,
-        title: story.title,
-        type: story.type,
-        id: story.id,
-        projectId: project,
-      });
-      alert('User Story Moved to REVIEW');
-    window.location.pathname = '/kanban';
-    } catch (err) {
-      alert(err.message);
-    }
-  }
+	function completed(story) {
+		try {
+			api.upsertStory({
+				createdBy: story.createdBy,
+				assignedTo: story.assignedTo,
+				comments: story.comments,
+				createdAt: story.createdAt,
+				description: story.description,
+				modifiedAt: story.modifiedAt,
+				priority: story.priority,
+				sprint: story.sprint,
+				status: 'Completed',
+				storyPoint: story.storyPoint,
+				title: story.title,
+				type: story.type,
+				projectId: project,
+				id: story.id,
+			});
+			alert('User Story Moved to COMPLETED');
+			window.location.pathname = '/kanban';
+		} catch (err) {
+			alert(err.message);
+		}
+	}
+
+	function review(story) {
+		try {
+			api.upsertStory({
+				createdBy: story.createdBy,
+				assignedTo: story.assignedTo,
+				comments: story.comments,
+				createdAt: story.createdAt,
+				description: story.description,
+				modifiedAt: story.modifiedAt,
+				priority: story.priority,
+				sprint: story.sprint,
+				status: 'Review',
+				storyPoint: story.storyPoint,
+				title: story.title,
+				type: story.type,
+				projectId: project,
+				id: story.id,
+			});
+			alert('User Story Moved to REVIEW');
+			window.location.pathname = '/kanban';
+		} catch (err) {
+			alert(err.message);
+		}
+	}
 
 	if (storyData && Array.isArray(storyData)) {
 		cardfortodo = storyData.map((story) => {
@@ -145,8 +170,8 @@ function Kanban2(props) {
 									// const {
 									//   member
 									// } = e.target.elements;
-								  inprogress(story)
-									
+									inprogress(story);
+
 									//window.location.pathname = '/projects';
 								}}
 							>
@@ -155,7 +180,7 @@ function Kanban2(props) {
 						</Card>
 					</Grid>
 				);
-			} 
+			}
 		});
 	}
 
@@ -190,11 +215,11 @@ function Kanban2(props) {
 								onClick={(e) => {
 									e.preventDefault();
 									console.log('story is', story);
-                  review(story)
+									review(story);
 									// const {
 									//   member
 									// } = e.target.elements;
-									
+
 									//window.location.pathname = '/projects';
 								}}
 							>
@@ -203,7 +228,7 @@ function Kanban2(props) {
 						</Card>
 					</Grid>
 				);
-			} 
+			}
 		});
 	}
 
@@ -238,11 +263,11 @@ function Kanban2(props) {
 								onClick={(e) => {
 									e.preventDefault();
 									console.log('story is', story);
-                  completed(story)
+									completed(story);
 									// const {
 									//   member
 									// } = e.target.elements;
-								
+
 									// window.location.pathname = {pathname:'/backlog', sprint:`${project.totalSprints}`, project:`${project.id}`} ;
 								}}
 							>
@@ -251,7 +276,7 @@ function Kanban2(props) {
 						</Card>
 					</Grid>
 				);
-			} 
+			}
 		});
 	}
 
@@ -309,6 +334,15 @@ function Kanban2(props) {
 					{cardforcompleted}
 				</div>
 			</div>
+			<Link to={{ pathname: `/backlog` }}>Backlog</Link>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					handleEndSprint();
+				}}
+			>
+				End Sprint
+			</button>
 		</div>
 	);
 }

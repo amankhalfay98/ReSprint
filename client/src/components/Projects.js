@@ -45,10 +45,6 @@ const Projects = () => {
 		window.location.href = '/backlog';
 	};
 
-	// const handelEdit = (proj) => {
-	// 	localStorage.setItem('project', `${proj.id}`);
-	// 	window.location.href = '/editproject';
-	// };
 
 	const deleteProject = async (id, memId) => {
 		const api = new Api();
@@ -90,14 +86,6 @@ const Projects = () => {
 				) : (
 					''
 				)}
-				{/* {user && user.isScrumMaster ? (
-					<button onClick={(e)=>{
-						e.preventDefault();
-						handelEdit(project);
-					}}>Edit Project</button>
-				) : (
-					''
-				)} */}
 				{user && user.isScrumMaster ? (
 					<button onClick={() => deleteProject(project.id, user.id)}>
 						Delete Project

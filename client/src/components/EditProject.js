@@ -47,7 +47,7 @@ function EditProject() {
 		}
 		getUserById();
 
-	}, [currentUser]);
+	}, [currentUser,projectId]);
 
     function Editingform(){
         try {
@@ -191,7 +191,7 @@ function EditProject() {
 				</div>
 				<br />
 				<label>
-					Employee Name:
+					Employee Name: (Add all Members for this Project)
 					<select multiple name="member" id="member">
 						<option value="">--Please choose an option--</option>
 						{members}
