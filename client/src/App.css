@@ -1,272 +1,297 @@
+body {
+  font-family: "DM Sans", sans-serif;
+  height: 100vh;
+  font-size: 18px;
+}
 .App-link {
-	color: #61dafb;
+  color: #61dafb;
 }
 
 .App {
-	text-align: center;
+  text-align: center;
 }
 .center {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 .App-logo {
-	height: 80px;
+  height: 80px;
 }
 
 input {
-	border: 1px solid #1e8678;
+  border: 1px solid #1e8678;
 }
 .show-body {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 .App-header {
-	/* background-color: #1e8678; */
-	/* height: 120px;
+  /* background-color: #1e8678; */
+  /* height: 120px;
 	padding: 20px;
 	color: #222; */
 }
 
 .App-title {
-	font-size: 1.5em;
-	font-weight: bold;
-	color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
 }
 
 cite {
-	font-weight: bold;
+  font-weight: bold;
 }
 table {
-	align-content: center;
-	margin: auto;
+  align-content: center;
+  margin: auto;
 }
 td {
-	padding: 10px;
+  padding: 10px;
 }
 
 .App-intro {
-	font-size: large;
+  font-size: large;
 }
 .cap-first-letter:first-letter {
-	text-transform: capitalize;
+  text-transform: capitalize;
 }
 .col-sm-6,
 col-md-4 {
-	border: 1px;
+  border: 1px;
 }
 
 .hometext {
-	max-width: 60%;
+  max-width: 60%;
 }
 .showlink {
-	padding: 0.4rem 0.8rem;
-	background-color: white;
-	border-radius: 3px;
-	color: #1e8678;
-	text-decoration: none !important;
-	margin: 5px;
+  padding: 0.4rem 0.8rem;
+  background-color: white;
+  border-radius: 3px;
+  color: #1e8678;
+  text-decoration: none !important;
+  margin: 5px;
 }
 
 .showlink:hover {
-	background-color: transparent;
-	color: white;
-	border: 2px solid white;
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
 }
 
 li {
-	padding: 20px;
+  padding: 20px;
 }
 
 p {
-	/* margin-left: auto;
+  /* margin-left: auto;
 	margin-right: auto;
 	text-align: center; */
-	font-size: 16px;
-	line-height: 28px;
+  font-size: 16px;
+  line-height: 28px;
 }
 
 div {
-	text-align: center;
+  text-align: center;
 }
 
 a {
-	margin-right: 7px;
-	color: black;
-	text-decoration: none !important;
+  margin-right: 7px;
+  color: black;
+  text-decoration: none !important;
 }
 
 ul a:hover {
-	background-color: transparent;
-	color: blue;
+  background-color: transparent;
+  color: blue;
 }
 
 ul {
-	list-style: none;
+  list-style: none;
 }
 
 .title {
-	font-weight: bold;
-	color: #1e8678;
+  font-weight: bold;
+  color: #1e8678;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-	input {
-		font-size: 16px;
-	}
+  input {
+    font-size: 16px;
+  }
 }
 
 dt,
 dl {
-	padding: 0px;
-	margin-top: 0px;
-	margin-bottom: 0px;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 dt {
-	display: inline-block;
+  display: inline-block;
 }
 
 dd {
-	display: inline;
-	margin-left: 5px;
+  display: inline;
+  margin-left: 5px;
 }
 
 .kanban_navbar {
-	width: 100%;
-	padding: 20 px 30px;
-	border-bottom: 1px solid #ccc;
+  width: 100%;
+  padding: 20 px 30px;
+  border-bottom: 1px solid #ccc;
 }
 .kanban {
-	height: 100vh;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .kanban_outer {
-	flex: 1;
-	width: 100%;
-	overflow-x: auto;
+  flex: 1;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .kanban_boards {
-	height: 100%;
-	padding: 20px;
-	padding-bottom: 0px;
-	min-width: fit-content;
-	display: flex;
-	gap: 30px;
+  height: 100%;
+  padding: 20px;
+  padding-bottom: 0px;
+  min-width: fit-content;
+  display: flex;
+  gap: 30px;
 }
 .nav-pills .nav-link {
-	background-color: whitesmoke;
-	border-radius: 2.5rem;
-	margin-right: 7px;
+  background-color: whitesmoke;
+  border-radius: 2.5rem;
+  margin-right: 7px;
 }
 
 .nav-link:hover {
-	background-color: transparent;
-	color: white;
-	border: 2px solid white;
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
 }
 
 .navigation {
-	background: #282c34;
-	display: inline;
+  background: #282c34;
+  display: inline;
 }
 
 .navigation ul {
-	display: inline;
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .navigation a:link,
 .navigation a:visited {
-	color: white;
-	text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .active {
-	font-weight: bold;
-	color: red !important;
+  font-weight: bold;
+  color: red !important;
 }
 
 .error {
-	font-weight: bold;
-	color: red !important;
+  font-weight: bold;
+  color: red !important;
 }
 
 .forgotPassword {
-	background: none !important;
-	border: none !important;
-	text-decoration: underline;
-	margin-left: 5px;
-	color: #069;
+  background: none !important;
+  border: none !important;
+  text-decoration: underline;
+  margin-left: 5px;
+  color: #069;
 }
 
 .forgotPassword:hover {
-	text-decoration: none;
-	color: red;
+  text-decoration: none;
+  color: red;
 }
 
-.project_card{
-	border: 1px solid #1e8678;
-	width: 400px;
-	height: 300px;
-	display: inline-grid;
+.project_card {
+  border: 1px solid #1e8678;
+  width: 400px;
+  height: 300px;
+  display: inline-grid;
 }
-.drag-n-drop{
-	padding: .5rem;
-	gap: .5rem;
-	display: grid;
-	width: 100%;
-	height: 100%;
-	grid-template-columns: repeat(auto-fill,400px);
-	align-items: start;
-}
-
-.dnd-group{
-	background-color: #79808f;
-	border-radius: 5px;
-	padding: .5rem;
+.drag-n-drop {
+  padding: 0.5rem;
+  gap: 0.5rem;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(auto-fill, 400px);
+  align-items: start;
 }
 
-.dnd-item{
-	min-height: 150px;
-	background-color: white;
-	color: #282c34;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-weight: bold;
+.dnd-group {
+  background-color: #79808f;
+  border-radius: 5px;
+  padding: 0.5rem;
 }
 
-.dnd-item:not(:last-of-type){
-	margin-bottom: .5rem;
+.dnd-item {
+  min-height: 150px;
+  background-color: white;
+  color: #282c34;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 }
 
-.dnd-item *{
-	margin:0;
-	font-size: 1.2rem;
+.dnd-item:not(:last-of-type) {
+  margin-bottom: 0.5rem;
 }
 
-.group-title{
-	text-align: left;
-	margin-bottom: .5rem;
-	font-size: 1.5rem;
+.dnd-item * {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.group-title {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
 
 /* .current{
 
 } */
 
-.label-form{
-	text-align: left !important;
-	float: left;
+.label-form {
+  text-align: left !important;
+  float: left;
+}
+
+.left-text {
+  text-align: left !important;
+}
+.name {
+  font-weight: bold;
+}
+
+.friend {
+  text-align: left !important;
+}
+
+.friend .data {
+  display: inline-block !important;
+  vertical-align: top !important;
+}
+
+ul li{
+  display: inline;
 }

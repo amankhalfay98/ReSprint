@@ -49,7 +49,7 @@ function App() {
 						<PrivateRoute path="/storyform" component={Storyform} />
 						<PrivateRoute path="/editform" component={Editform} />
 						<PrivateRoute path="/newproject" component={NewProject} />
-            <PrivateRoute path="/editproject" component={EditProject} />
+						<PrivateRoute path="/editproject" component={EditProject} />
 						<PrivateRoute path="/stats" component={Stats} />
 						<PrivateRoute path="/editproject" component={EditProject} />
 					</div>
