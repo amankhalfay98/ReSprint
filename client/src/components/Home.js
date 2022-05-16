@@ -21,7 +21,7 @@ const Home = () => {
 				if (user) {
 					setUserData(user);
 					if (
-						user.photoURL != 'https://resprint-media.s3.amazonaws.com/undefined'
+						user.photoURL !== 'https://resprint-media.s3.amazonaws.com/undefined'
 					) {
 						setUserPhoto(user.photoURL);
 					}

@@ -47,7 +47,7 @@ function EditProject() {
 		}
 		getUserById();
 
-	}, [currentUser]);
+	}, [currentUser,projectId]);
 
     function Editingform(){
         try {

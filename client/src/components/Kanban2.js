@@ -33,7 +33,7 @@ function Kanban2(props) {
 			}
 		}
 		getStories();
-	}, []);
+	}, [project, sprint]);
 
   function inprogress(story){
     try {
