@@ -148,7 +148,7 @@ export default function SignUp() {
 				alert(error.message);
 			}
 		}
-	}, [currentUser, api, company, history, isScrumMaster]);
+	}, [currentUser, api, company, history, isScrumMaster,fileName]);
 
 	return (
 		<>

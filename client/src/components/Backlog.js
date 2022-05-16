@@ -10,6 +10,7 @@ const Backlog = (props) => {
 	const [storyData, setStoryData] = useState(undefined);
 
 	useEffect(() => {
+		const api = new Api();
 		// console.log('Props.location.project', typeof props.location.project);
 		async function getStories() {
 			try {
@@ -88,10 +89,9 @@ const Backlog = (props) => {
 
 
 	if (storyData && Array.isArray(storyData)) {
-		{
 			card = storyData.map((story) => {
 				//If Story is not in Backlog that is sprint no is not 0 then display "Add to next sprint button " and "Add to next sprint"
-				if (story.sprint != 0) {
+				if (parseInt(story.sprint) !== 0) {
 					return (
 						<div className="project_card" key={story.id}>
               <button
@@ -173,7 +173,6 @@ const Backlog = (props) => {
 					);
 				}
 			});
-		}
 	}
 
 	return (

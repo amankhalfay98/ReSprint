@@ -122,11 +122,11 @@ function EditStory(props) {
 					} catch (err) {
 						alert(err.message);
 					}
-					alert('Story is created');
+					alert('Story updated successfully');
 					window.location.pathname = '/backlog';
 				}}
 			>
-				<h2>Add New User Story</h2>
+				<h2>Edit User Story</h2>
 				<div className="form-group">
 					<label>
 						Assigned To:
