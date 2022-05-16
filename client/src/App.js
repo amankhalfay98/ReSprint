@@ -9,7 +9,7 @@ import Kanban from './components/Kanban2';
 import Retrospective from './components/Retrospective';
 import UserStories from './components/UserStories';
 import individualUserStory from './components/IndividualUserStory';
-import Landing from './components/Landing';
+//import Landing from './components/Landing';
 import Navigation from './components/Navigation';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';

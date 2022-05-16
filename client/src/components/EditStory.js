@@ -80,6 +80,166 @@ function EditStory(props) {
 	}
 
 	if (updateStory && projectData) {
+		if(updateStory.status === 'Completed'){
+			return (
+				<form 
+					className="form"
+					id="add-story"
+					onSubmit={(e) => {
+						console.log(description.value);
+						console.log(title.value);
+						console.log(priority.value);
+						console.log(sprint.value);
+						console.log(story_point.value);
+						console.log(e.target.elements.member.value);
+						e.preventDefault();
+						try {
+							if (parseInt(sprint.value) > parseInt(projectData.totalSprints)) {
+								throw Error(
+									'Sprint Value cannot be greater than total sprints of project'
+								);
+							}
+	
+							api.upsertStory({
+								createdBy: currentUser.uid,
+								assignedTo: e.target.elements.member.value,
+								comments: updateStory.comments,
+								createdAt: updateStory.createdAt,
+								description: description.value,
+								modifiedAt: new Date().toISOString(),
+								priority: parseInt(priority.value),
+								sprint: parseInt(sprint.value),
+								status: e.target.elements.status.value,
+								storyPoint: parseInt(story_point.value),
+								title: title.value,
+								type: e.target.elements.type.value,
+								projectId: projectId,
+								id: updateStory.id,
+							});
+							description.value = '';
+							title.value = '';
+							priority.value = '';
+							story_point.value = '';
+	
+						alert('Story updated successfully');
+						window.location.pathname = '/backlog';
+						} catch (err) {
+							alert(err.message);
+						}
+						
+					}}
+				>
+					<h2>Edit User Story</h2>
+					<div className="form-group">
+						<label>
+							Assigned To:
+							<select disabled
+								name="member"
+								id="member"
+								defaultValue={`${updateStory.assignedTo}`}
+							>
+								{members}
+							</select>
+						</label>
+					</div>
+					<div className="form-group">
+						<label>
+							Description:
+							<br />
+							<input disabled
+								defaultValue={`${updateStory.description}`}
+								ref={(node) => {
+									description = node;
+								}}
+							/>
+						</label>
+					</div>
+					<br />
+					<div className="form-group">
+						<label>
+							Priority
+							<br />
+							<input disabled
+								type="number"
+								defaultValue={`${updateStory.priority}`}
+								ref={(node) => {
+									priority = node;
+								}}
+							/>
+						</label>
+					</div>
+					<br />
+					<br />
+					<div className="form-group">
+						<label>
+							Sprint (Max value can be {`${projectData.totalSprints}`})
+							<br />
+							<input disabled
+								type="number"
+								defaultValue={`${updateStory.sprint}`}
+								ref={(node) => {
+									sprint = node;
+								}}
+							/>
+						</label>
+					</div>
+					<br />
+					<div className="form-group">
+						<label>
+							Story Point:
+							<br />
+							<input disabled
+								type="number"
+								defaultValue={`${updateStory.storyPoint}`}
+								ref={(node) => {
+									story_point = node;
+								}}
+							/>
+						</label>
+					</div>
+					<br />
+					<div className="form-group">
+						<label>
+							Title:
+							<br />
+							<input disabled
+								defaultValue={`${updateStory.title}`}
+								ref={(node) => {
+									title = node;
+								}}
+							/>
+						</label>
+					</div>
+					<div className="form-group">
+						<label>
+							Status:
+							<select name="status" id="status" defaultValue={updateStory.status} disabled>
+								<option value="To do">To do</option>
+								<option value="In Progress">In Progress</option>
+								<option value="Review">Review</option>
+								<option value="Completed">Completed</option>
+							</select>
+						</label>
+					</div>
+					<div className="form-group">
+						<label>
+							Type:
+							<select name="type" id="type" defaultValue={updateStory.type} disabled>
+								<option value="Feature">Feature</option>
+								<option value="Bug">Bug</option>
+								<option value="Enhancement">Enhancement</option>
+							</select>
+						</label>
+					</div>
+					<br />
+					<br />
+	
+					<Button variant="outlined" type="submit" disabled>
+						Submit
+					</Button>
+				</form>
+			);
+		}
 		return (
 			<form
 				className="form"
@@ -119,14 +279,16 @@ function EditStory(props) {
 						title.value = '';
 						priority.value = '';
 						story_point.value = '';
+
+					alert('Story updated successfully');
+					window.location.pathname = '/backlog';
 					} catch (err) {
 						alert(err.message);
 					}
-					alert('Story is created');
-					window.location.pathname = '/backlog';
+					
 				}}
 			>
-				<h2>Add New User Story</h2>
+				<h2>Edit User Story</h2>
 				<div className="form-group">
 					<label>
 						Assigned To:
@@ -236,6 +398,7 @@ function EditStory(props) {
 				</Button>
 			</form>
 		);
+
 	} else {
 		return <h2>Loading...</h2>;
 	}

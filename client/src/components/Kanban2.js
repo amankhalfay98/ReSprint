@@ -33,7 +33,7 @@ function Kanban2(props) {
 			}
 		}
 		getStories();
-	}, []);
+	}, [project, sprint]);
 
   function inprogress(story){
     try {
@@ -309,6 +309,7 @@ function Kanban2(props) {
 					{cardforcompleted}
 				</div>
 			</div>
+			<Link to={{ pathname: `/backlog` }}>Backlog</Link>
 		</div>
 	);
 }
