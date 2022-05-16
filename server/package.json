@@ -4,6 +4,7 @@
   "description": "CS-524 Final Project",
   "main": "index.js",
   "scripts": {
+    "seed": "node ./tasks/seed.js",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
