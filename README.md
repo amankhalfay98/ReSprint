@@ -1,5 +1,22 @@
 # ReSprint
 
+
+## Client Requirements
+For development, you will only need React.js
+
+The entry point of the application is located in `App.js` from where the express server starts
+
+## Configure app
+
+### You will need to first install all the dependencies by running this command
+
+    $ npm ci
+
+### Then you will need an .env file to make sure all the configurations are in place to run the application
+
+### Start the application using command
+
+    $ npm start
 ## Server Requirements
 
 For development, you will only need Node.js
