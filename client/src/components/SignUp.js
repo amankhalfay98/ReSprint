@@ -91,6 +91,7 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      uploadFile(selectedFile);
       setLoading(true);
       await doCreateUserWithEmailAndPassword(
         emailRef.current.value,
@@ -145,7 +146,7 @@ export default function SignUp() {
         alert(error.message);
       }
     }
-  }, [currentUser, api, company, history, isScrumMaster,fileName]);
+  }, [currentUser, api, company, history, isScrumMaster, fileName]);
 
   return (
     <>
@@ -160,7 +161,7 @@ export default function SignUp() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="name">
                   <Form.Label htmlFor="name" className="label-form">
-                    Name
+                    Name <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="name"
@@ -171,7 +172,7 @@ export default function SignUp() {
                 </Form.Group>
                 <Form.Group id="email">
                   <Form.Label htmlFor="email" className="label-form">
-                    Email
+                    Email <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="email"
@@ -182,7 +183,7 @@ export default function SignUp() {
                 </Form.Group>
                 <Form.Group id="password">
                   <Form.Label htmlFor="password" className="label-form">
-                    Password
+                    Password <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="password"
@@ -193,7 +194,8 @@ export default function SignUp() {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label htmlFor="isScrumMaster" className="label-form">
-                    Are you a Scrum Master or a Developer?
+                    Are you a Scrum Master or a Developer?{" "}
+                    <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Check
                     className="label-form"
@@ -219,7 +221,11 @@ export default function SignUp() {
                   />
                 </Form.Group>
                 <Form.Group>
+                  <Form.Label htmlFor="companyName" className="label-form">
+                    Select Company <span className="required-color"> *</span>
+                  </Form.Label>
                   <Form.Select
+                    id="companyName"
                     name="companyName"
                     aria-label="Select Company"
                     required
@@ -229,36 +235,21 @@ export default function SignUp() {
                     {companies}
                   </Form.Select>
                 </Form.Group>
-                <br />
-                <div>
-                  <label
-                    className="label-form"
+                <Form.Group>
+                  <Form.Label
                     htmlFor="image-aws"
                     name="image-aws"
+                    className="label-form"
                   >
-                    Native SDK File Upload Progress is {progress}%
-                  </label>
-                  <input
+                    Upload Profile Image [{progress}%]
+                  </Form.Label>
+                  <Form.Control
                     id="image-aws"
-                    name="file"
                     type="file"
+                    accept=".png,.jpg"
                     onChange={handleFileInput}
                   />
-                  <button
-                    type="button"
-                    onClick={() => uploadFile(selectedFile)}
-                  >
-                    Upload
-                  </button>
-                </div>
-                {/* <Form.Group controlId="formFile" className="mb-3">
-									<Form.Label>Upload Profile Photo</Form.Label>
-									<Form.Control
-										onChange={(e) => setFileName(e.target.files[0].name)}
-										accept=".png,.jpg"
-										type="file"
-									/>
-								</Form.Group> */}
+                </Form.Group>
                 <br />
                 <Button disabled={loading} className="w-100" type="submit">
                   Sign Up

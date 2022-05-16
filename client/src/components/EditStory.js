@@ -63,13 +63,14 @@ function EditStory(props) {
     getStory();
   }, [storyVal]);
 
-  const optionGenerator = (member) => {
-    return (
-      <option key={member.id} value={member.id}>
-        {member.userName}
-      </option>
-    );
-  };
+
+	const optionGenerator = (member) => {
+		return (
+			<option key={member.id} value={member.id}>
+				{member.userName}
+			</option>
+		);
+	};
 
   if (projectData && projectUsers && updateStory) {
     members =
