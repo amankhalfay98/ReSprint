@@ -309,6 +309,7 @@ function Kanban2(props) {
 					{cardforcompleted}
 				</div>
 			</div>
+			<Link to={{ pathname: `/backlog` }}>Backlog</Link>
 		</div>
 	);
 }
