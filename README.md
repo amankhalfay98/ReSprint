@@ -1,5 +1,16 @@
 # ReSprint
 
+              Agile methodology has become the new trend of project management to
+					which companies are now switching. ReSprint brings a
+					web based solution for enterprises who work on Agile based software
+					development lifecycle. Project managers can use this application to
+					list down every user story onto the Kanban board which can help the
+					team to track the progress of each user story (feature) and maximize
+					team efficiency.
+                Teams can keep track of the backlog features and divide their task to
+					different sprints for feature tracking. This application will also
+					manage sprint retro activities in order to improve on agile based
+					project management.
 
 ## Client Requirements
 For development, you will only need React.js
