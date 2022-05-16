@@ -108,7 +108,7 @@ function NewProject() {
                 <Form onSubmit={handleSubmit}>
                   <Form.Group id="title">
                     <Form.Label htmlFor="title" className="label-form">
-                      Project Name
+                      Project Name <span className="required-color"> *</span>
                     </Form.Label>
                     <Form.Control
                       id="title"
@@ -130,7 +130,8 @@ function NewProject() {
                   </Form.Group>
                   <Form.Group id="member">
                     <Form.Label htmlFor="member" className="label-form">
-                      Project Members (Add all Members for this Project)
+                      Project Members (Add all Members for this Project){" "}
+                      <span className="required-color"> *</span>
                     </Form.Label>
                     <Form.Select
                       multiple
@@ -145,7 +146,7 @@ function NewProject() {
                   </Form.Group>
                   <Form.Group id="totalSprints">
                     <Form.Label htmlFor="totalSprints" className="label-form">
-                      Total Sprints
+                      Total Sprints <span className="required-color"> *</span>
                     </Form.Label>
                     <Form.Control
                       id="totalSprints"

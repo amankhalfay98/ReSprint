@@ -295,3 +295,7 @@ dd {
 ul li{
   display: inline;
 }
+
+.required-color{
+  color: #b50000;
+}

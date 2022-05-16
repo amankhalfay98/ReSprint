@@ -55,7 +55,7 @@ function SignIn() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                   <Form.Label htmlFor="email" className="label-form">
-                    Email
+                    Email <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="email"
@@ -66,7 +66,7 @@ function SignIn() {
                 </Form.Group>
                 <Form.Group id="password">
                   <Form.Label htmlFor="password" className="label-form">
-                    Password
+                    Password <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="password"

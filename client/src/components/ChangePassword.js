@@ -52,7 +52,7 @@ function ChangePassword() {
                       htmlFor="currentPassword"
                       className="label-form"
                     >
-                      Current Password
+                      Current Password <span className="required-color"> *</span>
                     </Form.Label>
                     <Form.Control
                       id="currentPassword"
@@ -63,7 +63,7 @@ function ChangePassword() {
                   </Form.Group>
                   <Form.Group id="newPasswordOne">
                     <Form.Label htmlFor="newPasswordOne" className="label-form">
-                      New Password
+                      New Password <span className="required-color"> *</span>
                     </Form.Label>
                     <Form.Control
                       id="newPasswordOne"
@@ -74,7 +74,7 @@ function ChangePassword() {
                   </Form.Group>
                   <Form.Group id="newPasswordTwo">
                     <Form.Label htmlFor="newPasswordTwo" className="label-form">
-                      Confirm New Password
+                      Confirm New Password <span className="required-color"> *</span>
                     </Form.Label>
                     <Form.Control
                       id="newPasswordTwo"

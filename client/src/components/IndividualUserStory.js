@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
 import Api from "../services/api";
-import { Card, Container, Button, Accordion, ListGroup } from "react-bootstrap";
+import { Card, Container, Accordion, ListGroup } from "react-bootstrap";
 
 const UserStories = (props) => {
   console.log(props.location);

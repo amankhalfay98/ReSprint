@@ -116,7 +116,7 @@ function Storyform(props) {
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="title">
                   <Form.Label htmlFor="title" className="label-form">
-                    Title
+                    Title <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="title"
@@ -127,7 +127,7 @@ function Storyform(props) {
                 </Form.Group>
                 <Form.Group id="description">
                   <Form.Label htmlFor="description" className="label-form">
-                    Description
+                    Description <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="description"
@@ -137,7 +137,9 @@ function Storyform(props) {
                   ></Form.Control>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label className="label-form">Assign To</Form.Label>
+                  <Form.Label className="label-form">
+                    Assign To <span className="required-color"> *</span>
+                  </Form.Label>
                   <Form.Select
                     name="assignedTo"
                     aria-label="Select Member"
@@ -149,7 +151,9 @@ function Storyform(props) {
                   </Form.Select>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label className="label-form">Type</Form.Label>
+                  <Form.Label className="label-form">
+                    Type <span className="required-color"> *</span>
+                  </Form.Label>
                   <Form.Select
                     name="type"
                     aria-label="Select Type"
@@ -164,7 +168,7 @@ function Storyform(props) {
                 </Form.Group>
                 <Form.Group id="priority">
                   <Form.Label htmlFor="priority" className="label-form">
-                    Priority
+                    Priority <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="priority"
@@ -175,7 +179,7 @@ function Storyform(props) {
                 </Form.Group>
                 <Form.Group id="points">
                   <Form.Label htmlFor="points" className="label-form">
-                    Story Point
+                    Story Point <span className="required-color"> *</span>
                   </Form.Label>
                   <Form.Control
                     id="points"
