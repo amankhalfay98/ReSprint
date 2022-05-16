@@ -22,6 +22,7 @@ const UserStories = () => {
 				console.log(stories);
 				if (stories) setStoryData(stories);
 			} catch (error) {
+				alert(error.message);
 				console.log(error.message);
 			}
 		}

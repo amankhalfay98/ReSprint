@@ -28,6 +28,7 @@ function Kanban2(props) {
 				console.log('All stories are', stories);
 				if (stories) setStoryData(stories);
 			} catch (error) {
+        alert(error.message);
 				console.log(error.message);
 			}
 		}

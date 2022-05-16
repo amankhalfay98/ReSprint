@@ -56,6 +56,7 @@ const Projects = () => {
 				window.location.reload();
 			}
 		} catch (error) {
+      alert(error.message);
 			console.log(error.message);
 		}
 	};
