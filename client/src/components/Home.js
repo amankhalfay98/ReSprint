@@ -28,7 +28,6 @@ const Home = () => {
 				}
 			} catch (error) {
 				alert(error.message);
-
 			}
 		}
 		getCurrentUserData();
@@ -39,6 +38,18 @@ const Home = () => {
 		return (
 			<div>
 				<h1>Welcome to ReSprint, {`${userData.userName}`}!</h1>
+				<br />
+				<br />
+				<div>
+					<img
+						src={`${userPhoto}`}
+						alt="profile_photo"
+						width="150"
+						height="150"
+					/>
+				</div>
+				<br />
+				<br />
 				<p>
 					Agile methodology has become the new trend of project management to
 					which companies are now switching. ReSprint brings a
@@ -48,14 +59,8 @@ const Home = () => {
 					team to track the progress of each user story (feature) and maximize
 					team efficiency.{' '}
 				</p>
-				<div>
-					<img
-						src={`${userPhoto}`}
-						alt="profile_photo"
-						width="150"
-						height="150"
-					/>
-				</div>
+				<br />
+
 				<p>
 					{' '}
 					Teams can keep track of the backlog features and divide their task to

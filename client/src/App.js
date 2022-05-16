@@ -31,7 +31,7 @@ function App() {
 				<div className="App">
 					<Navigation />
 					<div className="App-body">
-						{/* <Route exact path="/" component={Home} /> */}
+						<Route exact path="/" component={SignIn} />
 						<Route path="/signin" component={SignIn} />
 						<Route path="/signup" component={SignUp} />
 						<PrivateRoute path="/home" component={Home} />
@@ -49,7 +49,7 @@ function App() {
 						<PrivateRoute path="/storyform" component={Storyform} />
 						<PrivateRoute path="/editform" component={Editform} />
 						<PrivateRoute path="/newproject" component={NewProject} />
-            <PrivateRoute path="/editproject" component={EditProject} />
+						<PrivateRoute path="/editproject" component={EditProject} />
 						<PrivateRoute path="/stats" component={Stats} />
 						<PrivateRoute path="/editproject" component={EditProject} />
 					</div>
