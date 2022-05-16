@@ -91,7 +91,9 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      uploadFile(selectedFile);
+      if (selectedFile !== null) {
+        uploadFile(selectedFile);
+      }
       setLoading(true);
       await doCreateUserWithEmailAndPassword(
         emailRef.current.value,
