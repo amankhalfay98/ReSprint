@@ -27,6 +27,7 @@ const Projects = () => {
 						console.log(error.message);
 					}
 				}
+				console.log(user);
 			} catch (error) {
 				console.log(error.message);
 			}
@@ -45,7 +46,6 @@ const Projects = () => {
 		window.location.href = '/backlog';
 	};
 
-
 	const deleteProject = async (id, memId) => {
 		const api = new Api();
 		try {
@@ -56,7 +56,7 @@ const Projects = () => {
 				window.location.reload();
 			}
 		} catch (error) {
-      alert(error.message);
+			alert(error.message);
 			console.log(error.message);
 		}
 	};
@@ -97,45 +97,45 @@ const Projects = () => {
 		);
 	};
 
-	if(user){
+	if (user) {
+		if (projectData && Array.isArray(projectData) && projectData.length > 0) {
+			card = projectData.map((project) => {
+				return buildCard(project);
+			});
+		} else if (
+			projectData &&
+			projectData.length === 0 &&
+			Array.isArray(projectData)
+		) {
+			return (
+				<div>
+					{user && user.isScrumMaster ? (
+						<NavLink to="/newproject">New Project</NavLink>
+					) : (
+						''
+					)}
+					<div>
+						<p>Currently there are no Projects</p>
+						<p>Scrum Master Needs to add Projects</p>
+					</div>
+				</div>
+			);
+		}
 
-	if (
-		projectData &&
-		Array.isArray(projectData) &&
-		projectData.length > 0
-	) {
-		card = projectData.map((project) => {
-			return buildCard(project);
-		});
-	} else if (
-		projectData &&
-		projectData.length === 0 &&
-		Array.isArray(projectData)
-	) {
 		return (
 			<div>
-				<p>Currently there are no Projects</p>
-				<p>Scrum Master Needs to add Projects</p>
+				{user && user.isScrumMaster ? (
+					<NavLink to="/newproject">New Project</NavLink>
+				) : (
+					''
+				)}
+
+				<ul>{card}</ul>
 			</div>
 		);
+	} else {
+		return <h2>Loading...</h2>;
 	}
-
-	return (
-		<div>
-			{user && user.isScrumMaster ? (
-				<NavLink to="/newproject">New Project</NavLink>
-			) : (
-				''
-			)}
-
-			<ul>{card}</ul>
-		</div>
-	);
-			}else{
-				return(
-				<h2>Loading...</h2>
-				)
-			}
 };
 
 export default Projects;
