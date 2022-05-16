@@ -70,7 +70,7 @@ const UserStories = (props) => {
       <>
         <Container>
           <Card key={storyy.id} border={border} className="left-text">
-            <Card.Header className="left-text" as="h5">
+            <Card.Header className="left-text" as="h1">
               User Story
             </Card.Header>
             <Card.Body className="left-text">
